@@ -4,105 +4,241 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>今知错题本</title>
-<meta name="description" content="今知错题本：AI 智能录题、多层级整理、错题 AI 追问、思维导图、智能复习与一键导出，让每一道错题都有清晰来源，也有明确去处。">
+<meta name="description" content="今知错题本：拍照即录，AI 补全答案、知识点与标签；多层级整理、错题追问、思维导图、按计划复习与一键导出。iPhone / iPad、Android、Windows、Mac 可用。">
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="assets/style.css">
 <style>
-:root{
-  --blue:#376EFF;--blue-deep:#2158E8;--blue-ink:#1B45C9;--blue-50:#EEF3FF;--blue-100:#DCE6FF;--blue-200:#B9CBFF;
-  --ground:#F3F6FC;--surface:#FFFFFF;--ink:#1B1F2A;--ink-2:#3E4657;--muted:#7D8699;--line:#E4E9F2;--line-2:#CDD6E6;
-  --green:#259D56;--green-bg:#EAF7EE;--red:#E5484D;--red-bg:#FEF0EF;--orange:#F18C32;--orange-bg:#FFF6EF;--purple:#7649D8;--purple-bg:#F2ECFA;
-  --navy:#0F1E4A;--navy-2:#16296A;
-  --shadow-sm:0 1px 2px rgba(27,31,42,.05),0 1px 6px rgba(27,31,42,.04);
-  --shadow:0 14px 34px -14px rgba(15,30,74,.22);
-  --shadow-lg:0 36px 70px -28px rgba(15,30,74,.38);
-  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","MiSans","HarmonyOS Sans SC","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC","Helvetica Neue",Arial,sans-serif;
-  --serif:"Songti SC","STSong","Noto Serif CJK SC","Noto Serif SC","Source Han Serif SC","SimSun",Georgia,serif;
-  --math:"Times New Roman","STIX Two Math","Cambria Math",Times,serif;
-  color-scheme:light;
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--font);font-size:16px;line-height:1.75;color:var(--ink);background:var(--surface);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4,p,ul,ol,figure{margin:0}
-ul,ol{padding:0;list-style:none}
-a{color:inherit;text-decoration:none}
-button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-svg{display:block}
-sup{font-size:.72em;line-height:0}
-:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
-.i{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.i--s{width:16px;height:16px}
-.i--xs{width:12px;height:12px;stroke-width:2}
-.i--f{fill:currentColor;stroke:none}
-.container{width:min(1160px,calc(100% - 48px));margin-inline:auto}
-.num{font-variant-numeric:tabular-nums}
-
-/* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid transparent;white-space:nowrap;transition:transform .15s ease,box-shadow .15s ease,background .15s ease,border-color .15s ease}
-.btn:hover{transform:translateY(-1px)}
-.btn--primary{background:var(--blue);color:#fff;box-shadow:0 10px 22px -10px rgba(55,110,255,.75)}
-.btn--primary:hover{background:var(--blue-deep)}
-.btn--ghost{background:var(--surface);border-color:var(--line-2);color:var(--ink)}
-.btn--ghost:hover{border-color:var(--blue-200);background:var(--blue-50)}
-.btn--sm{height:38px;padding:0 16px;font-size:14px;border-radius:10px}
-.btn--lg{height:54px;padding:0 28px;font-size:16px;border-radius:14px}
-
-/* ---------- nav ---------- */
-.nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s}
-.nav.scrolled{border-color:var(--line);box-shadow:0 6px 24px -18px rgba(15,30,74,.25)}
-.nav__inner{display:flex;align-items:center;justify-content:space-between;height:70px;gap:24px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.01em}
-.brand__mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,#4A86FF,#2158E8);display:grid;place-items:center;color:#fff;box-shadow:0 8px 16px -8px rgba(33,88,232,.7)}
-.brand__mark .i{width:20px;height:20px;stroke-width:2}
-.brand__tag{margin-left:6px;font-size:11px;font-weight:600;color:var(--blue);background:var(--blue-50);border-radius:999px;padding:2px 8px;letter-spacing:.04em}
-.nav__links{display:flex;gap:34px;font-size:15px;font-weight:500;color:var(--ink-2)}
-.nav__links a{position:relative;padding:6px 0}
-.nav__links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:var(--blue);transform:scaleX(0);transition:transform .2s}
-.nav__links a:hover{color:var(--ink)}
-.nav__links a:hover::after{transform:scaleX(1)}
-.nav__cta{display:flex;align-items:center;gap:10px}
-.nav__toggle{display:none;width:40px;height:40px;border-radius:10px;border:1px solid var(--line);place-items:center}
-
-/* ---------- section scaffolding ---------- */
-.section{padding:96px 0}
-.section--ground{background:var(--ground)}
-.kicker{display:inline-flex;align-items:center;gap:10px;color:var(--blue);font-weight:700;font-size:13px;letter-spacing:.14em}
-.kicker::before{content:"";width:22px;height:2px;background:var(--blue);border-radius:2px}
-.sec-head{max-width:680px;margin-bottom:56px}
-.sec-head h2{font-size:clamp(28px,3.6vw,42px);line-height:1.22;letter-spacing:-.02em;font-weight:800;margin:14px 0 16px;text-wrap:balance}
-.sec-head p{color:var(--ink-2);font-size:17px;max-width:600px}
-
-/* ---------- hero ---------- */
-.hero{position:relative;padding:64px 0 48px;overflow:hidden}
-.hero__grid{display:grid;grid-template-columns:1.02fr 1fr;gap:40px;align-items:center}
+/* ===================== hero ===================== */
+.hero{position:relative;padding:52px 0 28px;overflow:hidden}
+.hero__head{max-width:860px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;color:var(--ink-2);box-shadow:var(--shadow-sm)}
 .eyebrow b{display:inline-flex;align-items:center;gap:4px;background:var(--blue);color:#fff;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700}
-.hero h1{font-size:clamp(38px,5.2vw,62px);line-height:1.14;letter-spacing:-.025em;font-weight:800;margin:22px 0 20px;text-wrap:balance}
-.hero h1 em{font-style:normal;color:var(--blue);background:linear-gradient(transparent 64%,var(--blue-100) 64%);padding:0 .04em;border-radius:3px}
-.hero__lead{font-size:18px;color:var(--ink-2);max-width:540px;line-height:1.8}
-.hero__actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
-.hero__facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:30px;font-size:13.5px;color:var(--muted)}
-.hero__facts span{display:inline-flex;align-items:center;gap:7px}
-.hero__facts span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
-.hero__shot{position:relative;display:flex;justify-content:center;align-items:center;min-height:700px}
-.hero__shot::before{content:"";position:absolute;inset:24px 0 0 0;border-radius:36px;background:var(--ground);z-index:0}
-.hero__shot::after{content:"";position:absolute;inset:24px 0 0 0;border-radius:36px;background:radial-gradient(420px 320px at 50% 45%,rgba(55,110,255,.16),transparent 70%);z-index:0;pointer-events:none}
-.hero__shot .phone{z-index:1}
-.fl{position:absolute;z-index:3;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:11px 14px 11px 11px;display:flex;align-items:center;gap:10px;font-size:12.5px;line-height:1.4;white-space:nowrap;animation:bob 7s ease-in-out infinite}
-.fl b{display:block;font-size:13px;font-weight:700}
-.fl small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
-.fl .fic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
-.fl--a{top:70px;left:-14px}
-.fl--b{top:150px;right:-26px;animation-delay:-2.5s}
-.fl--c{bottom:40px;left:-6px;animation-delay:-4.5s}
-.fl .crumbline{display:flex;align-items:center;gap:3px;font-size:11.5px;color:var(--muted);margin-top:3px}
-.fl .crumbline b{display:inline;font-size:11.5px;color:var(--blue)}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hero h1{font-size:clamp(40px,6vw,74px);line-height:1.1;letter-spacing:-.03em;font-weight:800;margin:22px 0 20px;text-wrap:balance}
+.circled{position:relative;display:inline-block;padding:0 .04em}
+.circled svg{position:absolute;left:-5%;top:-14%;width:112%;height:132%;overflow:visible;pointer-events:none}
+.circled path{fill:none;stroke:var(--pen);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:drawpath 1s cubic-bezier(.4,0,.2,1) .45s forwards;opacity:.92}
+@keyframes drawpath{to{stroke-dashoffset:0}}
+.hero__lead{font-size:18px;color:var(--ink-2);max-width:640px;line-height:1.8}
+.hero__actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;align-items:center}
+.hero__plat{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);margin-left:8px}
+.hero__plat .i{width:16px;height:16px}
 
-/* ---------- phone ---------- */
-.phone{--w:300px;width:var(--w);height:calc(var(--w) * 2.06);background:#0E1326;border-radius:46px;padding:10px;box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.08);position:relative;flex:none}
+/* scene */
+.scene-wrap{position:relative;margin-top:40px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scene-wrap::-webkit-scrollbar{display:none}
+.scene-size{position:relative;width:calc(1100px * var(--s,1));height:calc(480px * var(--s,1));margin:0 auto}
+.scene{position:absolute;left:0;top:0;width:1100px;height:480px;transform:scale(var(--s,1));transform-origin:0 0;transition:opacity .35s}
+.scene.fade{opacity:0}
+.scene.fade *{transition:none!important;animation:none!important}
+.sc-bg{position:absolute;inset:8px 0 0 0;border-radius:36px;background:var(--ground);overflow:hidden}
+.sc-bg::before{content:"";position:absolute;inset:0;background:radial-gradient(520px 330px at 52% 42%,rgba(55,110,255,.15),transparent 70%)}
+.sc-bg::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(27,31,42,.09) 1px,transparent 1px);background-size:22px 22px;opacity:.5;-webkit-mask-image:linear-gradient(#000 30%,transparent);mask-image:linear-gradient(#000 30%,transparent)}
+/* paper */
+.sc-paper{position:absolute;left:40px;top:40px;width:328px;height:392px;background:var(--paper);border-radius:6px;box-shadow:0 30px 50px -24px rgba(27,31,42,.35),0 2px 6px rgba(27,31,42,.08);transform:rotate(-2.5deg);padding:20px 24px 20px;font-family:var(--serif);color:#22262F;transition:transform .6s,opacity .5s}
+.sc-paper::before{content:"";position:absolute;inset:0;border-radius:6px;background:linear-gradient(90deg,rgba(0,0,0,.035),transparent 12%);pointer-events:none}
+.pp-head{display:flex;justify-content:space-between;font-size:10.5px;color:#6B6F7B;letter-spacing:.06em;border-bottom:1px solid #D9D2C0;padding-bottom:8px;margin-bottom:14px;font-family:var(--font)}
+.pp-q{font-size:13.5px;line-height:1.7;letter-spacing:.01em}
+.pp-q b{font-weight:700;margin-right:4px}
+.pp-opts{margin-top:10px;font-size:13px;line-height:1.5;display:grid;gap:10px}
+.pp-opts li{position:relative}
+.pencil{position:absolute;left:-12px;top:-8px;width:150px;height:36px;overflow:visible;pointer-events:none}
+.pencil path{fill:none;stroke:var(--pencil);stroke-width:1.7;stroke-linecap:round;opacity:.8}
+.pp-mark{position:absolute;left:-6px;top:38px;width:60px;height:60px;overflow:visible;pointer-events:none}
+.pp-mark path{fill:none;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.pp-mark .x1,.pp-mark .x2{stroke:var(--pen)}
+.pp-mark .ok{stroke:var(--green)}
+.scene.s0 .pp-mark .x1{animation:drawpath .3s ease-out .5s forwards}
+.scene.s0 .pp-mark .x2{animation:drawpath .3s ease-out .8s forwards}
+.scene.s5 .pp-mark .x1,.scene.s5 .pp-mark .x2{opacity:0;transition:opacity .45s .25s}
+.scene.s5 .pp-mark .ok{animation:drawpath .7s ease-out .65s forwards}
+.pp-stamp{position:absolute;right:22px;bottom:24px;padding:5px 12px;border:2.5px solid var(--green);color:var(--green);border-radius:8px;font-family:var(--font);font-weight:800;font-size:15px;letter-spacing:.14em;transform:rotate(-9deg) scale(1.5);opacity:0;transition:transform .35s cubic-bezier(.2,1.2,.4,1) 1.3s,opacity .25s 1.3s;background:rgba(255,255,255,.35)}
+.scene.s5 .pp-stamp{opacity:1;transform:rotate(-9deg) scale(1)}
+/* viewfinder + flash */
+.sc-vf{position:absolute;left:22px;top:22px;width:364px;height:428px;opacity:0;transform:scale(1.08);transition:opacity .35s,transform .35s;pointer-events:none}
+.sc-vf i{position:absolute;width:36px;height:36px;border:3px solid var(--blue);border-radius:5px}
+.sc-vf i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}
+.sc-vf i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.sc-vf i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}
+.sc-vf i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.scene.s1 .sc-vf{opacity:1;transform:scale(1)}
+.scene.s2 .sc-vf{opacity:0}
+.sc-flash{position:absolute;left:22px;top:22px;width:364px;height:428px;background:#fff;border-radius:8px;opacity:0;pointer-events:none}
+.scene.s1 .sc-flash{animation:flash .5s ease-out .55s}
+@keyframes flash{0%{opacity:0}15%{opacity:.9}100%{opacity:0}}
+/* snapshot flying into the phone */
+.sc-snap{position:absolute;left:40px;top:40px;width:328px;height:392px;transform-origin:0 0;opacity:0;pointer-events:none;border-radius:6px;overflow:hidden;box-shadow:0 20px 40px -16px rgba(27,31,42,.45)}
+.sc-snap .sc-paper,.ph-thumb .sc-paper{left:0;top:0;transform:none;box-shadow:none;transition:none}
+.scene.s1 .sc-snap{animation:fly .8s cubic-bezier(.5,0,.3,1) .75s both,vanish .01s 1.6s forwards}
+@keyframes fly{0%{opacity:1;transform:rotate(-2.5deg) scale(1)}18%{transform:rotate(-1deg) scale(1.03)}100%{opacity:1;transform:translate(424px,174px) scale(.2)}}
+@keyframes vanish{to{opacity:0}}
+/* phone */
+.sc-phone{position:absolute;left:436px;top:22px;width:236px;height:426px;background:#0E1326;border-radius:38px;padding:8px;box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.08);transition:transform .6s,opacity .6s}
+.sc-phone::before{content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);width:62px;height:17px;border-radius:10px;background:#0E1326;z-index:3}
+.sc-screen{width:100%;height:100%;border-radius:30px;background:var(--ground);overflow:hidden;position:relative;font-size:10.5px;line-height:1.45;color:var(--ink)}
+.scene.s3 .sc-phone{transform:scale(.97);opacity:.85}
+.scene.s4 .sc-phone{opacity:.55}
+.ph-sb{height:34px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 18px 3px;font-size:9.5px;font-weight:600}
+.ph-sb .i{width:11px;height:11px;stroke-width:2.2}
+.ph-bar{height:30px;display:flex;align-items:center;gap:6px;padding:0 12px;font-size:13px;font-weight:700}
+.ph-bar .i--back{width:14px;height:14px;stroke-width:2.4}
+.ph-bar .act{margin-left:auto;font-size:11px;color:var(--blue);font-weight:700}
+.ph-card{margin:0 10px 8px;background:#fff;border-radius:12px;padding:10px}
+.ph-label{display:flex;align-items:center;gap:5px;font-weight:700;font-size:11.5px;margin-bottom:6px}
+.ph-label .i{width:13px;height:13px;color:var(--blue)}
+.ph-ta{height:78px;border:1px solid var(--line);border-radius:9px;padding:7px 8px;font-size:10px;line-height:1.55;color:var(--ink);overflow:hidden}
+.ph-ta .ph{color:#A5ADBD}
+.scene.s1 .ph-ta .ph,.scene.s2 .ph-ta .ph{display:none}
+.ph-caret{display:none;width:1.5px;height:1em;background:var(--blue);vertical-align:-.15em;margin-left:1px;animation:blink 1s steps(2) infinite}
+.scene.s1 .ph-caret{display:inline-block}
+@keyframes blink{50%{opacity:0}}
+.ph-thumbrow{display:flex;align-items:flex-end;gap:8px;margin-top:8px;height:78px}
+.ph-thumb{position:relative;width:66px;height:78px;border-radius:7px;overflow:hidden;border:1px solid var(--line);background:#fff;opacity:0;flex:none}
+.scene.s1 .ph-thumb{opacity:1;transition:opacity .2s 1.55s}
+.ph-thumb .mini{position:absolute;left:0;top:0;width:328px;height:392px;transform:scale(.2);transform-origin:0 0}
+.ph-thumb .scan{position:absolute;left:0;right:0;top:0;height:2px;background:var(--blue);box-shadow:0 0 10px 2px rgba(55,110,255,.6);opacity:0}
+.scene.s1 .ph-thumb .scan{animation:scan 1.2s ease-in-out 1.6s both}
+@keyframes scan{0%{top:0;opacity:1}100%{top:calc(100% - 2px);opacity:1}}
+.ph-thumbtxt{font-size:10px;color:var(--muted);opacity:0;line-height:1.5;padding-bottom:4px}
+.scene.s1 .ph-thumbtxt{opacity:1;transition:opacity .3s 2.85s}
+.ph-thumbtxt b{display:block;color:var(--green);font-weight:700}
+.ph-fields{padding:4px 10px;background:transparent;transition:background .3s}
+.scene.s2 .ph-fields{background:#fff}
+.ph-field{display:grid;grid-template-columns:42px 1fr auto;gap:6px;align-items:center;padding:6px 0;border-top:1px solid #EEF1F6;font-size:10.5px;opacity:0;transform:translateY(6px)}
+.ph-field:first-child{border-top:0}
+.ph-field span{color:var(--muted)}
+.ph-field b{font-weight:600;display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-width:0}
+.ph-field b.ok{color:var(--green)}
+.ph-field b.no{color:var(--red)}
+.ph-field .long{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;color:var(--ink-2)}
+.ph-field .ai{font-size:9px;font-weight:700;color:var(--blue);background:var(--blue-50);border-radius:4px;padding:1px 4px;font-style:normal;white-space:nowrap}
+.ph-field .chip{padding:1px 6px;font-size:9.5px}
+.scene.s2 .ph-field{opacity:1;transform:none;transition:opacity .35s,transform .35s}
+.scene.s2 .ph-field:nth-child(1){transition-delay:.2s}
+.scene.s2 .ph-field:nth-child(2){transition-delay:.6s}
+.scene.s2 .ph-field:nth-child(3){transition-delay:1s}
+.scene.s2 .ph-field:nth-child(4){transition-delay:1.4s}
+.scene.s2 .ph-field:nth-child(5){transition-delay:1.8s}
+.scene.s2 .ph-field:nth-child(6){transition-delay:2.2s}
+.ph-cam{position:absolute;right:14px;bottom:16px;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 10px 18px -8px rgba(55,110,255,.8);z-index:2}
+.ph-cam .i{width:18px;height:18px}
+.scene.s1 .ph-cam{animation:press .5s ease .2s}
+@keyframes press{50%{transform:scale(.86)}}
+/* step captions (right area, before the card appears) */
+.sc-cap{position:absolute;left:748px;top:130px;width:310px;transition:opacity .35s}
+.sc-cap > div{position:absolute;left:0;top:0;width:100%;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.sc-cap small{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--blue)}
+.sc-cap small::before{content:"";width:18px;height:2px;background:var(--blue);border-radius:2px}
+.sc-cap b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.25;margin:10px 0 8px;color:var(--ink)}
+.sc-cap p{font-size:14px;line-height:1.7;color:var(--ink-2)}
+.sc-cap .cap0{opacity:1;transform:none}
+.scene.s1 .sc-cap .cap0{opacity:0;transform:translateY(-8px)}
+.scene.s1 .sc-cap .cap1{opacity:1;transform:none;transition-delay:.25s}
+.scene.s2 .sc-cap .cap1{opacity:0;transform:translateY(-8px);transition-delay:0s}
+.scene.s2 .sc-cap .cap2{opacity:1;transform:none;transition-delay:.25s}
+.scene.s3 .sc-cap{opacity:0;pointer-events:none}
+/* mini card flying into the tree */
+.sc-mini{position:absolute;left:452px;top:150px;width:206px;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 16px 30px -12px rgba(15,30,74,.35);border:1px solid var(--line);font-size:10.5px;opacity:0;transform-origin:0 0;pointer-events:none;z-index:4}
+.sc-mini .t{display:block;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.sc-mini .chips{margin-top:5px}
+.scene.s3 .sc-mini{animation:flycard .9s cubic-bezier(.5,0,.3,1) .5s both}
+@keyframes flycard{0%{opacity:0;transform:translate(0,0) scale(.9)}20%{opacity:1;transform:translate(0,-8px) scale(1)}100%{opacity:1;transform:translate(286px,86px) scale(.92)}}
+.scene.s4 .sc-mini{animation:none;opacity:0}
+/* right card */
+.sc-right{position:absolute;left:722px;top:56px;width:346px;height:352px;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-lg);padding:16px;opacity:0;transform:translateX(26px);transition:opacity .5s,transform .5s;overflow:hidden}
+.scene.s3 .sc-right{opacity:1;transform:none}
+.rc-head{font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:space-between;height:24px}
+.rc-head .n{font-weight:600;color:var(--muted);font-size:11px}
+.rc-tree,.rc-review{position:absolute;inset:16px;transition:opacity .45s,transform .45s}
+.rc-review{opacity:0;transform:translateY(10px)}
+.scene.s4 .rc-tree{opacity:0;transform:translateY(-10px)}
+.scene.s4 .rc-review{opacity:1;transform:none}
+.rc-crumb{display:flex;align-items:center;gap:3px;font-size:10.5px;color:var(--muted);margin:6px 0 10px;flex-wrap:wrap}
+.rc-crumb i{font-style:normal;opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s}
+.rc-crumb i.on{color:var(--blue);font-weight:700}
+.scene.s3 .rc-crumb i{opacity:1;transform:none}
+.scene.s3 .rc-crumb i:nth-child(1){transition-delay:1.5s}
+.scene.s3 .rc-crumb i:nth-child(2){transition-delay:1.65s}
+.scene.s3 .rc-crumb i:nth-child(3){transition-delay:1.8s}
+.scene.s3 .rc-crumb i:nth-child(4){transition-delay:1.95s}
+.scene.s3 .rc-crumb i:nth-child(5){transition-delay:2.1s}
+.scene.s3 .rc-crumb i:nth-child(6){transition-delay:2.25s}
+.scene.s3 .rc-crumb i:nth-child(7){transition-delay:2.4s}
+.rc-tree ul li{display:flex;align-items:center;gap:6px;height:30px;font-size:11.5px;color:var(--ink-2)}
+.rc-tree li .i{width:14px;height:14px;color:var(--blue)}
+.rc-tree li .n{margin-left:auto;font-size:10.5px;color:var(--muted)}
+.rc-tree li.l2{padding-left:16px}
+.rc-tree li.l3{padding-left:32px}
+.rc-tree li.on{color:var(--ink);font-weight:700}
+.rc-tree li.slot{height:50px;margin:2px 0 2px 32px;border-radius:9px;background:var(--blue-50);border:1.5px dashed var(--blue-200);transition:background .3s 1.4s,border-color .3s 1.4s}
+.scene.s3 .rc-tree li.slot{background:#fff;border-color:transparent}
+.rv-prog{height:5px;border-radius:3px;background:var(--line);margin:8px 0 10px;overflow:hidden}
+.rv-prog i{display:block;height:100%;width:25%;background:var(--blue);border-radius:3px;transition:width .6s 1.9s}
+.scene.s4 .rv-prog i{width:33%}
+.rv-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;font-size:11.5px;color:var(--ink-2);border:1px solid transparent}
+.rv-item .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rv-item--on{background:var(--ground);border-color:var(--line);color:var(--ink)}
+.rv-item .ok{width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;opacity:0;transform:scale(.5);transition:opacity .25s 1.85s,transform .3s 1.85s cubic-bezier(.2,1.4,.4,1);flex:none}
+.rv-item .ok .i{width:12px;height:12px;stroke-width:3}
+.scene.s4 .rv-item .ok{opacity:1;transform:scale(1)}
+.rv-btns{display:flex;gap:8px;margin-top:12px}
+.rv-btns span{flex:1;text-align:center;border-radius:9px;padding:8px 0;font-size:11.5px;font-weight:700;background:#F1F3F8;color:var(--ink-2);position:relative;overflow:hidden}
+.rv-btns .g{background:var(--green-bg);color:var(--green)}
+.rv-btns .p{background:var(--blue);color:#fff}
+.scene.s4 .rv-btns .g{animation:press .4s ease 1.5s}
+.rv-btns .g::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;background:rgba(37,157,86,.35);transform:translate(-50%,-50%) scale(0);opacity:0}
+.scene.s4 .rv-btns .g::after{animation:ripple .6s ease-out 1.5s}
+@keyframes ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(10);opacity:0}}
+.rv-done{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;color:var(--green);font-weight:700;opacity:0;transition:opacity .3s 1.6s}
+.rv-done .i{width:13px;height:13px;stroke-width:2.6}
+.scene.s5 .rv-done{opacity:1}
+/* chapters */
+.chapters{display:flex;align-items:center;gap:2px;margin:16px 0 0;flex-wrap:wrap}
+.chapters li{display:flex;align-items:center}
+.chapters li.replay-li::before{content:none}
+.chapters li + li::before{content:"›";color:var(--blue);opacity:.45;font-size:20px;line-height:1;margin:0 4px}
+.chapters button{position:relative;font-size:14px;font-weight:600;color:var(--muted);padding:8px 10px 10px;border-radius:10px;transition:color .2s,background .2s}
+.chapters button::after{content:"";position:absolute;left:10px;right:10px;bottom:5px;height:2px;border-radius:2px;background:var(--blue);transform:scaleX(0);transform-origin:left}
+.chapters button:hover{color:var(--ink);background:var(--ground)}
+.chapters button.on{color:var(--ink)}
+.chapters button.on::after{animation:fillbar var(--dur,3s) linear forwards}
+@keyframes fillbar{to{transform:scaleX(1)}}
+.chapters .replay{margin-left:auto;font-size:13px;color:var(--blue);display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:8px 10px;border-radius:10px}
+.chapters .replay:hover{background:var(--blue-50)}
+.chapters .replay .i{width:15px;height:15px}
+
+/* ===================== story (sticky phone) ===================== */
+.story{padding:88px 0 24px}
+.story__grid{display:grid;grid-template-columns:1fr 470px;gap:72px;align-items:start}
+.step{min-height:76vh;display:flex;flex-direction:column;justify-content:center;padding:28px 0;opacity:.45;transition:opacity .4s}
+.step.on{opacity:1}
+.step:first-child{min-height:58vh;justify-content:flex-start;padding-top:16px}
+.step:last-child{min-height:58vh;justify-content:flex-start}
+.step .no{font-size:13px;letter-spacing:.14em;color:var(--blue);font-weight:800;display:inline-flex;align-items:center;gap:10px}
+.step .no::before{content:"";width:22px;height:2px;background:var(--blue)}
+.step h2{font-size:clamp(26px,3vw,36px);line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:14px 0 12px;text-wrap:balance}
+.step > p{color:var(--ink-2);font-size:16.5px;max-width:540px}
+.plist{display:grid;gap:18px;margin-top:24px;max-width:540px}
+.plist li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.plist .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--blue-50);color:var(--blue)}
+.plist .ico .i{width:22px;height:22px}
+.plist h3{font-size:16.5px;font-weight:700;margin-bottom:3px}
+.plist p{color:var(--muted);font-size:14.5px;line-height:1.7}
+.dims{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;max-width:540px}
+.dims span{font-size:12.5px;padding:4px 10px;border-radius:999px;background:var(--ground);border:1px solid var(--line);color:var(--ink-2)}
+.story__phone{position:sticky;top:90px;height:calc(100vh - 110px);min-height:660px;max-height:820px}
+.story__stage{position:relative;width:100%;height:100%;border-radius:32px;background:var(--ground);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate}
+.story__stage::before{content:"";position:absolute;inset:0;background:radial-gradient(360px 320px at 50% 46%,rgba(55,110,255,.16),transparent 70%);z-index:0}
+.story__stage::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(27,31,42,.09) 1px,transparent 1px);background-size:20px 20px;opacity:.45;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);z-index:0}
+.story__tag{position:absolute;left:20px;top:18px;display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-size:12.5px;font-weight:700;box-shadow:var(--shadow-sm);z-index:3}
+.story__tag i{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800}
+.story__stage .phone{position:relative;z-index:1}
+
+/* phone mockup */
+.phone{--w:290px;width:var(--w);height:calc(var(--w) * 2.06);background:#0E1326;border-radius:46px;padding:10px;box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.08);position:relative;flex:none}
 .phone::before{content:"";position:absolute;top:22px;left:50%;transform:translateX(-50%);width:80px;height:22px;border-radius:12px;background:#0E1326;z-index:4}
-.phone--hero{--w:320px}
-.screen{width:100%;height:100%;border-radius:37px;background:var(--ground);overflow:hidden;position:relative;font-size:11.5px;line-height:1.5;color:var(--ink);display:flex;flex-direction:column}
+.screen{width:100%;height:100%;border-radius:37px;background:var(--ground);overflow:hidden;position:relative;font-size:11.5px;line-height:1.5;color:var(--ink)}
+.ss{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateY(14px) scale(.985);transition:opacity .45s ease,transform .45s ease}
+.ss.on{opacity:1;transform:none}
 .sb{height:46px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:11.5px;font-weight:600}
 .sb__ic{display:flex;align-items:center;gap:5px}
 .sb__ic .i{width:13px;height:13px;stroke-width:2.2}
@@ -110,16 +246,9 @@ sup{font-size:.72em;line-height:0}
 .sb__bat::after{content:"";position:absolute;inset:1.5px;right:5px;background:var(--ink);border-radius:1px}
 .ah{flex:none;display:flex;align-items:center;gap:8px;padding:4px 14px 10px;font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
 .ah .i--back{width:16px;height:16px;stroke-width:2.4;margin-right:-2px}
-.ah__ic{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--ink)}
+.ah__ic{margin-left:auto;display:flex;align-items:center;gap:12px;color:var(--ink)}
 .ah__ic .i{width:18px;height:18px;stroke-width:2}
-.ah__act{margin-left:auto;font-size:13px;font-weight:500;color:var(--ink-2)}
-.ah__act + .ah__act{margin-left:0}
-.ah__act--b{color:var(--blue);font-weight:700}
-.cap{display:flex;align-items:center;width:66px;height:25px;border:1px solid #DCE2EE;border-radius:999px;background:#fff;overflow:hidden;flex:none}
-.cap i{flex:1;height:100%;display:grid;place-items:center}
-.cap i + i{border-left:1px solid #E6EAF2}
-.cap__dots::before{content:"";width:3px;height:3px;border-radius:50%;background:#2B2F3A;box-shadow:-5px 0 0 #2B2F3A,5px 0 0 #2B2F3A}
-.cap__o::before{content:"";width:9px;height:9px;border:1.8px solid #2B2F3A;border-radius:50%}
+.ah__act{margin-left:auto;font-size:13px;font-weight:700;color:var(--blue)}
 .scr{flex:1;min-height:0;padding:2px 12px 12px;overflow:hidden;position:relative}
 .mcard{background:var(--surface);border-radius:14px;padding:11px 12px;margin-bottom:9px;box-shadow:0 1px 2px rgba(15,30,74,.04)}
 .mrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -127,42 +256,13 @@ sup{font-size:.72em;line-height:0}
 .mdate{font-size:11px;color:var(--muted)}
 .mmeta{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
 .mhead{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.mhead .sub{font-size:11px;font-weight:500;color:var(--muted)}
-.mhead--blue{color:var(--blue)}
-.mhead--green{color:var(--green)}
-.mhead--orange{color:var(--orange)}
 .mhead .i{width:16px;height:16px;color:var(--blue)}
-.mcard--orange{background:var(--orange-bg)}
-.mcard--green{background:var(--green-bg)}
 .mq{font-size:12px;line-height:1.6;color:var(--ink)}
 .mq--clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:7px;background:#EEF1F7;color:var(--ink-2);font-size:11px;font-weight:500;line-height:1.5;white-space:nowrap}
-.chip .i{width:12px;height:12px}
-.chip--blue{background:var(--blue-50);color:var(--blue)}
-.chip--green{background:var(--green-bg);color:var(--green)}
-.chip--red{background:var(--red-bg);color:var(--red)}
-.chip--orange{background:var(--orange-bg);color:var(--orange)}
-.chip--purple{background:var(--purple-bg);color:var(--purple)}
-.chip--sm{padding:1px 6px;font-size:10.5px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.math{font-family:var(--math);font-style:italic;font-size:1.08em;letter-spacing:.01em;white-space:nowrap}
+.math{font-family:var(--math);font-style:italic;font-size:1.06em;letter-spacing:.01em;white-space:nowrap}
 .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;font-size:.86em;margin:0 1px}
 .frac i{font-style:italic;padding:0 2px 1px}
 .frac i:first-child{border-bottom:1px solid currentColor;margin-bottom:1px}
-.opts{display:flex;flex-direction:column;gap:6px;margin-top:9px}
-.opt{display:flex;align-items:center;gap:9px;padding:5px 9px 5px 6px;border-radius:9px;background:#F4F6FA;font-size:11.5px;min-height:34px}
-.opt b{width:22px;height:22px;border-radius:7px;background:#fff;display:grid;place-items:center;font-weight:700;font-size:11.5px;color:var(--ink-2);flex:none;box-shadow:var(--shadow-sm)}
-.opt em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:600}
-.opt--ok{background:var(--green-bg);color:var(--green)}
-.opt--ok b{color:var(--green)}
-.opt--no{background:var(--red-bg);color:var(--red)}
-.opt--no b{color:var(--red)}
-.btnrow{display:flex;gap:8px}
-.mbtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;height:32px;border-radius:9px;font-size:12px;font-weight:600}
-.mbtn .i{width:14px;height:14px}
-.mbtn--blue{background:var(--blue-50);color:var(--blue)}
-.mbtn--green{background:var(--green-bg);color:var(--green)}
-.mbtn--solid{background:var(--blue);color:#fff}
 .crumb{display:flex;align-items:center;gap:3px;font-size:12px;padding:2px 2px 8px;flex-wrap:wrap}
 .crumb a{color:var(--blue)}
 .crumb .i{width:11px;height:11px;color:var(--muted)}
@@ -188,15 +288,12 @@ sup{font-size:.72em;line-height:0}
 .tabbar .i{width:20px;height:20px}
 .tabbar .on{color:var(--blue)}
 .ta{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:11.5px;line-height:1.6;min-height:74px;color:var(--ink)}
-.cursor{display:inline-block;width:1.5px;height:1em;background:var(--blue);vertical-align:-.15em;margin-left:1px;animation:blink 1s steps(2) infinite}
-@keyframes blink{50%{opacity:0}}
 .link{color:var(--blue);font-weight:600;display:inline-flex;align-items:center;gap:4px;font-size:11.5px}
 .link .i{width:13px;height:13px}
+.muted{color:var(--muted)}
 .thumbs{display:flex;gap:8px;margin-top:8px}
 .thumb{position:relative;width:96px;height:68px;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:#fff}
 .thumb svg{width:100%;height:100%}
-.thumb .scan{position:absolute;left:0;right:0;top:0;height:2px;background:var(--blue);box-shadow:0 0 12px 2px rgba(55,110,255,.55);animation:scan 3.2s ease-in-out infinite}
-@keyframes scan{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
 .thumb__badge{position:absolute;left:5px;bottom:5px;background:rgba(27,31,42,.78);color:#fff;font-size:9.5px;padding:1px 6px;border-radius:5px}
 .krow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid #EEF1F6;font-size:12px}
 .krow:first-of-type{border-top:0}
@@ -204,9 +301,8 @@ sup{font-size:.72em;line-height:0}
 .krow small{display:block;color:var(--muted);font-size:10.5px;line-height:1.4}
 .kv{display:inline-flex;align-items:center;gap:3px;color:var(--blue);font-weight:600}
 .kv .i{width:11px;height:11px}
-.muted{color:var(--muted)}
 .toggle{width:38px;height:22px;border-radius:999px;background:#D5DBE6;position:relative;flex:none}
-.toggle::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .toggle.on{background:var(--blue)}
 .toggle.on::after{left:18px}
 .seg3{display:flex;gap:8px;margin-top:6px}
@@ -215,10 +311,10 @@ sup{font-size:.72em;line-height:0}
 .segi{display:inline-flex;background:#EEF1F7;border-radius:8px;padding:2px}
 .segi span{padding:3px 9px;border-radius:6px;font-size:11px;color:var(--ink-2)}
 .segi span.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:var(--shadow-sm)}
-/* chat */
 .pin{background:var(--surface);border-radius:12px;padding:8px 10px;margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line)}
 .pin .chip{flex:none}
 .pin p{font-size:11px;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5}
+.chatlist{flex:1;min-height:0;overflow:hidden}
 .msg{display:flex;gap:7px;margin-bottom:9px;align-items:flex-start}
 .msg--me{justify-content:flex-end}
 .msg .av{width:24px;height:24px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;flex:none}
@@ -228,15 +324,14 @@ sup{font-size:.72em;line-height:0}
 .msg--ai .bub{border-bottom-left-radius:4px}
 .bub .tip{margin-top:6px;padding:6px 8px;border-radius:8px;background:var(--orange-bg);color:#A85F1B;font-size:11px;line-height:1.5}
 .bub .tip b{color:var(--orange)}
-.bub .var{margin-top:6px;padding:6px 8px;border-radius:8px;background:var(--blue-50);color:var(--blue-ink);font-size:11px;line-height:1.5}
+.bub .var{padding:6px 8px;border-radius:8px;background:var(--blue-50);color:var(--blue-ink);font-size:11px;line-height:1.5}
 .quick{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
 .quick span{border:1px solid var(--blue-200);color:var(--blue);background:#fff;border-radius:999px;padding:3px 9px;font-size:10.5px;font-weight:600}
 .inbar{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:999px;padding:6px 6px 6px 14px;border:1px solid var(--line);font-size:11.5px;color:var(--muted)}
 .inbar i{margin-left:auto;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center}
 .inbar i .i{width:14px;height:14px;stroke-width:2.4}
-/* review home */
-.today{border-radius:18px;padding:14px 14px 14px;background:linear-gradient(135deg,#3B8CFF 0%,#2F6BFF 45%,#1E5AE3 100%);color:#fff;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 16px 28px -16px rgba(33,88,232,.7)}
-.today::after{content:"";position:absolute;right:26px;bottom:38px;width:54px;height:72px;border:2px solid rgba(255,255,255,.22);border-radius:8px;transform:rotate(12deg);background:repeating-linear-gradient(180deg,transparent 0 12px,rgba(255,255,255,.22) 12px 14px);background-size:60% 100%;background-repeat:no-repeat;background-position:50% 14px}
+.today{border-radius:18px;padding:14px;background:linear-gradient(135deg,#3B8CFF 0%,#2F6BFF 45%,#1E5AE3 100%);color:#fff;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 16px 28px -16px rgba(33,88,232,.7)}
+.today::after{content:"";position:absolute;right:26px;bottom:64px;width:54px;height:72px;border:2px solid rgba(255,255,255,.22);border-radius:8px;transform:rotate(12deg)}
 .today__top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .today__title{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700}
 .today__title .i{width:15px;height:15px;stroke-width:2.2}
@@ -257,7 +352,6 @@ sup{font-size:.72em;line-height:0}
 .qrow .go{margin-left:auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none}
 .qrow .go .i{width:12px;height:12px;stroke-width:2.6}
 .badge{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 5px;border-radius:999px;background:var(--red);color:#fff;font-size:10px;font-weight:700}
-/* export screen */
 .docic{width:40px;height:40px;border-radius:11px;background:var(--blue);color:#fff;display:grid;place-items:center;flex:none}
 .docic .i{width:20px;height:20px;stroke-width:2.2}
 .styles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 4px}
@@ -266,7 +360,8 @@ sup{font-size:.72em;line-height:0}
 .style.on .pv{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-100)}
 .style .pv i{display:block;height:3px;border-radius:2px;background:#9AA3B5}
 .style .pv i.h{height:4px;background:#2B2F3A;width:55%}
-.style .pv i.w60{width:60%}.style .pv i.w80{width:80%}
+.style .pv i.w60{width:60%}
+.style .pv i.w80{width:80%}
 .style .pv .blk{height:14px;border-radius:3px}
 .style .pv .blk.g{background:var(--green-bg);border-left:2px solid var(--green)}
 .style .pv .blk.r{background:var(--red-bg);border-left:2px solid var(--red)}
@@ -278,241 +373,115 @@ sup{font-size:.72em;line-height:0}
 .style .rad{width:12px;height:12px;border-radius:50%;border:1.5px solid #C4CBD9;display:inline-grid;place-items:center}
 .style.on .rad{border-color:var(--blue);background:var(--blue)}
 .style.on .rad::after{content:"";width:4px;height:4px;border-radius:50%;background:#fff}
+.pmap{width:100%;height:auto;display:block}
+.pmap text{font-family:var(--font)}
 
-/* ---------- stages & side cards ---------- */
-.stage{position:relative;background:var(--ground);border:1px solid var(--line);border-radius:30px;padding:36px 24px;display:flex;align-items:center;justify-content:center;min-height:560px;overflow:hidden;isolation:isolate}
-.stage::before{content:"";position:absolute;inset:0;background:radial-gradient(360px 300px at 50% 40%,rgba(55,110,255,.14),transparent 70%);pointer-events:none;z-index:0}
-.stage::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(27,31,42,.09) 1px,transparent 1px);background-size:20px 20px;opacity:.45;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent)}
-.stage > *{position:relative;z-index:1}
-.stage--bleed{align-items:flex-start;padding-bottom:0}
-.stage--bleed .phone{margin-bottom:-120px}
-.stage .phone{--w:280px}
-.side{z-index:2;margin-left:-34px;width:min(300px,52%);display:flex;flex-direction:column;gap:12px;flex:none}
-.stage--bleed .side{margin-top:64px}
-.stage--fit{min-height:0}
-.side--low{margin-top:110px}
-.chatlist{flex:1;min-height:0;overflow:hidden}
-.fcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:13px 14px;font-size:12px;line-height:1.5}
-.fcard__h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.fcard__h b{display:block;font-size:13.5px;font-weight:700}
-.fcard__h small{display:block;color:var(--muted);font-size:11.5px}
-.aiico{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,#4A86FF,#2158E8);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 8px 14px -8px rgba(33,88,232,.8)}
-.aiico .i{width:18px;height:18px}
-/* search card */
-.sinput{display:flex;align-items:center;gap:8px;border:1.5px solid var(--blue);border-radius:10px;padding:6px 8px 6px 10px;background:#fff;font-size:12.5px;margin-bottom:10px;box-shadow:0 0 0 3px var(--blue-50)}
-.sinput .i{width:15px;height:15px;color:var(--blue)}
-.sinput kbd{margin-left:auto;font-family:inherit;font-size:10.5px;background:var(--blue);color:#fff;border-radius:6px;padding:2px 8px;font-weight:600}
-.frow2{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:4px 0}
-.fk{font-size:11px;color:var(--muted);width:30px;flex:none}
-.fv{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);background:#fff}
-.fv.on{background:var(--blue-50);border-color:var(--blue-200);color:var(--blue);font-weight:600}
-.fv.on.red{background:var(--red-bg);border-color:#F8C9CB;color:var(--red)}
-.scount{font-size:12px;color:var(--ink-2);margin:8px 0 6px;padding-top:8px;border-top:1px solid var(--line)}
-.scount b{color:var(--blue)}
-.sres{padding:7px 9px;border-radius:10px;background:var(--ground);margin-top:6px}
-.sres--on{background:var(--blue-50)}
-.spath{font-size:10.5px;color:var(--muted);display:flex;align-items:center;gap:3px;flex-wrap:wrap}
-.spath b{color:var(--blue);font-weight:600}
-.stitle{font-size:11.5px;color:var(--ink);margin-top:2px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
-/* ai result card */
-.krow2{display:grid;grid-template-columns:52px 1fr;gap:8px;padding:7px 0;border-top:1px solid #EEF1F6;font-size:12px;align-items:start}
-.krow2:first-of-type{border-top:0}
-.krow2 .k{color:var(--muted);font-size:11.5px;padding-top:1px}
-.krow2 .v{display:flex;flex-wrap:wrap;gap:5px;align-items:center;color:var(--ink);line-height:1.5}
-.krow2 .v--red{color:var(--red);font-weight:700}
-.krow2 .v--green{color:var(--green);font-weight:700}
-.ai{display:inline-flex;align-items:center;gap:3px;font-style:normal;font-size:10px;font-weight:700;color:var(--blue);background:var(--blue-50);border-radius:5px;padding:1px 5px}
-.ai .i{width:10px;height:10px;stroke-width:2.4}
-/* session card */
-.sess__bar{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px}
-.sess__prog{height:4px;border-radius:2px;background:var(--line);margin-bottom:10px;overflow:hidden}
-.sess__prog i{display:block;height:100%;width:25%;background:var(--blue);border-radius:2px}
-.sess__q{font-size:12px;line-height:1.55;color:var(--ink);margin-bottom:8px}
-.sess__ans{border-radius:10px;padding:8px 10px;background:var(--green-bg);color:var(--green);font-size:12px;display:flex;gap:8px;align-items:center}
-.sess__ans b{font-size:13px}
-.sess__btns{display:flex;gap:6px;margin-top:10px}
-.sess__btns span{flex:1;text-align:center;border-radius:9px;padding:6px 0;font-size:11.5px;font-weight:600;background:#F1F3F8;color:var(--ink-2);display:inline-flex;align-items:center;justify-content:center;gap:4px}
-.sess__btns span .i{width:12px;height:12px;stroke-width:2.4}
-.sess__btns .g{background:var(--green-bg);color:var(--green)}
-.sess__btns .o{background:var(--orange-bg);color:var(--orange)}
-.sess__btns .p{background:var(--blue);color:#fff}
-/* rematch list */
-.rlist li{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #EEF1F6;font-size:12px}
-.rlist li:first-child{border-top:0}
-.rlist li em{margin-left:auto;font-style:normal;font-size:10.5px;color:var(--muted);white-space:nowrap}
-.rlist .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* paper preview */
-.paper{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:18px 18px 14px;font-family:var(--serif);color:#1E2230;font-size:11.5px;line-height:1.7;position:relative;width:100%}
-.paper::before{content:"";position:absolute;inset:0;border:1px solid rgba(27,31,42,.06);pointer-events:none}
-.paper__h{font-weight:700;font-size:14px;text-align:center;letter-spacing:.06em;border-bottom:1.5px solid #1E2230;padding-bottom:6px;margin-bottom:10px}
-.paper__h small{display:block;font-weight:400;font-size:10px;letter-spacing:.04em;color:#6B7280;margin-top:2px;font-family:var(--font)}
-.paper__q{display:grid;grid-template-columns:18px 1fr;gap:4px;margin-bottom:8px}
-.paper__q b{font-weight:700}
-.paper__line{height:14px;border-bottom:1px solid #C9CED9;margin-top:4px}
-.paper__ans{margin-top:4px;padding:5px 8px;background:#F5F7FB;font-size:10.5px;color:#3E4657;border-left:2px solid #1E2230}
-.paper__foot{display:flex;justify-content:space-between;font-family:var(--font);font-size:9.5px;color:#9AA3B5;margin-top:10px;padding-top:6px;border-top:1px solid #E4E9F2}
-/* mindmap frame */
-.canvas{width:100%;max-width:600px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden}
-.canvas__bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:12.5px;font-weight:700;white-space:nowrap}
-.canvas__title{min-width:0;overflow:hidden;text-overflow:ellipsis}
-.canvas__bar .zoom{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:11.5px;color:var(--ink-2);margin-left:auto}
-.canvas__bar .zoom i{width:22px;height:22px;border-radius:7px;background:var(--blue-50);color:var(--blue);display:grid;place-items:center;font-style:normal;font-weight:700}
-.canvas__bar .nodes{font-weight:500;font-size:11.5px;color:var(--muted)}
-.mindmap{width:100%;height:auto;display:block;background:radial-gradient(rgba(27,31,42,.07) 1px,transparent 1px) 0 0/16px 16px,#FBFCFE}
-.mindmap text{font-family:var(--font)}
+/* ===================== spec sheet ===================== */
+.sheet{padding:72px 0 80px}
+.sheet__grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.sp{background:var(--surface);padding:24px 20px 22px;display:flex;flex-direction:column;gap:10px;min-height:206px;transition:background .2s}
+.sp:hover{background:var(--ground)}
+.sp .st{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--t);display:inline-flex;align-items:center;gap:6px}
+.sp .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--t)}
+.sp > .i{width:24px;height:24px;color:var(--t);margin-top:4px}
+.sp h3{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.sp p{font-size:13px;color:var(--muted);line-height:1.65}
+.t-blue{--t:var(--blue)}
+.t-purple{--t:var(--purple)}
+.t-orange{--t:var(--orange)}
+.t-green{--t:var(--green)}
+.t-red{--t:var(--red)}
 
-/* ---------- flow path ---------- */
-.flow{padding:56px 0 24px}
-.flow__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.flow__head h2{font-size:clamp(24px,2.8vw,32px);letter-spacing:-.02em;font-weight:800;margin-top:10px;text-wrap:balance}
-.flow__head p{color:var(--muted);font-size:15px;max-width:420px}
-.path{display:flex;margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:8px;box-shadow:var(--shadow-sm)}
-.path li{flex:1;position:relative;padding:18px 18px 18px 26px;display:flex;flex-direction:column;gap:6px;border-radius:14px;transition:background .2s}
-.path li:hover{background:var(--ground)}
-.path li + li::before{content:"›";position:absolute;left:-7px;top:50%;transform:translateY(-52%);font-size:36px;line-height:1;color:var(--blue);opacity:.4;font-weight:300;font-family:var(--font)}
-.path b{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:800;letter-spacing:-.01em}
-.path b .i{width:20px;height:20px;color:var(--blue)}
-.path p{font-size:13.5px;color:var(--muted);line-height:1.6}
+/* ===================== platforms band ===================== */
+.band{padding:0 0 96px}
+.band__inner{background:var(--ground);border:1px solid var(--line);border-radius:32px;padding:56px 56px 0;display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:end;overflow:hidden}
+.band__copy{padding-bottom:56px}
+.band__copy h2{font-size:clamp(26px,3vw,36px);line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:14px 0 12px;text-wrap:balance}
+.band__copy p{color:var(--ink-2);font-size:16px;max-width:460px;margin-bottom:22px}
+.plats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.plats span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.plats .i{width:15px;height:15px}
+.devices{position:relative;height:300px}
+.dev{position:absolute;bottom:0;background:#1F2535;box-shadow:var(--shadow-lg)}
+.dev .dscr{position:absolute;inset:0;background:var(--ground);overflow:hidden;padding:10px}
+.dev-laptop{left:50%;transform:translateX(-50%);width:380px;height:238px;border-radius:14px 14px 0 0;padding:10px 10px 0;border-bottom:0}
+.dev-laptop .dscr{border-radius:6px 6px 0 0;display:grid;grid-template-columns:96px 1fr;gap:8px}
+.dev-laptop::after{content:"";position:absolute;left:-26px;right:-26px;bottom:-9px;height:10px;background:#2A3145;border-radius:0 0 8px 8px}
+.dev-tablet{right:8px;width:150px;height:200px;border-radius:16px;padding:7px;bottom:20px}
+.dev-tablet .dscr{border-radius:10px;background:#fff}
+.dev-phone{left:14px;width:96px;height:186px;border-radius:20px;padding:6px;bottom:20px}
+.dev-phone .dscr{border-radius:15px;padding:8px 7px}
+.ds-side{background:#fff;border-radius:6px;padding:8px 6px;display:grid;gap:6px;align-content:start}
+.ds-side i{display:block;height:6px;border-radius:3px;background:#DCE2EE}
+.ds-side i:nth-child(2){background:var(--blue-100);width:80%}
+.ds-side i:nth-child(3){width:70%}
+.ds-side i:nth-child(4){width:60%}
+.ds-main{display:grid;gap:8px;align-content:start}
+.ds-card{background:#fff;border-radius:8px;padding:8px;display:grid;gap:5px}
+.ds-card i{display:block;height:6px;border-radius:3px;background:#E1E6F0}
+.ds-card i.b{background:var(--blue-100);width:40%}
+.ds-card i.g{background:var(--green-bg);width:55%}
+.ds-card i.r{background:var(--red-bg);width:50%}
+.ds-paper{font-family:var(--serif);font-size:7px;color:#2B2F3A;line-height:1.6;padding:8px 8px}
+.ds-paper b{display:block;text-align:center;font-size:8px;border-bottom:1px solid #2B2F3A;margin-bottom:5px;padding-bottom:3px}
+.ds-paper i{display:block;height:4px;border-radius:2px;background:#C9CED9;margin:4px 0}
+.ds-today{background:linear-gradient(135deg,#3B8CFF,#1E5AE3);border-radius:10px;padding:8px;color:#fff;height:64px;display:flex;flex-direction:column;justify-content:space-between}
+.ds-today b{font-size:16px;font-weight:800;line-height:1}
+.ds-today i{display:block;width:60%;height:5px;border-radius:3px;background:rgba(255,255,255,.4)}
+.ds-rows{display:grid;gap:6px;margin-top:8px}
+.ds-rows i{display:block;height:20px;border-radius:6px;background:#fff}
 
-/* ---------- feature rows ---------- */
-.feat{display:grid;grid-template-columns:5fr 6fr;gap:56px;align-items:center}
-.feat + .feat{margin-top:120px}
-.feat--flip{grid-template-columns:6fr 5fr}
-.feat--flip .feat__text{order:2}
-.feat__text h2{font-size:clamp(26px,3vw,36px);line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:14px 0 12px;text-wrap:balance}
-.feat__text > p{color:var(--ink-2);font-size:16.5px}
-.plist{display:grid;gap:20px;margin-top:26px}
-.plist li{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start}
-.plist .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:var(--blue-50);color:var(--blue)}
-.plist .ico .i{width:24px;height:24px}
-.plist h3{font-size:17px;font-weight:700;margin-bottom:3px;letter-spacing:-.01em}
-.plist p{color:var(--muted);font-size:15px;line-height:1.7}
-.dims{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:20px;border-top:1px dashed var(--line-2)}
-.dims span{font-size:13px;padding:5px 11px;border-radius:999px;background:var(--ground);border:1px solid var(--line);color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
-.dims span .i{width:14px;height:14px;color:var(--blue)}
-.dims em{font-style:normal;font-size:12.5px;color:var(--muted);width:100%;margin-bottom:2px}
-.modes{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.modes button{font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;transition:all .15s}
-.modes button .i{width:15px;height:15px}
-.modes button:hover{border-color:var(--blue-200);color:var(--blue)}
-.modes button[aria-selected="true"]{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 8px 16px -8px rgba(55,110,255,.7)}
+/* ===================== cta ===================== */
+.cta{position:relative;background:var(--navy);color:#fff;padding:92px 0 80px;text-align:center;overflow:hidden}
+.cta::before{content:"";position:absolute;left:50%;top:-180px;width:720px;height:720px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(55,110,255,.42),transparent 72%)}
+.cta > .container{position:relative}
+.cta__icon{width:92px;height:92px;margin:0 auto 24px;filter:drop-shadow(0 22px 30px rgba(3,88,216,.55))}
+.cta h2{font-size:clamp(30px,4.2vw,50px);font-weight:800;letter-spacing:-.025em;line-height:1.14;text-wrap:balance}
+.cta p{margin:14px auto 30px;font-size:16.5px;color:rgba(255,255,255,.74);max-width:560px}
+.cta__actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta__plats{margin-top:24px;font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.06em}
+.footer{border-top:1px solid rgba(255,255,255,.1);padding-top:56px}
 
-/* ---------- feature grid ---------- */
-.fgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.fitem{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 18px 16px;display:flex;flex-direction:column;gap:10px;min-height:200px;transition:transform .2s,box-shadow .2s,border-color .2s}
-.fitem:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--blue-200)}
-.fitem .fic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--t-bg);color:var(--t)}
-.fitem h3{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
-.fitem p{font-size:13px;color:var(--muted);line-height:1.65}
-.fitem small{margin-top:auto;padding-top:6px;font-size:11px;color:var(--t);font-weight:700;letter-spacing:.1em}
-.t-blue{--t:var(--blue);--t-bg:var(--blue-50)}
-.t-purple{--t:var(--purple);--t-bg:var(--purple-bg)}
-.t-orange{--t:var(--orange);--t-bg:var(--orange-bg)}
-.t-green{--t:var(--green);--t-bg:var(--green-bg)}
-.t-red{--t:var(--red);--t-bg:var(--red-bg)}
-
-/* ---------- who ---------- */
-.who{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.wcard{background:var(--ground);border:1px solid var(--line);border-radius:22px;padding:26px 24px 22px;display:flex;flex-direction:column;gap:12px}
-.wcard .wic{width:48px;height:48px;border-radius:14px;background:var(--surface);color:var(--blue);display:grid;place-items:center;box-shadow:var(--shadow-sm)}
-.wcard h3{font-size:19px;font-weight:800;letter-spacing:-.01em}
-.wcard p{color:var(--ink-2);font-size:15px;line-height:1.75}
-.wcard .chips{margin-top:auto;padding-top:6px}
-.wcard .chip{background:var(--surface);border:1px solid var(--line);font-size:12px;padding:3px 10px}
-
-/* ---------- cta ---------- */
-.cta{position:relative;overflow:hidden;background:linear-gradient(135deg,#1E4FD8 0%,#2F6BFF 55%,#4A8BFF 100%);color:#fff;border-radius:32px;padding:60px 64px;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;box-shadow:0 30px 60px -30px rgba(33,88,232,.6)}
-.cta::before{content:"";position:absolute;width:460px;height:460px;border-radius:50%;background:rgba(255,255,255,.08);right:-120px;top:-200px}
-.cta::after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.07);left:-120px;bottom:-200px}
-.cta > *{position:relative;z-index:1}
-.cta .kicker{color:#fff;opacity:.9}
-.cta .kicker::before{background:#fff}
-.cta h2{font-size:clamp(28px,3.6vw,42px);line-height:1.2;letter-spacing:-.02em;font-weight:800;margin:14px 0 14px;text-wrap:balance}
-.cta p{font-size:17px;opacity:.92;max-width:520px}
-.cta__steps{display:flex;gap:26px;margin-top:28px;flex-wrap:wrap}
-.cta__steps span{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
-.cta__steps span i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-style:normal;font-size:12px}
-.cta__qr{display:flex;flex-direction:column;align-items:center;gap:12px;justify-self:end}
-.qr{width:200px;height:200px;background:#fff;border-radius:22px;padding:16px;position:relative;box-shadow:0 20px 40px -20px rgba(0,0,0,.4)}
-.qr svg{width:100%;height:100%}
-.qr__logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:12px;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
-.qr__logo span{width:36px;height:36px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center}
-.qr__logo .i{width:20px;height:20px;stroke-width:2.2}
-.cta__qr p{font-size:14px;font-weight:600;opacity:.95;display:flex;align-items:center;gap:6px}
-.cta__qr .i{width:18px;height:18px}
-
-/* ---------- footer ---------- */
-.footer{background:var(--navy);color:rgba(255,255,255,.78);padding:64px 0 28px;margin-top:40px}
-.footer__inner{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
-.footer .brand{color:#fff}
-.footer__brand p{margin-top:14px;font-size:14px;line-height:1.8;max-width:320px;color:rgba(255,255,255,.66)}
-.footer h4{color:#fff;font-size:14px;font-weight:700;margin-bottom:14px;letter-spacing:.04em}
-.footer__col a{display:block;font-size:14px;padding:5px 0;color:rgba(255,255,255,.7)}
-.footer__col a:hover{color:#fff}
-.footer__bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:48px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;color:rgba(255,255,255,.5)}
-
-/* ---------- responsive ---------- */
+/* ===================== responsive ===================== */
 @media (max-width:1100px){
-  .fgrid{grid-template-columns:repeat(3,1fr)}
-  .feat{gap:40px}
-  .stage .phone{--w:260px}
-  .side{width:min(280px,55%)}
+  .story__grid{grid-template-columns:1fr 400px;gap:48px}
+  .sheet__grid{grid-template-columns:repeat(3,1fr)}
+  .band__inner{grid-template-columns:1fr 1fr;padding:44px 40px 0}
 }
 @media (max-width:960px){
-  .nav__links{display:none}
-  .nav__toggle{display:grid}
-  .nav__login{display:none}
-  .nav.open .nav__links{display:flex;flex-direction:column;gap:0;position:absolute;left:0;right:0;top:70px;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 24px 16px;box-shadow:0 20px 40px -20px rgba(15,30,74,.3)}
-  .nav.open .nav__links a{padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
-  .nav.open .nav__links a::after{display:none}
-  .hero{padding-top:40px}
-  .hero__grid{grid-template-columns:1fr;gap:28px}
-  .hero__shot{min-height:0;padding:40px 0 0}
-  .hero__shot::before,.hero__shot::after{inset:24px -24px 0}
-  .fl--a{top:40px;left:0}
-  .fl--b{top:auto;bottom:220px;right:0}
-  .fl--c{bottom:60px;left:0}
-  .feat,.feat--flip{grid-template-columns:1fr;gap:32px}
-  .feat + .feat{margin-top:88px}
-  .feat--flip .feat__text{order:0}
-  .path{flex-direction:column;padding:6px}
-  .path li{padding:16px 18px}
-  .path li + li::before{content:"⌄";left:22px;top:-12px;transform:none;font-size:26px}
-  .who{grid-template-columns:1fr}
-  .cta{grid-template-columns:1fr;padding:44px 32px;text-align:left}
-  .cta__qr{justify-self:start;flex-direction:row;gap:20px}
-  .footer__inner{grid-template-columns:1fr 1fr}
-  .section{padding:72px 0}
+  .hero{padding-top:36px}
+  .story{padding-top:64px}
+  .story__grid{grid-template-columns:1fr;gap:0}
+  .story__phone{position:sticky;top:70px;height:auto;min-height:0;max-height:none;z-index:5;padding:6px 0 0;background:var(--surface);order:-1}
+  .story__stage{height:340px;border-radius:24px;align-items:flex-start;padding-top:24px}
+  .story__stage .phone{--w:224px}
+  .story__fade{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,var(--ground));z-index:2}
+  .step{min-height:0;padding:40px 0 8px;opacity:1}
+  .step:first-child{padding-top:30px}
+  .band__inner{grid-template-columns:1fr;padding:40px 28px 0}
+  .band__copy{padding-bottom:12px}
+  .devices{height:260px}
+  .dev-laptop{width:320px;height:200px}
+  .dev-tablet{display:none}
+  .dev-phone{left:auto;right:8px}
 }
 @media (max-width:640px){
-  .container{width:calc(100% - 32px)}
-  .fl{display:none}
-  .fl--c{display:flex;position:static;animation:none;margin-top:16px;white-space:normal}
-  .hero__shot{flex-direction:column}
-  .stage{flex-direction:column;padding:28px 16px;min-height:0;gap:18px}
-  .stage--bleed{padding-bottom:28px}
-  .stage--bleed .phone{margin-bottom:0}
-  .side{margin:0;width:100%;max-width:340px}
-  .side--low{margin-top:0}
-  .hero__shot .fl--c{order:2}
-  .fgrid{grid-template-columns:1fr 1fr}
-  .fitem{min-height:0}
-  .footer__inner{grid-template-columns:1fr}
-  .cta__qr{flex-direction:column}
-  .hero h1{font-size:34px}
-}
-@media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  html{scroll-behavior:auto}
+  .hero h1{font-size:38px}
+  .hero__plat{display:none}
+  .sheet__grid{grid-template-columns:1fr 1fr}
+  .sp{min-height:0}
+  .chapters .replay{margin-left:0}
+  .devices{height:220px}
+  .dev-laptop{width:260px;height:170px;left:40%}
 }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="i-logo" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M9 14.5l2.2 2.2 4.3-4.7"/></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6"/><path d="M4 20h16"/></symbol>
     <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
     <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol>
@@ -538,45 +507,45 @@ sup{font-size:.72em;line-height:0}
     <symbol id="i-me" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
-    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+    <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></symbol>
     <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 5h16l-6.2 7.6V19l-3.6-1.8v-4.6z"/></symbol>
     <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></symbol>
     <symbol id="i-swords" viewBox="0 0 24 24"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M7 17l-3 3M17 17l3 3M9 15l-2.5 2.5M15 15l2.5 2.5"/></symbol>
     <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H14a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h5.5"/></symbol>
     <symbol id="i-tree" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="6" rx="1.5"/><rect x="13" y="10" width="8" height="5" rx="1.5"/><rect x="13" y="17" width="8" height="4" rx="1.5"/><path d="M7 9v10.5h6M7 12.5h6"/></symbol>
+    <symbol id="i-cam" viewBox="0 0 24 24"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H7l1.6-2.2h6.8L17 7h2.5A1.5 1.5 0 0 1 21 8.5V18a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18z"/><circle cx="12" cy="13" r="3.4"/></symbol>
     <symbol id="i-cam-ai" viewBox="0 0 24 24"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H7l1.6-2.2h4.8L15 7h2.5A1.5 1.5 0 0 1 19 8.5V18a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/><circle cx="11" cy="13" r="3.2"/><path d="M20.5 2v4M18.5 4h4"/></symbol>
     <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></symbol>
     <symbol id="i-chat-q" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"/><path d="M9.8 8.2a2.3 2.3 0 0 1 4.5.6c0 1.5-2.3 1.6-2.3 3"/><path d="M12 13.8h.01"/></symbol>
     <symbol id="i-mindmap" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6"/><circle cx="4.5" cy="6" r="1.8"/><circle cx="4.5" cy="18" r="1.8"/><circle cx="19.5" cy="6" r="1.8"/><circle cx="19.5" cy="18" r="1.8"/><path d="M6 7l4 3.5M6 17l4-3.5M18 7l-4 3.5M18 17l-4-3.5"/></symbol>
     <symbol id="i-refresh-check" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4.5h-4.5"/><path d="M9 12.5l2 2 4-4"/></symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></symbol>
     <symbol id="i-export" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v7M9 15l3 3 3-3"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H19v-3"/></symbol>
-    <symbol id="i-grad" viewBox="0 0 24 24"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5v4.5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-4.5"/><path d="M21.5 9.5v5"/></symbol>
     <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10z"/><path d="M13.5 7.5l3 3"/></symbol>
-    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><path d="M4 12h16"/></symbol>
     <symbol id="i-signal" viewBox="0 0 24 24"><path d="M5 18v-3M9.5 18V9M14 18V6M18.5 18V3"/></symbol>
     <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9.5a14 14 0 0 1 19 0M6 13a9 9 0 0 1 12 0M9.5 16.5a4 4 0 0 1 5 0"/><path d="M12 19.8h.01"/></symbol>
     <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6h14M12 6v13M9 19h6"/></symbol>
     <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8V4h10v4"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 13h10v7H7z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19h20"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+    <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></symbol>
+    <symbol id="i-windows" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M3 5.6l7.6-1.05v7.3H3zM11.6 4.4L21 3.1v8.75h-9.4zM3 12.85h7.6v7.3L3 19.1zM11.6 12.85H21v8.75l-9.4-1.3z"/></symbol>
   </defs>
 </svg>
 
 <header class="nav" id="nav">
   <div class="container nav__inner">
-    <a class="brand" href="#top" aria-label="今知错题本 首页">
-      <span class="brand__mark"><svg class="i"><use href="#i-logo"/></svg></span>
-      <span>今知错题本</span>
-      <span class="brand__tag">小程序</span>
-    </a>
+    <a class="brand" href="#top" aria-label="今知错题本 首页"><img class="brand__icon" src="assets/icon.png" alt=""><span>今知错题本</span></a>
     <nav class="nav__links" id="navLinks" aria-label="主导航">
       <a href="#features">功能亮点</a>
-      <a href="#flow">使用流程</a>
-      <a href="#who">适合谁</a>
-      <a href="#download">开始使用</a>
+      <a href="#overview">功能一览</a>
+      <a href="#platforms">多端可用</a>
+      <a href="download.html">下载</a>
     </nav>
     <div class="nav__cta">
-      <a class="btn btn--primary btn--sm" href="#download"><svg class="i i--s"><use href="#i-scan"/></svg>微信扫码使用</a>
+      <a class="btn btn--primary btn--sm" href="download.html"><svg class="i i--s"><use href="#i-down"/></svg><span>下载 App</span></a>
       <button class="nav__toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="navLinks"><svg class="i"><use href="#i-menu"/></svg></button>
     </div>
   </div>
@@ -585,536 +554,433 @@ sup{font-size:.72em;line-height:0}
 <main id="top">
 <!-- ===================== HERO ===================== -->
 <section class="hero">
-  <div class="container hero__grid">
-    <div class="hero__copy">
+  <div class="container">
+    <div class="hero__head">
       <span class="eyebrow"><b><svg class="i i--xs"><use href="#i-spark"/></svg>AI</b>今日之错，今日知</span>
-      <h1>每一道错题，<br>都值得被<em>学透</em></h1>
-      <p class="hero__lead">今知错题本把「录题、整理、追问、复习、导出」串成一条清晰的路径：拍照即录、层级归类、随时追问、按计划复习。让错题不再重复，进步看得见。</p>
+      <h1>把每一道<span class="circled">错题<svg viewBox="0 0 200 100" aria-hidden="true"><path pathLength="1" d="M30 54C22 22 96 6 150 16c44 8 48 54 12 70-40 17-118 14-134-12-8-13 6-28 34-34"/></svg></span>，<br>都学透。</h1>
+      <p class="hero__lead">拍照即录、AI 补全，把它归到该在的位置，再按计划复习，直到红叉变成绿勾。今知错题本把「录题、整理、追问、复习、导出」串成一条路，让错题不再重复，进步看得见。</p>
       <div class="hero__actions">
-        <a class="btn btn--primary btn--lg" href="#download">微信扫码，立即使用<svg class="i i--s"><use href="#i-arrow"/></svg></a>
-        <a class="btn btn--ghost btn--lg" href="#features">看看功能亮点</a>
-      </div>
-      <div class="hero__facts">
-        <span>文字 / 图片多模态录题</span>
-        <span>文件夹 · 课本 · 知识点多层级</span>
-        <span>AI 追问与思维导图</span>
-        <span>今日复习 · 再战区</span>
-        <span>自定义导出打印</span>
+        <a class="btn btn--primary btn--lg" href="download.html"><svg class="i i--s"><use href="#i-down"/></svg>下载今知错题本</a>
+        <a class="btn btn--ghost btn--lg" href="#features">看看六个场景</a>
+        <span class="hero__plat"><svg class="i"><use href="#i-phone"/></svg>iPhone / iPad · Android<svg class="i"><use href="#i-laptop"/></svg>Windows · Mac</span>
       </div>
     </div>
 
-    <div class="hero__shot">
-      <div class="fl fl--a"><span class="fic" style="background:var(--blue-50);color:var(--blue)"><svg class="i i--s"><use href="#i-sparks"/></svg></span><div><b>AI 已录入</b><small>识别题目 · 补全答案、知识点与标签</small></div></div>
-      <div class="fl fl--b"><span class="fic" style="background:var(--purple-bg);color:var(--purple)"><svg class="i i--s"><use href="#i-route"/></svg></span><div><b>智能导航路径</b><div class="crumbline">错题本<svg class="i i--xs"><use href="#i-chev"/></svg>高等数学<svg class="i i--xs"><use href="#i-chev"/></svg>多元函数微分<svg class="i i--xs"><use href="#i-chev"/></svg><b>隐函数求导</b></div></div></div>
-      <div class="fl fl--c"><span class="fic" style="background:var(--green-bg);color:var(--green)"><svg class="i i--s"><use href="#i-cal-check"/></svg></span><div><b>今日复习 12 题</b><small>预计 25 分钟 · 再战区 5 题待攻克</small></div></div>
+    <div class="scene-wrap" id="sceneWrap" role="img" aria-label="动画演示：一道被打叉的错题，被拍照录入、AI 补全、归入文件夹、加入今日复习，最后被标记为已学透">
+      <div class="scene-size">
+        <div class="scene s0" id="scene">
+          <div class="sc-bg"></div>
 
-      <div class="phone phone--hero" aria-label="今知错题本 错题详情页示意">
-        <div class="screen">
-          <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
-          <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>错题详情<span class="cap"><i class="cap__dots"></i><i class="cap__o"></i></span></div>
-          <div class="scr">
-            <div class="mcard">
-              <div class="mrow"><span class="chip chip--blue"><svg class="i"><use href="#i-folder-f"/></svg>高等数学 › 多元函数微分</span><span class="mdate num">3月12日 12:54</span></div>
-              <div class="mrow"><span class="mmeta"><svg class="i i--xs"><use href="#i-clock"/></svg>上次复习 3 天前 · 次数 2</span><span class="chip chip--sm"><svg class="i"><use href="#i-img"/></svg>1</span></div>
-            </div>
-            <div class="mcard">
-              <div class="mhead mhead--blue">题目<span class="chip chip--blue chip--sm">单选题</span></div>
-              <p class="mq">设函数 <span class="math">z = z(x, y)</span> 由方程 <span class="math">x − az = e<sup>y+az</sup></span> 确定，其中 <span class="math">a</span> 是非零常数，则（　）。</p>
-              <div class="opts">
-                <div class="opt opt--ok"><b>A</b><span class="math"><span class="frac"><i>∂z</i><i>∂x</i></span> − <span class="frac"><i>∂z</i><i>∂y</i></span> = <span class="frac"><i>1</i><i>a</i></span></span><em>正确答案</em></div>
-                <div class="opt opt--no"><b>B</b><span class="math"><span class="frac"><i>∂z</i><i>∂x</i></span> + <span class="frac"><i>∂z</i><i>∂y</i></span> = <span class="frac"><i>1</i><i>a</i></span></span><em>你的选择</em></div>
-                <div class="opt"><b>C</b><span class="math"><span class="frac"><i>∂z</i><i>∂x</i></span> − <span class="frac"><i>∂z</i><i>∂y</i></span> = −<span class="frac"><i>1</i><i>a</i></span></span></div>
-                <div class="opt"><b>D</b><span class="math"><span class="frac"><i>∂z</i><i>∂x</i></span> + <span class="frac"><i>∂z</i><i>∂y</i></span> = −<span class="frac"><i>1</i><i>a</i></span></span></div>
+          <div class="sc-paper" id="paper">
+            <div class="pp-head"><span>高等数学（下）· 周测三</span><span>第 2 页 / 共 4 页</span></div>
+            <div class="pp-q"><b>7.</b>设函数 <span class="math">z = z(x, y)</span> 由方程 <span class="math">x − az = e<sup>y+az</sup></span> 确定，其中 <span class="math">a</span> 是非零常数，则（　）。</div>
+            <ol class="pp-opts">
+              <li>A. <span class="math">∂z/∂x − ∂z/∂y = 1/a</span></li>
+              <li>B. <span class="math">∂z/∂x + ∂z/∂y = 1/a</span><svg class="pencil" viewBox="0 0 150 36" aria-hidden="true"><path d="M8 18c4-12 40-14 74-12 36 2 62 6 60 16-2 9-30 12-66 12C40 34 4 30 8 18z"/></svg></li>
+              <li>C. <span class="math">∂z/∂x − ∂z/∂y = −1/a</span></li>
+              <li>D. <span class="math">∂z/∂x + ∂z/∂y = −1/a</span></li>
+            </ol>
+            <svg class="pp-mark" viewBox="0 0 60 60" aria-hidden="true"><path class="x1" pathLength="1" d="M13 12L48 48"/><path class="x2" pathLength="1" d="M48 12L13 48"/><path class="ok" pathLength="1" d="M10 32l14 14L52 14"/></svg>
+            <div class="pp-stamp">已学透</div>
+          </div>
+
+          <div class="sc-vf"><i></i><i></i><i></i><i></i></div>
+          <div class="sc-flash"></div>
+
+          <div class="sc-phone">
+            <div class="sc-screen">
+              <div class="ph-sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg></span></div>
+              <div class="ph-bar"><svg class="i i--back"><use href="#i-back"/></svg>智能录题<span class="act">保存</span></div>
+              <div class="ph-card">
+                <div class="ph-label"><svg class="i"><use href="#i-sparks"/></svg>题目内容</div>
+                <div class="ph-ta"><span class="ph">拍照或输入题目文本，AI 自动识别</span><span id="typed"></span><i class="ph-caret"></i></div>
+                <div class="ph-thumbrow"><div class="ph-thumb"><div class="mini" id="thumbMini"></div><i class="scan"></i></div><div class="ph-thumbtxt"><b>识别完成</b>已提取题干与 4 个选项</div></div>
               </div>
+              <div class="ph-card ph-fields">
+                <div class="ph-field"><span>题型</span><b>单选题</b><em class="ai">AI</em></div>
+                <div class="ph-field"><span>标准答案</span><b class="ok">A</b><em class="ai">AI</em></div>
+                <div class="ph-field"><span>我的答案</span><b class="no">B</b><em class="ai" style="visibility:hidden">AI</em></div>
+                <div class="ph-field"><span>知识点</span><b><i class="chip chip--blue">隐函数求导</i><i class="chip chip--blue">偏导数</i></b><em class="ai">AI</em></div>
+                <div class="ph-field"><span>标签</span><b><i class="chip chip--red">#易错</i><i class="chip chip--purple">#符号错误</i></b><em class="ai">AI</em></div>
+                <div class="ph-field"><span>解析</span><b><i class="long">两边分别求偏导后相减，指数项抵消，得 1/a</i></b><em class="ai">AI</em></div>
+              </div>
+              <div class="ph-cam"><svg class="i"><use href="#i-cam"/></svg></div>
             </div>
-            <div class="mcard mcard--orange">
-              <div class="mhead mhead--orange">解析与错因</div>
-              <p class="mq">两边分别对 x、y 求偏导后相减，含 e<sup>y+az</sup> 的项恰好抵消。<b>错因：</b>整理时丢掉了 ∂z/∂y 的负号，误写成相加。</p>
+          </div>
+
+          <div class="sc-cap" aria-hidden="true">
+            <div class="cap0"><small>第 1 步 · 做错了</small><b>周测卷上，第 7 题被打了叉。</b><p>选了 B，正确答案是 A。以前，这道题到这里就结束了。</p></div>
+            <div class="cap1"><small>第 2 步 · 拍照录入</small><b>对着题目拍一张。</b><p>AI 识别出题干和四个选项，不用再手动抄题。</p></div>
+            <div class="cap2"><small>第 3 步 · AI 补全</small><b>答案、知识点、标签，一并补齐。</b><p>还会写一段解析，指出这次错在哪一步。</p></div>
+          </div>
+          <div class="sc-snap" id="snap"></div>
+          <div class="sc-mini"><span class="chip chip--blue chip--sm">单选题</span><span class="t">设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数…</span></div>
+
+          <div class="sc-right">
+            <div class="rc-tree">
+              <div class="rc-head">归入位置<span class="n">错题本</span></div>
+              <div class="rc-crumb"><i>错题本</i><i>›</i><i>高等数学</i><i>›</i><i>多元函数微分</i><i>›</i><i class="on">隐函数求导</i></div>
+              <ul>
+                <li class="l1"><svg class="i"><use href="#i-folder-f"/></svg>高等数学<span class="n">48</span></li>
+                <li class="l2"><svg class="i"><use href="#i-folder-f"/></svg>多元函数微分<span class="n">14</span></li>
+                <li class="l3 on"><svg class="i"><use href="#i-folder-f"/></svg>隐函数求导<span class="n">7</span></li>
+                <li class="slot"></li>
+                <li class="l3"><svg class="i"><use href="#i-folder-f"/></svg>极值与最值<span class="n">5</span></li>
+                <li class="l2"><svg class="i"><use href="#i-folder-f"/></svg>重积分<span class="n">9</span></li>
+              </ul>
             </div>
-            <div class="mcard">
-              <div class="mhead">知识点与标签</div>
-              <div class="chips"><span class="chip chip--blue">隐函数求导</span><span class="chip chip--blue">偏导数</span><span class="chip chip--red">#易错</span><span class="chip chip--purple">#符号错误</span><span class="chip"><svg class="i"><use href="#i-mic"/></svg>录音 0:42</span></div>
-            </div>
-            <div class="mcard">
-              <div class="mhead">在线复习<span class="sub">温和模式</span></div>
-              <div class="btnrow"><span class="mbtn mbtn--blue"><svg class="i"><use href="#i-cal-check"/></svg>复习模式</span><span class="mbtn mbtn--green"><svg class="i"><use href="#i-plus-c"/></svg>加入再战区</span></div>
+            <div class="rc-review">
+              <div class="rc-head">今日复习<span class="n">第 4 / 12 题</span></div>
+              <div class="rv-prog"><i></i></div>
+              <div class="rv-item rv-item--on"><span class="chip chip--blue chip--sm">高等数学</span><span class="t">隐函数求导 · 设函数 z = z(x, y) 由方程…</span><span class="ok"><svg class="i"><use href="#i-check"/></svg></span></div>
+              <div class="rv-item"><span class="chip chip--purple chip--sm">线性代数</span><span class="t">子空间维数 · 全体下三角矩阵组成的集合…</span></div>
+              <div class="rv-item"><span class="chip chip--green chip--sm">政治</span><span class="t">新发展理念的五个方面</span></div>
+              <div class="rv-btns"><span>加入再战区</span><span class="g">答对 ✓</span><span class="p">下一题</span></div>
+              <div class="rv-done"><svg class="i"><use href="#i-check-c"/></svg>连续答对 3 次，已标记为掌握</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ===================== FLOW ===================== -->
-<section class="flow" id="flow">
-  <div class="container">
-    <div class="flow__head">
-      <div><span class="kicker">使用流程</span><h2>一道错题，从录入到学透的完整路径</h2></div>
-      <p>每一步都有对应的功能承接，不用在多个工具之间来回切换。</p>
-    </div>
-    <ol class="path">
-      <li><b><svg class="i"><use href="#i-cam-ai"/></svg>录入</b><p>拍照或输入文字，AI 识别题目并补全答案、知识点与标签。</p></li>
-      <li><b><svg class="i"><use href="#i-tree"/></svg>整理</b><p>按文件夹、课本、知识点分层归类，来源清晰，随时可搜。</p></li>
-      <li><b><svg class="i"><use href="#i-chat-q"/></svg>学透</b><p>围绕错题继续追问，思维导图展开知识脉络。</p></li>
-      <li><b><svg class="i"><use href="#i-refresh-check"/></svg>复习</b><p>今日复习、文件夹复习、筛选复习、再战区，按计划巩固。</p></li>
-      <li><b><svg class="i"><use href="#i-print"/></svg>导出</b><p>自选内容、版式与字号，一键导出打印，再练一遍。</p></li>
+    <ol class="chapters" id="chapters" aria-label="动画章节">
+      <li><button type="button" data-step="0" class="on" aria-pressed="true">做错了</button></li>
+      <li><button type="button" data-step="1" aria-pressed="false">拍照录入</button></li>
+      <li><button type="button" data-step="2" aria-pressed="false">AI 补全</button></li>
+      <li><button type="button" data-step="3" aria-pressed="false">归入位置</button></li>
+      <li><button type="button" data-step="4" aria-pressed="false">按计划复习</button></li>
+      <li><button type="button" data-step="5" aria-pressed="false">学透了</button></li>
+      <li class="replay-li"><button type="button" class="replay" id="replay"><svg class="i"><use href="#i-replay"/></svg>重播</button></li>
     </ol>
   </div>
 </section>
 
-<!-- ===================== FEATURES ===================== -->
-<section class="section" id="features">
+<!-- ===================== STORY ===================== -->
+<section class="story" id="features">
   <div class="container">
     <div class="sec-head">
-      <span class="kicker">功能亮点</span>
-      <h2>十项能力，覆盖整理、录入、学透、复习、导出全流程</h2>
-      <p>按你真正使用错题本的顺序，逐一展开。</p>
+      <span class="kicker">六个场景</span>
+      <h2>一部手机，走完错题的每一步</h2>
+      <p>往下滚动，右侧的手机会切换到对应的界面。十项功能亮点，都在这六个场景里。</p>
     </div>
+    <div class="story__grid">
+      <div class="story__steps" id="steps">
 
-    <!-- 1. 整理 -->
-    <div class="feat" id="f-organize">
-      <div class="feat__text">
-        <span class="kicker">整理有序</span>
-        <h2>错题归属清晰，复习路径有序</h2>
-        <p>从文件夹到课本再到知识点，每一道错题都有自己的位置：找得到，也回得去。</p>
-        <ul class="plist">
-          <li><span class="ico"><svg class="i"><use href="#i-tree"/></svg></span><div><h3>多层级错题整理</h3><p>支持文件夹、课本、知识点等多层级分类，错题归属更清晰，复习路径更有序。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-route"/></svg></span><div><h3>智能导航路径</h3><p>自动呈现错题所在位置，快速跳转目标内容，让每一道错题都有清晰来源。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-mag"/></svg></span><div><h3>多维搜索定位</h3><p>支持按科目、章节、日期、标签、关键词等多条件搜索，快速找到目标错题。</p></div></li>
-        </ul>
+        <article class="step on" data-i="0">
+          <span class="no">01 · 录入</span>
+          <h2>拍一张照片，AI 帮你把题录全</h2>
+          <p>文字、图片都能作为输入。AI 识别题目内容、提取关键信息，再把答案、知识点、标签一并补全。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-cam-ai"/></svg></span><div><h3>AI 智能录题系统</h3><p>支持文字、图片等多模态输入，AI 自动识别题目内容，提取关键信息，减少手动录入成本。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-sparks"/></svg></span><div><h3>智能补全功能</h3><p>AI 可辅助补全题目、答案、知识点、标签等内容，让错题记录更完整。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-layers"/></svg></span><div><h3>多维度错题记录</h3><p>支持题目、标准答案、我的答案、图片、录音、标签、知识点等多维度记录，完整还原学习过程。</p></div></li>
+          </ul>
+          <div class="dims"><span>题目</span><span>标准答案</span><span>我的答案</span><span>图片</span><span>录音</span><span>标签</span><span>知识点</span></div>
+        </article>
+
+        <article class="step" data-i="1">
+          <span class="no">02 · 整理</span>
+          <h2>错题归属清晰，复习路径有序</h2>
+          <p>从文件夹到课本再到知识点，每一道错题都有自己的位置：找得到，也回得去。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-tree"/></svg></span><div><h3>多层级错题整理</h3><p>支持文件夹、课本、知识点等多层级分类，错题归属更清晰，复习路径更有序。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-route"/></svg></span><div><h3>智能导航路径</h3><p>自动呈现错题所在位置，快速跳转目标内容，让每一道错题都有清晰来源。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-mag"/></svg></span><div><h3>多维搜索定位</h3><p>支持按科目、章节、日期、标签、关键词等多条件搜索，快速找到目标错题。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="2">
+          <span class="no">03 · 追问</span>
+          <h2>不止记下来，更要问明白</h2>
+          <p>错题 AI 追问围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-chat-q"/></svg></span><div><h3>深挖解题思路</h3><p>不满足于一个答案，追问每一步为什么这样做，把过程讲清楚。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-target"/></svg></span><div><h3>定位易错点</h3><p>结合你的作答，指出最容易出错的那一步，下次不再踩同一个坑。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-refresh-check"/></svg></span><div><h3>生成变式训练</h3><p>换条件、换问法再练一道，确认这类题真正掌握。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="3">
+          <span class="no">04 · 导图</span>
+          <h2>把零散的错题，连成一张知识图</h2>
+          <p>思维导图可视化自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-mindmap"/></svg></span><div><h3>自动生成结构关系</h3><p>文件夹、知识点与错题自动连线，不用手动画图。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-tree"/></svg></span><div><h3>知识脉络一眼看清</h3><p>哪个知识点下错题最多、哪条分支还没掌握，一张图就能看出来。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-route"/></svg></span><div><h3>点击节点直达错题</h3><p>从导图上的任一节点，直接跳到对应的错题详情。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="4">
+          <span class="no">05 · 复习</span>
+          <h2>有计划地复习，把薄弱点一个个攻克</h2>
+          <p>智能错题复习支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-cal-check"/></svg></span><div><h3>今日复习</h3><p>每天一份待复习清单，打开就能开始，做完自动排好下一次。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-filter"/></svg></span><div><h3>文件夹复习与筛选复习</h3><p>按课本章节逐个击破，或按标签、日期、知识点组合筛选，只复习最需要的。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-swords"/></svg></span><div><h3>再战区</h3><p>做错的题自动进入再战区，反复挑战，直到连续答对。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="5">
+          <span class="no">06 · 导出</span>
+          <h2>一键导出，还原真题质感</h2>
+          <p>一键导出错题支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-layers"/></svg></span><div><h3>自选导出内容</h3><p>题目、标准答案、我的答案、解析、图片……需要什么导什么。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-doc"/></svg></span><div><h3>版式与字号自定义</h3><p>经典留白、彩签笔记、方格手账多种样式；一题一页、题目与答案分离随你设置。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-print"/></svg></span><div><h3>打印即用</h3><p>导出的错题卷像一份真题，打印出来直接再做一遍。</p></div></li>
+          </ul>
+        </article>
       </div>
-      <div class="feat__shot">
-        <div class="stage">
-          <div class="phone" aria-label="文件夹层级示意">
-            <div class="screen">
-              <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
-              <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>多元函数微分<span class="ah__ic"><svg class="i"><use href="#i-mag"/></svg></span><span class="cap"><i class="cap__dots"></i><i class="cap__o"></i></span></div>
-              <div class="scr">
-                <div class="crumb"><a>错题本</a><svg class="i"><use href="#i-chev"/></svg><a>高等数学</a><svg class="i"><use href="#i-chev"/></svg><span>多元函数微分</span></div>
-                <div class="listbar"><span class="num">14 道错题</span><span class="sortchip"><svg class="i"><use href="#i-cal"/></svg>时间 新→旧<svg class="i"><use href="#i-chev-d"/></svg></span></div>
-                <div class="sec"><svg class="i"><use href="#i-chev-d"/></svg>文件夹</div>
-                <div class="mcard mcard--list">
-                  <div class="frow"><span class="fic"><svg class="i"><use href="#i-folder-f"/></svg></span><div><b>隐函数求导</b><small><span><svg class="i"><use href="#i-folder"/></svg>0</span><span><svg class="i"><use href="#i-doc"/></svg>6</span></small></div><svg class="i i--chev"><use href="#i-chev"/></svg></div>
-                  <div class="frow"><span class="fic"><svg class="i"><use href="#i-folder-f"/></svg></span><div><b>极值与最值</b><small><span><svg class="i"><use href="#i-folder"/></svg>1</span><span><svg class="i"><use href="#i-doc"/></svg>5</span></small></div><svg class="i i--chev"><use href="#i-chev"/></svg></div>
-                  <div class="frow"><span class="fic"><svg class="i"><use href="#i-folder-f"/></svg></span><div><b>方向导数与梯度</b><small><span><svg class="i"><use href="#i-folder"/></svg>0</span><span><svg class="i"><use href="#i-doc"/></svg>3</span></small></div><svg class="i i--chev"><use href="#i-chev"/></svg></div>
-                </div>
-                <div class="sec"><svg class="i"><use href="#i-chev-d"/></svg>错题</div>
-                <div class="mcard">
-                  <div class="mrow"><span class="chip chip--blue"><svg class="i"><use href="#i-folder-f"/></svg>隐函数求导</span><span class="mdate">3月12日</span></div>
-                  <p class="mq mq--clamp" style="margin-top:6px">设函数 z = z(x, y) 由方程 x − az = e<sup>y+az</sup> 确定，其中 a 是非零常数，则（　）。</p>
-                  <div class="mrow" style="margin-top:8px"><span class="chip chip--green"><svg class="i"><use href="#i-img"/></svg>1</span><span class="chip chip--purple">单选题</span></div>
+
+      <div class="story__phone">
+        <div class="story__stage">
+          <span class="story__tag" id="storyTag"><i>1</i>录入</span>
+          <div class="phone" aria-hidden="true">
+            <div class="screen" id="screens">
+
+              <!-- 0 录入 -->
+              <div class="ss on">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>智能录题<span class="ah__act">加入队列</span></div>
+                <div class="scr">
+                  <div class="mcard">
+                    <div class="mhead"><svg class="i"><use href="#i-sparks"/></svg>题目内容</div>
+                    <div class="ta">设函数 z = z(x, y) 由方程 x − az = e<sup>y+az</sup> 确定，其中 a 是非零常数，则（　）。<br>A. ∂z/∂x − ∂z/∂y = 1/a　B. ∂z/∂x + ∂z/∂y = 1/a<br>C. ∂z/∂x − ∂z/∂y = −1/a　D. ∂z/∂x + ∂z/∂y = −1/a</div>
+                    <div class="mrow" style="margin-top:8px"><span class="muted">图片 1/12</span><span class="link"><svg class="i"><use href="#i-plus-c"/></svg>添加图片</span></div>
+                    <div class="thumbs"><div class="thumb"><svg viewBox="0 0 96 68" aria-hidden="true"><rect width="96" height="68" fill="#F7F5EF"/><rect x="8" y="6" width="80" height="56" fill="#fff"/><rect x="14" y="12" width="52" height="3" rx="1.5" fill="#3A3F4B"/><rect x="14" y="19" width="66" height="3" rx="1.5" fill="#6B7280"/><rect x="14" y="26" width="58" height="3" rx="1.5" fill="#6B7280"/><rect x="14" y="36" width="30" height="3" rx="1.5" fill="#6B7280"/><rect x="50" y="36" width="30" height="3" rx="1.5" fill="#6B7280"/><rect x="14" y="43" width="30" height="3" rx="1.5" fill="#6B7280"/><rect x="50" y="43" width="30" height="3" rx="1.5" fill="#6B7280"/><path d="M47 33l5 7M52 33l-5 7" stroke="#E5484D" stroke-width="1.6" stroke-linecap="round"/></svg><span class="thumb__badge">识别完成</span></div></div>
+                  </div>
+                  <div class="mcard">
+                    <div class="mhead"><svg class="i"><use href="#i-sliders"/></svg>识别配置</div>
+                    <div class="krow"><span>题型</span><span class="kv">单选题<svg class="i"><use href="#i-chev-d"/></svg></span></div>
+                    <div class="krow"><div><b>交互式错题</b><small>识别题型、选项和可判定答案，保存后可直接交互作答</small></div><span class="toggle on"></span></div>
+                    <div class="krow"><div><b>将原图加入错题</b><small>保留拍摄图片，方便对照原题</small></div><span class="toggle on"></span></div>
+                    <div class="krow"><span>识别字段</span><span class="muted num">7/7</span></div>
+                    <div class="seg3"><span>极简</span><span>快速</span><span class="on">完整</span></div>
+                  </div>
                 </div>
               </div>
-              <div class="fab"><svg class="i"><use href="#i-plus"/></svg></div>
-              <div class="tabbar"><span class="on"><svg class="i"><use href="#i-home"/></svg>首页</span><span><svg class="i"><use href="#i-explore"/></svg>探索</span><span><svg class="i"><use href="#i-review"/></svg>复习</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
-            </div>
-          </div>
-          <div class="side">
-            <div class="fcard" aria-label="多维搜索示意">
-              <div class="sinput"><svg class="i"><use href="#i-mag"/></svg><span>隐函数<i class="cursor"></i></span><kbd>搜索</kbd></div>
-              <div class="frow2"><span class="fk">科目</span><span class="fv on">高等数学</span><span class="fv">线性代数</span><span class="fv">政治</span></div>
-              <div class="frow2"><span class="fk">章节</span><span class="fv on">多元函数微分</span><span class="fv">重积分</span></div>
-              <div class="frow2"><span class="fk">日期</span><span class="fv on">近 30 天</span><span class="fv">本学期</span></div>
-              <div class="frow2"><span class="fk">标签</span><span class="fv on red">#易错</span><span class="fv">#未掌握</span><span class="fv">#单选题</span></div>
-              <div class="scount">找到 <b class="num">6</b> 道错题</div>
-              <div class="sres sres--on"><div class="spath">高等数学<svg class="i i--xs" style="width:10px;height:10px"><use href="#i-chev"/></svg>多元函数微分<svg class="i i--xs" style="width:10px;height:10px"><use href="#i-chev"/></svg><b>隐函数求导</b></div><div class="stitle">设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数……</div></div>
-              <div class="sres"><div class="spath">高等数学<svg class="i i--xs" style="width:10px;height:10px"><use href="#i-chev"/></svg>多元函数微分<svg class="i i--xs" style="width:10px;height:10px"><use href="#i-chev"/></svg><b>隐函数求导</b></div><div class="stitle">设 x² + y² + z² = 4z 确定 z = z(x, y)，求 ∂²z/∂x²。</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- 2. 录入 -->
-    <div class="feat feat--flip" id="f-record">
-      <div class="feat__text">
-        <span class="kicker">录入省心</span>
-        <h2>拍一张照片，AI 帮你把题录全</h2>
-        <p>文字、图片都能作为输入。AI 识别题目内容、提取关键信息，再把答案、知识点、标签一并补全。</p>
-        <ul class="plist">
-          <li><span class="ico"><svg class="i"><use href="#i-cam-ai"/></svg></span><div><h3>AI 智能录题系统</h3><p>支持文字、图片等多模态输入，AI 自动识别题目内容，提取关键信息，减少手动录入成本。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-sparks"/></svg></span><div><h3>智能补全功能</h3><p>AI 可辅助补全题目、答案、知识点、标签等内容，让错题记录更完整。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-layers"/></svg></span><div><h3>多维度错题记录</h3><p>支持题目、标准答案、我的答案、图片、录音、标签、知识点等多维度记录，完整还原学习过程。</p></div></li>
-        </ul>
-        <div class="dims">
-          <em>一条错题可以记录的维度</em>
-          <span><svg class="i"><use href="#i-text"/></svg>题目</span><span><svg class="i"><use href="#i-check"/></svg>标准答案</span><span><svg class="i"><use href="#i-pencil"/></svg>我的答案</span><span><svg class="i"><use href="#i-img"/></svg>图片</span><span><svg class="i"><use href="#i-mic"/></svg>录音</span><span><svg class="i"><use href="#i-folder"/></svg>标签</span><span><svg class="i"><use href="#i-book"/></svg>知识点</span>
-        </div>
-      </div>
-      <div class="feat__shot">
-        <div class="stage stage--bleed">
-          <div class="phone" aria-label="智能录题示意">
-            <div class="screen">
-              <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
-              <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>智能录题<span class="ah__act ah__act--b">加入队列</span><span class="cap"><i class="cap__dots"></i><i class="cap__o"></i></span></div>
-              <div class="scr">
-                <div class="mcard">
-                  <div class="mhead"><svg class="i"><use href="#i-sparks"/></svg>题目内容</div>
-                  <div class="ta">设函数 z = z(x, y) 由方程 x − az = e<sup>y+az</sup> 确定，其中 a 是非零常数，则（　）。<br>A. ∂z/∂x − ∂z/∂y = 1/a　B. ∂z/∂x + ∂z/∂y = 1/a<br>C. ∂z/∂x − ∂z/∂y = −1/a　D. ∂z/∂x + ∂z/∂y = −1/a<i class="cursor"></i></div>
-                  <div class="mrow" style="margin-top:8px"><span class="muted">图片 1/12</span><span class="link"><svg class="i"><use href="#i-plus-c"/></svg>添加图片</span></div>
-                  <div class="thumbs">
-                    <div class="thumb">
-                      <svg viewBox="0 0 96 68" aria-hidden="true"><rect width="96" height="68" fill="#F7F5EF"/><rect x="8" y="6" width="80" height="56" fill="#fff"/><rect x="14" y="12" width="52" height="3" rx="1.5" fill="#3A3F4B"/><rect x="14" y="19" width="66" height="3" rx="1.5" fill="#6B7280"/><rect x="14" y="26" width="58" height="3" rx="1.5" fill="#6B7280"/><rect x="14" y="36" width="30" height="3" rx="1.5" fill="#6B7280"/><rect x="50" y="36" width="30" height="3" rx="1.5" fill="#6B7280"/><rect x="14" y="43" width="30" height="3" rx="1.5" fill="#6B7280"/><rect x="50" y="43" width="30" height="3" rx="1.5" fill="#6B7280"/><path d="M47 33l5 7M52 33l-5 7" stroke="#E5484D" stroke-width="1.6" stroke-linecap="round"/><path d="M14 50c6 4 14 4 20 0" stroke="#E5484D" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
-                      <div class="scan"></div><span class="thumb__badge">识别完成</span>
+              <!-- 1 整理 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>多元函数微分<span class="ah__ic"><svg class="i"><use href="#i-mag"/></svg><svg class="i"><use href="#i-sliders"/></svg></span></div>
+                <div class="scr">
+                  <div class="crumb"><a>错题本</a><svg class="i"><use href="#i-chev"/></svg><a>高等数学</a><svg class="i"><use href="#i-chev"/></svg><span>多元函数微分</span></div>
+                  <div class="listbar"><span class="num">14 道错题</span><span class="sortchip"><svg class="i"><use href="#i-cal"/></svg>时间 新→旧<svg class="i"><use href="#i-chev-d"/></svg></span></div>
+                  <div class="sec"><svg class="i"><use href="#i-chev-d"/></svg>文件夹</div>
+                  <div class="mcard mcard--list">
+                    <div class="frow"><span class="fic"><svg class="i"><use href="#i-folder-f"/></svg></span><div><b>隐函数求导</b><small><span><svg class="i"><use href="#i-folder"/></svg>0</span><span><svg class="i"><use href="#i-doc"/></svg>7</span></small></div><svg class="i i--chev"><use href="#i-chev"/></svg></div>
+                    <div class="frow"><span class="fic"><svg class="i"><use href="#i-folder-f"/></svg></span><div><b>极值与最值</b><small><span><svg class="i"><use href="#i-folder"/></svg>1</span><span><svg class="i"><use href="#i-doc"/></svg>5</span></small></div><svg class="i i--chev"><use href="#i-chev"/></svg></div>
+                    <div class="frow"><span class="fic"><svg class="i"><use href="#i-folder-f"/></svg></span><div><b>方向导数与梯度</b><small><span><svg class="i"><use href="#i-folder"/></svg>0</span><span><svg class="i"><use href="#i-doc"/></svg>3</span></small></div><svg class="i i--chev"><use href="#i-chev"/></svg></div>
+                  </div>
+                  <div class="sec"><svg class="i"><use href="#i-chev-d"/></svg>错题</div>
+                  <div class="mcard">
+                    <div class="mrow"><span class="chip chip--blue"><svg class="i"><use href="#i-folder-f"/></svg>隐函数求导</span><span class="mdate">3月12日</span></div>
+                    <p class="mq mq--clamp" style="margin-top:6px">设函数 z = z(x, y) 由方程 x − az = e<sup>y+az</sup> 确定，其中 a 是非零常数，则（　）。</p>
+                    <div class="mrow" style="margin-top:8px"><span class="chip chip--green"><svg class="i"><use href="#i-img"/></svg>1</span><span class="chip chip--purple">单选题</span></div>
+                  </div>
+                </div>
+                <div class="fab"><svg class="i"><use href="#i-plus"/></svg></div>
+                <div class="tabbar"><span class="on"><svg class="i"><use href="#i-home"/></svg>首页</span><span><svg class="i"><use href="#i-explore"/></svg>探索</span><span><svg class="i"><use href="#i-review"/></svg>复习</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
+              </div>
+
+              <!-- 2 追问 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>AI 追问</div>
+                <div class="scr" style="display:flex;flex-direction:column">
+                  <div class="chatlist">
+                    <div class="pin"><span class="chip chip--blue chip--sm">当前错题</span><p>设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数，则（　）。</p></div>
+                    <div class="msg msg--me"><div class="bub">为什么是相减不是相加？我选了 B。</div></div>
+                    <div class="msg msg--ai"><span class="av"><svg class="i"><use href="#i-bot"/></svg></span><div class="bub">分别对 x、y 求偏导并整理，两式相减时含 e<sup>y+az</sup> 的项刚好抵消，得到 z<sub>x</sub> − z<sub>y</sub> = 1/a，所以选 A。<div class="tip"><b>易错点</b> z<sub>y</sub> 带负号，丢掉负号就会得到「相加」的形式。</div></div></div>
+                    <div class="msg msg--me"><div class="bub">再来一道变式</div></div>
+                    <div class="msg msg--ai"><span class="av"><svg class="i"><use href="#i-bot"/></svg></span><div class="bub"><div class="var"><b>变式</b> 设 z = z(x, y) 由 x + bz = e<sup>y−bz</sup> 确定（b ≠ 0），求 ∂z/∂y − ∂z/∂x。</div></div></div>
+                  </div>
+                  <div>
+                    <div class="quick"><span>讲讲解题思路</span><span>我哪里容易错</span><span>换个方法解</span></div>
+                    <div class="inbar">围绕这道题继续提问…<i><svg class="i"><use href="#i-send"/></svg></i></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3 导图 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>思维导图<span class="ah__ic"><svg class="i"><use href="#i-sliders"/></svg></span></div>
+                <div class="scr" style="padding:0">
+                  <div class="listbar" style="padding:2px 14px 6px"><span class="num" style="display:inline-flex;gap:8px;align-items:center"><span class="chip chip--blue">−</span>64%<span class="chip chip--blue">+</span></span><span class="muted num">9 个节点</span></div>
+                  <svg class="pmap" viewBox="0 0 270 430" aria-hidden="true">
+                    <g fill="none" stroke="#B9C8EA" stroke-width="1.5">
+                      <path d="M135 58V70H34V352"/><path d="M34 100H48"/><path d="M34 300H48"/><path d="M34 352H48"/>
+                      <path d="M62 120V244"/><path d="M62 160H72"/><path d="M62 244H72"/>
+                    </g>
+                    <g>
+                      <rect x="52" y="14" width="166" height="44" rx="10" fill="#fff" stroke="#DCE3EF"/>
+                      <rect x="64" y="26" width="12" height="9" rx="2" fill="#376EFF"/>
+                      <text x="82" y="34" font-size="11.5" font-weight="700" fill="#1B1F2A">多元函数微分</text>
+                      <text x="64" y="50" font-size="8.5" fill="#7D8699">3 个文件夹 · 14 道错题</text>
+                    </g>
+                    <g>
+                      <rect x="48" y="80" width="200" height="40" rx="10" fill="#fff" stroke="#376EFF" stroke-width="1.5"/>
+                      <rect x="60" y="91" width="11" height="9" rx="2" fill="#376EFF"/>
+                      <text x="76" y="99" font-size="11" font-weight="700" fill="#1B1F2A">隐函数求导</text>
+                      <text x="60" y="113" font-size="8.5" fill="#7D8699">7 道错题</text>
+                      <text x="234" y="104" font-size="11" fill="#9AA3B5">⌃</text>
+                    </g>
+                    <g>
+                      <rect x="72" y="130" width="184" height="60" rx="9" fill="#fff" stroke="#DCE3EF"/>
+                      <rect x="82" y="138" width="50" height="13" rx="4" fill="#EEF3FF"/><text x="87" y="147.5" font-size="8" fill="#376EFF" font-weight="600">隐函数求导</text>
+                      <text x="246" y="147.5" font-size="8" fill="#9AA3B5" text-anchor="end">3月12日</text>
+                      <text x="82" y="164" font-size="8.8" fill="#1B1F2A">设函数 z = z(x, y) 由方程 x − az = e^(y+az)</text>
+                      <text x="82" y="175" font-size="8.8" fill="#1B1F2A">确定，其中 a 是非零常数，则（ ）。</text>
+                      <rect x="82" y="179" width="30" height="9" rx="3" fill="#FEF0EF"/><text x="86" y="186" font-size="6.8" fill="#E5484D">#易错</text>
+                      <rect x="116" y="179" width="32" height="9" rx="3" fill="#EEF3FF"/><text x="120" y="186" font-size="6.8" fill="#376EFF">偏导数</text>
+                    </g>
+                    <g>
+                      <rect x="72" y="214" width="184" height="60" rx="9" fill="#fff" stroke="#DCE3EF"/>
+                      <rect x="82" y="222" width="50" height="13" rx="4" fill="#EEF3FF"/><text x="87" y="231.5" font-size="8" fill="#376EFF" font-weight="600">隐函数求导</text>
+                      <text x="246" y="231.5" font-size="8" fill="#9AA3B5" text-anchor="end">3月9日</text>
+                      <text x="82" y="248" font-size="8.8" fill="#1B1F2A">设 x² + y² + z² = 4z 确定 z = z(x, y)，</text>
+                      <text x="82" y="259" font-size="8.8" fill="#1B1F2A">求 ∂²z/∂x²。</text>
+                      <rect x="82" y="263" width="34" height="9" rx="3" fill="#EAF7EE"/><text x="86" y="270" font-size="6.8" fill="#259D56">已掌握</text>
+                    </g>
+                    <g>
+                      <rect x="48" y="280" width="200" height="40" rx="10" fill="#fff" stroke="#DCE3EF"/>
+                      <rect x="60" y="291" width="11" height="9" rx="2" fill="#376EFF"/>
+                      <text x="76" y="299" font-size="11" font-weight="700" fill="#1B1F2A">极值与最值</text>
+                      <text x="60" y="313" font-size="8.5" fill="#7D8699">5 道错题 · 1 个子文件夹</text>
+                      <text x="234" y="304" font-size="11" fill="#9AA3B5">›</text>
+                    </g>
+                    <g>
+                      <rect x="48" y="332" width="200" height="40" rx="10" fill="#fff" stroke="#DCE3EF"/>
+                      <rect x="60" y="343" width="11" height="9" rx="2" fill="#376EFF"/>
+                      <text x="76" y="351" font-size="11" font-weight="700" fill="#1B1F2A">方向导数与梯度</text>
+                      <text x="60" y="365" font-size="8.5" fill="#7D8699">3 道错题</text>
+                      <text x="234" y="356" font-size="11" fill="#9AA3B5">›</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- 4 复习 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah">错题复习<span class="ah__ic"><svg class="i"><use href="#i-cal"/></svg><svg class="i"><use href="#i-refresh-check"/></svg></span></div>
+                <div class="scr">
+                  <div class="today">
+                    <div class="today__top"><span class="today__title"><svg class="i"><use href="#i-cal-check"/></svg>今日复习</span><span class="today__stat num">正确率 86%<br>预计用时 25:00</span></div>
+                    <div class="today__n num">12<small>题</small></div>
+                    <span class="today__pill">待复习</span>
+                    <div class="today__foot">
+                      <div class="steps"><i class="on"></i>待复习<i></i>复习中<i></i>已完成</div>
+                      <span class="today__go"><svg class="i"><use href="#i-play"/></svg>开始复习</span>
                     </div>
                   </div>
-                </div>
-                <div class="mcard">
-                  <div class="mhead"><svg class="i"><use href="#i-sliders"/></svg>识别配置</div>
-                  <div class="krow"><span>题型</span><span class="kv">单选题<svg class="i"><use href="#i-chev-d"/></svg></span></div>
-                  <div class="krow"><div><b>交互式错题</b><small>识别题型、选项和可判定答案，保存后可直接交互作答</small></div><span class="toggle on"></span></div>
-                  <div class="krow"><div><b>将原图加入错题</b><small>保留拍摄图片，方便对照原题</small></div><span class="toggle on"></span></div>
-                  <div class="krow"><span>识别字段</span><span class="muted num">7/7</span></div>
-                  <div class="seg3"><span>极简</span><span>快速</span><span class="on">完整</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="side">
-            <div class="fcard" aria-label="AI 补全结果示意">
-              <div class="fcard__h"><span class="aiico"><svg class="i"><use href="#i-sparks"/></svg></span><div><b>AI 补全完成</b><small>已从题目中提取关键信息</small></div></div>
-              <div class="krow2"><span class="k">标准答案</span><span class="v v--green">A<em class="ai"><svg class="i"><use href="#i-spark"/></svg>AI 补全</em></span></div>
-              <div class="krow2"><span class="k">我的答案</span><span class="v v--red">B</span></div>
-              <div class="krow2"><span class="k">知识点</span><span class="v"><span class="chip chip--blue">隐函数求导</span><span class="chip chip--blue">偏导数</span><em class="ai"><svg class="i"><use href="#i-spark"/></svg>AI 补全</em></span></div>
-              <div class="krow2"><span class="k">标签</span><span class="v"><span class="chip chip--red">#易错</span><span class="chip chip--purple">#符号错误</span><em class="ai"><svg class="i"><use href="#i-spark"/></svg>AI 建议</em></span></div>
-              <div class="krow2"><span class="k">解析</span><span class="v">两边分别求偏导后相减，含指数项抵消，得 1/a。<em class="ai"><svg class="i"><use href="#i-spark"/></svg>AI 补全</em></span></div>
-              <div class="krow2"><span class="k">附件</span><span class="v"><span class="chip"><svg class="i"><use href="#i-img"/></svg>原题照片</span><span class="chip"><svg class="i"><use href="#i-mic"/></svg>录音 0:42</span></span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. 追问 -->
-    <div class="feat" id="f-ask">
-      <div class="feat__text">
-        <span class="kicker">学得透彻</span>
-        <h2>不止记下来，更要问明白</h2>
-        <p>错题 AI 追问围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p>
-        <ul class="plist">
-          <li><span class="ico"><svg class="i"><use href="#i-chat-q"/></svg></span><div><h3>深挖解题思路</h3><p>不满足于一个答案，追问每一步为什么这样做，把过程讲清楚。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-target"/></svg></span><div><h3>定位易错点</h3><p>结合你的作答，指出最容易出错的一步，下次不再踩同一个坑。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-refresh-check"/></svg></span><div><h3>生成变式训练</h3><p>换条件、换问法再练一道，确认这类题真正掌握。</p></div></li>
-        </ul>
-      </div>
-      <div class="feat__shot">
-        <div class="stage">
-          <div class="phone" aria-label="错题 AI 追问示意">
-            <div class="screen">
-              <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
-              <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>AI 追问<span class="cap"><i class="cap__dots"></i><i class="cap__o"></i></span></div>
-              <div class="scr" style="display:flex;flex-direction:column">
-                <div class="chatlist">
-                <div class="pin"><span class="chip chip--blue chip--sm">当前错题</span><p>设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数，则（　）。</p></div>
-                <div class="msg msg--me"><div class="bub">为什么是相减不是相加？我选了 B。</div></div>
-                <div class="msg msg--ai"><span class="av"><svg class="i"><use href="#i-bot"/></svg></span><div class="bub">分别对 x、y 求偏导并整理，两式相减时含 e<sup>y+az</sup> 的项刚好抵消，得到 z<sub>x</sub> − z<sub>y</sub> = 1/a，所以选 A。<div class="tip"><b>易错点</b> z<sub>y</sub> 带负号，丢掉负号就会得到「相加」的形式。</div></div></div>
-                <div class="msg msg--me"><div class="bub">再来一道变式</div></div>
-                <div class="msg msg--ai"><span class="av"><svg class="i"><use href="#i-bot"/></svg></span><div class="bub"><div class="var" style="margin-top:0"><b>变式</b> 设 z = z(x, y) 由 x + bz = e<sup>y−bz</sup> 确定（b ≠ 0），求 ∂z/∂y − ∂z/∂x。</div></div></div>
-                </div>
-                <div style="margin-top:auto">
-                  <div class="quick"><span>讲讲解题思路</span><span>我哪里容易错</span><span>换个方法解</span></div>
-                  <div class="inbar">围绕这道题继续提问…<i><svg class="i"><use href="#i-send"/></svg></i></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. 导图 -->
-    <div class="feat feat--flip" id="f-map">
-      <div class="feat__text">
-        <span class="kicker">脉络清晰</span>
-        <h2>把零散的错题，连成一张知识图</h2>
-        <p>思维导图可视化自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p>
-        <ul class="plist">
-          <li><span class="ico"><svg class="i"><use href="#i-mindmap"/></svg></span><div><h3>自动生成结构关系</h3><p>文件夹、知识点与错题自动连线，不用手动画图。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-tree"/></svg></span><div><h3>知识脉络一眼看清</h3><p>哪个知识点下错题最多、哪条分支还没掌握，一张图就能看出来。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-route"/></svg></span><div><h3>点击节点直达错题</h3><p>从导图上的任一节点，直接跳到对应的错题详情。</p></div></li>
-        </ul>
-      </div>
-      <div class="feat__shot">
-        <div class="stage stage--fit">
-          <div class="canvas" aria-label="思维导图示意">
-            <div class="canvas__bar"><svg class="i i--s"><use href="#i-back"/></svg><span class="canvas__title">高等数学 · 多元函数微分</span><span class="zoom"><i>−</i><span class="num">64%</span><i>+</i></span><span class="nodes num">9 个节点</span></div>
-            <svg class="mindmap" viewBox="0 0 600 380" role="img" aria-label="多元函数微分 思维导图">
-              <g fill="none" stroke="#B9C8EA" stroke-width="1.5">
-                <path d="M166 189H200"/><path d="M200 62V316"/><path d="M200 62H216"/><path d="M200 189H216"/><path d="M200 316H216"/>
-                <path d="M356 62H390"/><path d="M390 43V208"/><path d="M390 43H406"/><path d="M390 125H406"/><path d="M390 208H406"/>
-              </g>
-              <g>
-                <rect x="16" y="160" width="150" height="58" rx="10" fill="#fff" stroke="#DCE3EF"/>
-                <rect x="28" y="178" width="13" height="10" rx="2" fill="#376EFF"/>
-                <text x="47" y="187" font-size="12" font-weight="700" fill="#1B1F2A">多元函数微分</text>
-                <text x="28" y="205" font-size="9" fill="#7D8699">3 个文件夹 · 14 道错题</text>
-                <text x="150" y="187" font-size="10" fill="#9AA3B5">⌃</text>
-              </g>
-              <g>
-                <rect x="216" y="40" width="140" height="44" rx="10" fill="#fff" stroke="#376EFF" stroke-width="1.5"/>
-                <rect x="228" y="52" width="11" height="9" rx="2" fill="#376EFF"/>
-                <text x="244" y="60" font-size="12" font-weight="700" fill="#1B1F2A">隐函数求导</text>
-                <text x="228" y="75" font-size="9" fill="#7D8699">6 道错题</text>
-                <rect x="216" y="167" width="140" height="44" rx="10" fill="#fff" stroke="#DCE3EF"/>
-                <rect x="228" y="179" width="11" height="9" rx="2" fill="#376EFF"/>
-                <text x="244" y="187" font-size="12" font-weight="700" fill="#1B1F2A">极值与最值</text>
-                <text x="228" y="202" font-size="9" fill="#7D8699">5 道错题 · 1 个子文件夹</text>
-                <text x="342" y="192" font-size="11" fill="#9AA3B5">›</text>
-                <rect x="216" y="294" width="140" height="44" rx="10" fill="#fff" stroke="#DCE3EF"/>
-                <rect x="228" y="306" width="11" height="9" rx="2" fill="#376EFF"/>
-                <text x="244" y="314" font-size="12" font-weight="700" fill="#1B1F2A">方向导数与梯度</text>
-                <text x="228" y="329" font-size="9" fill="#7D8699">3 道错题</text>
-                <text x="342" y="319" font-size="11" fill="#9AA3B5">›</text>
-              </g>
-              <g>
-                <rect x="406" y="8" width="180" height="70" rx="10" fill="#fff" stroke="#DCE3EF"/>
-                <rect x="416" y="16" width="56" height="14" rx="4" fill="#EEF3FF"/>
-                <text x="422" y="26" font-size="8.5" fill="#376EFF" font-weight="600">隐函数求导</text>
-                <text x="576" y="26" font-size="8.5" fill="#9AA3B5" text-anchor="end">3月12日</text>
-                <text x="416" y="44" font-size="9.5" fill="#1B1F2A">设函数 z = z(x, y) 由方程 x − az = e^(y+az)</text>
-                <text x="416" y="56" font-size="9.5" fill="#1B1F2A">确定，其中 a 是非零常数，则（ ）。</text>
-                <rect x="416" y="62" width="34" height="11" rx="3" fill="#EEF3FF"/><text x="421" y="70" font-size="8" fill="#376EFF">偏导数</text>
-                <rect x="454" y="62" width="34" height="11" rx="3" fill="#F2ECFA"/><text x="459" y="70" font-size="8" fill="#7649D8">单选题</text>
-                <rect x="492" y="62" width="30" height="11" rx="3" fill="#FEF0EF"/><text x="497" y="70" font-size="8" fill="#E5484D">#易错</text>
-
-                <rect x="406" y="90" width="180" height="70" rx="10" fill="#fff" stroke="#DCE3EF"/>
-                <rect x="416" y="98" width="56" height="14" rx="4" fill="#EEF3FF"/>
-                <text x="422" y="108" font-size="8.5" fill="#376EFF" font-weight="600">隐函数求导</text>
-                <text x="576" y="108" font-size="8.5" fill="#9AA3B5" text-anchor="end">3月9日</text>
-                <text x="416" y="126" font-size="9.5" fill="#1B1F2A">设 x² + y² + z² = 4z 确定 z = z(x, y)，</text>
-                <text x="416" y="138" font-size="9.5" fill="#1B1F2A">求 ∂²z/∂x²。</text>
-                <rect x="416" y="144" width="34" height="11" rx="3" fill="#EEF3FF"/><text x="421" y="152" font-size="8" fill="#376EFF">隐函数</text>
-                <rect x="454" y="144" width="42" height="11" rx="3" fill="#EEF3FF"/><text x="459" y="152" font-size="8" fill="#376EFF">二阶偏导</text>
-
-                <rect x="406" y="172" width="180" height="70" rx="10" fill="#fff" stroke="#DCE3EF"/>
-                <rect x="416" y="180" width="56" height="14" rx="4" fill="#EEF3FF"/>
-                <text x="422" y="190" font-size="8.5" fill="#376EFF" font-weight="600">隐函数求导</text>
-                <text x="576" y="190" font-size="8.5" fill="#9AA3B5" text-anchor="end">3月6日</text>
-                <text x="416" y="208" font-size="9.5" fill="#1B1F2A">设 u = f(x, y, z) 且 z 由 xz − e^z = y 确定，</text>
-                <text x="416" y="220" font-size="9.5" fill="#1B1F2A">求 ∂u/∂x。</text>
-                <rect x="416" y="226" width="42" height="11" rx="3" fill="#EEF3FF"/><text x="421" y="234" font-size="8" fill="#376EFF">复合函数</text>
-                <rect x="462" y="226" width="34" height="11" rx="3" fill="#EAF7EE"/><text x="467" y="234" font-size="8" fill="#259D56">已掌握</text>
-
-                <rect x="406" y="254" width="80" height="22" rx="11" fill="#EEF3FF"/>
-                <text x="446" y="269" font-size="9.5" fill="#376EFF" text-anchor="middle" font-weight="600">还有 3 道 ⌄</text>
-              </g>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. 复习 -->
-    <div class="feat" id="f-review">
-      <div class="feat__text">
-        <span class="kicker">复习有方</span>
-        <h2>有计划地复习，把薄弱点一个个攻克</h2>
-        <p>智能错题复习支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p>
-        <div class="modes" role="tablist" aria-label="复习方式" id="modes">
-          <button role="tab" aria-selected="true" data-mode="today"><svg class="i"><use href="#i-cal-check"/></svg>今日复习</button>
-          <button role="tab" aria-selected="false" data-mode="folder"><svg class="i"><use href="#i-folder"/></svg>文件夹复习</button>
-          <button role="tab" aria-selected="false" data-mode="filter"><svg class="i"><use href="#i-filter"/></svg>筛选复习</button>
-          <button role="tab" aria-selected="false" data-mode="rematch"><svg class="i"><use href="#i-swords"/></svg>再战区</button>
-        </div>
-        <ul class="plist" style="margin-top:22px">
-          <li><span class="ico"><svg class="i"><use href="#i-refresh-check"/></svg></span><div><h3>智能错题复习</h3><p>每天一份待复习清单；也可以按文件夹、按筛选条件专项复习，做错的题自动进入再战区。</p></div></li>
-        </ul>
-      </div>
-      <div class="feat__shot">
-        <div class="stage">
-          <div class="phone" aria-label="错题复习示意">
-            <div class="screen">
-              <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
-              <div class="ah">错题复习<span class="ah__ic"><svg class="i"><use href="#i-cal"/></svg><svg class="i"><use href="#i-refresh-check"/></svg></span><span class="cap"><i class="cap__dots"></i><i class="cap__o"></i></span></div>
-              <div class="scr">
-                <div class="today">
-                  <div class="today__top"><span class="today__title"><svg class="i"><use href="#i-cal-check"/></svg>今日复习</span><span class="today__stat num">正确率 86%<br>预计用时 25:00</span></div>
-                  <div class="today__n num">12<small>题</small></div>
-                  <span class="today__pill">待复习</span>
-                  <div class="today__foot">
-                    <div class="steps"><i class="on"></i>待复习<i></i>复习中<i></i>已完成</div>
-                    <span class="today__go"><svg class="i"><use href="#i-play"/></svg>开始复习</span>
+                  <div class="mcard">
+                    <div class="mrow"><span class="mhead" style="margin:0">快速复习</span><span class="mmeta">按需选择复习方式<svg class="i i--xs"><use href="#i-chev"/></svg></span></div>
+                    <div class="qrow"><span class="qic" style="background:var(--blue-50);color:var(--blue)"><svg class="i i--s"><use href="#i-folder"/></svg></span><div><b>文件夹复习</b><small>按课本章节逐个击破</small></div><span class="go" style="background:var(--blue-50);color:var(--blue)"><svg class="i"><use href="#i-chev"/></svg></span></div>
+                    <div class="qrow"><span class="qic" style="background:var(--purple-bg);color:var(--purple)"><svg class="i i--s"><use href="#i-filter"/></svg></span><div><b>筛选复习</b><small>按标签、日期、知识点自定义</small></div><span class="go" style="background:var(--blue-50);color:var(--blue)"><svg class="i"><use href="#i-chev"/></svg></span></div>
+                    <div class="qrow"><span class="qic" style="background:var(--red-bg);color:var(--red)"><svg class="i i--s"><use href="#i-swords"/></svg></span><div><b>再战区<span class="badge">5</span></b><small>5 道待攻克</small></div><span class="go" style="background:var(--red-bg);color:var(--red)"><svg class="i"><use href="#i-chev"/></svg></span></div>
                   </div>
                 </div>
-                <div class="mcard">
-                  <div class="mrow"><span class="mhead" style="margin:0">快速复习</span><span class="mmeta">按需选择复习方式<svg class="i i--xs"><use href="#i-chev"/></svg></span></div>
-                  <div class="qrow"><span class="qic" style="background:var(--blue-50);color:var(--blue)"><svg class="i i--s"><use href="#i-folder"/></svg></span><div><b>文件夹复习</b><small>按课本章节逐个击破</small></div><span class="go" style="background:var(--blue-50);color:var(--blue)"><svg class="i"><use href="#i-chev"/></svg></span></div>
-                  <div class="qrow"><span class="qic" style="background:var(--purple-bg);color:var(--purple)"><svg class="i i--s"><use href="#i-filter"/></svg></span><div><b>筛选复习</b><small>按标签、日期、知识点自定义</small></div><span class="go" style="background:var(--blue-50);color:var(--blue)"><svg class="i"><use href="#i-chev"/></svg></span></div>
-                  <div class="qrow"><span class="qic" style="background:var(--red-bg);color:var(--red)"><svg class="i i--s"><use href="#i-swords"/></svg></span><div><b>再战区<span class="badge">5</span></b><small>5 道待攻克</small></div><span class="go" style="background:var(--red-bg);color:var(--red)"><svg class="i"><use href="#i-chev"/></svg></span></div>
-                </div>
+                <div class="tabbar"><span><svg class="i"><use href="#i-home"/></svg>首页</span><span><svg class="i"><use href="#i-explore"/></svg>探索</span><span class="on"><svg class="i"><use href="#i-review"/></svg>复习</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
               </div>
-              <div class="tabbar"><span><svg class="i"><use href="#i-home"/></svg>首页</span><span><svg class="i"><use href="#i-explore"/></svg>探索</span><span class="on"><svg class="i"><use href="#i-review"/></svg>复习</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
-            </div>
-          </div>
-          <div class="side side--low" id="modePanels">
-            <div class="fcard" data-panel="today">
-              <div class="sess__bar"><span>今日复习 · 第 <b class="num">3</b> / 12 题</span><span class="num">9 道剩余</span></div>
-              <div class="sess__prog"><i></i></div>
-              <div class="sess__q">设 V 是 n 阶方阵空间 M 中全体下三角矩阵组成的集合，则 V 是 M 的子空间，其维数是（　）。</div>
-              <div class="sess__ans"><svg class="i i--s"><use href="#i-check"/></svg><span>标准答案 <b>A</b>　½ n(n + 1)</span></div>
-              <div class="sess__btns"><span class="o"><svg class="i"><use href="#i-plus-c"/></svg>加入再战区</span><span class="g"><svg class="i"><use href="#i-check"/></svg>答对</span><span class="p">下一题</span></div>
-            </div>
-            <div class="fcard" data-panel="folder" hidden>
-              <div class="fcard__h"><span class="aiico" style="background:var(--blue-50);color:var(--blue);box-shadow:none"><svg class="i"><use href="#i-folder"/></svg></span><div><b>文件夹复习</b><small>高等数学 › 多元函数微分</small></div></div>
-              <ul class="rlist">
-                <li><span class="chip chip--blue">隐函数求导</span><span class="t">6 道 · 已掌握 4</span><em>复习 ›</em></li>
-                <li><span class="chip chip--blue">极值与最值</span><span class="t">5 道 · 已掌握 2</span><em>复习 ›</em></li>
-                <li><span class="chip chip--blue">方向导数与梯度</span><span class="t">3 道 · 已掌握 3</span><em>已完成</em></li>
-              </ul>
-              <div class="sess__btns"><span class="p">复习整个文件夹（14 题）</span></div>
-            </div>
-            <div class="fcard" data-panel="filter" hidden>
-              <div class="fcard__h"><span class="aiico" style="background:var(--purple-bg);color:var(--purple);box-shadow:none"><svg class="i"><use href="#i-filter"/></svg></span><div><b>筛选复习</b><small>组合条件，只复习最需要的</small></div></div>
-              <div class="frow2"><span class="fk">科目</span><span class="fv on">高等数学</span><span class="fv on">线性代数</span></div>
-              <div class="frow2"><span class="fk">标签</span><span class="fv on red">#易错</span><span class="fv">#未掌握</span></div>
-              <div class="frow2"><span class="fk">日期</span><span class="fv on">近 30 天</span><span class="fv">近 7 天</span></div>
-              <div class="frow2"><span class="fk">状态</span><span class="fv on">答错 ≥ 2 次</span></div>
-              <div class="scount">筛出 <b class="num">9</b> 道错题</div>
-              <div class="sess__btns"><span class="p">开始筛选复习</span></div>
-            </div>
-            <div class="fcard" data-panel="rematch" hidden>
-              <div class="fcard__h"><span class="aiico" style="background:var(--red-bg);color:var(--red);box-shadow:none"><svg class="i"><use href="#i-swords"/></svg></span><div><b>再战区</b><small>上次仍做错的题，再战一次</small></div></div>
-              <ul class="rlist">
-                <li><span class="chip chip--red">连错 2 次</span><span class="t">隐函数求导 · 偏导符号</span><em>第 3 次挑战</em></li>
-                <li><span class="chip chip--red">连错 2 次</span><span class="t">线性代数 · 子空间维数</span><em>第 3 次挑战</em></li>
-                <li><span class="chip chip--orange">连错 1 次</span><span class="t">政治 · 新发展理念</span><em>第 2 次挑战</em></li>
-              </ul>
-              <div class="sess__btns"><span class="p">开始再战（5 题）</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- 6. 导出 -->
-    <div class="feat feat--flip" id="f-export">
-      <div class="feat__text">
-        <span class="kicker">打印再练</span>
-        <h2>一键导出，还原真题质感</h2>
-        <p>一键导出错题支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p>
-        <ul class="plist">
-          <li><span class="ico"><svg class="i"><use href="#i-layers"/></svg></span><div><h3>自选导出内容</h3><p>题目、标准答案、我的答案、解析、图片……需要什么导什么。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-doc"/></svg></span><div><h3>版式与字号自定义</h3><p>经典留白、彩签笔记、方格手账多种样式；一题一页、题目与答案分离随你设置。</p></div></li>
-          <li><span class="ico"><svg class="i"><use href="#i-print"/></svg></span><div><h3>打印即用</h3><p>导出的错题卷像一份真题，打印出来直接再做一遍。</p></div></li>
-        </ul>
-      </div>
-      <div class="feat__shot">
-        <div class="stage stage--bleed">
-          <div class="phone" aria-label="导出设置示意">
-            <div class="screen">
-              <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
-              <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>导出错题<span class="ah__act ah__act--b">导出</span><span class="cap"><i class="cap__dots"></i><i class="cap__o"></i></span></div>
-              <div class="scr">
-                <div class="mcard" style="display:flex;gap:10px;align-items:center">
-                  <span class="docic"><svg class="i"><use href="#i-doc"/></svg></span>
-                  <div><b style="font-size:13.5px">多元函数微分</b><div class="muted" style="font-size:11px">可导出 14 道错题，已选择 14 道</div></div>
-                </div>
-                <div class="mrow" style="padding:2px 2px 6px"><span style="font-weight:700;font-size:13px">导出样式</span><span class="link">经典留白</span></div>
-                <div class="styles">
-                  <div class="style on"><div class="pv"><i class="h"></i><i></i><i class="w80"></i><i class="w60"></i><i></i><i class="w80"></i></div><b><span class="rad"></span>经典留白</b></div>
-                  <div class="style"><div class="pv"><i style="background:#376EFF;width:40%;height:4px"></i><div class="blk g"></div><div class="blk r"></div><div class="blk b"></div></div><b><span class="rad"></span>彩签笔记</b></div>
-                  <div class="style"><div class="pv pv--grid"><i class="w60"></i><i></i><i class="w80"></i><i class="w60"></i></div><b><span class="rad"></span>方格手账</b></div>
-                </div>
-                <div class="mcard">
-                  <div class="krow"><span>图片大小</span><span class="segi"><span>小</span><span class="on">中</span><span>大</span></span></div>
-                  <div class="krow"><span>字号</span><span class="segi"><span>小</span><span class="on">中</span><span>大</span></span></div>
-                  <div class="krow"><span>排序方式</span><span class="kv">时间 新→旧<svg class="i"><use href="#i-chev-d"/></svg></span></div>
-                  <div class="krow"><div><b>一题一页</b></div><span class="toggle"></span></div>
-                  <div class="krow"><div><b>题目与答案分离</b><small>先集中显示题目，再显示答案与解析</small></div><span class="toggle on"></span></div>
-                  <div class="krow"><span>导出内容</span><span class="muted num">6/6</span></div>
+              <!-- 5 导出 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>导出错题<span class="ah__act">导出</span></div>
+                <div class="scr">
+                  <div class="mcard" style="display:flex;gap:10px;align-items:center">
+                    <span class="docic"><svg class="i"><use href="#i-doc"/></svg></span>
+                    <div><b style="font-size:13.5px">多元函数微分</b><div class="muted" style="font-size:11px">可导出 14 道错题，已选择 14 道</div></div>
+                  </div>
+                  <div class="mrow" style="padding:2px 2px 6px"><span style="font-weight:700;font-size:13px">导出样式</span><span class="link">经典留白</span></div>
+                  <div class="styles">
+                    <div class="style on"><div class="pv"><i class="h"></i><i></i><i class="w80"></i><i class="w60"></i><i></i><i class="w80"></i></div><b><span class="rad"></span>经典留白</b></div>
+                    <div class="style"><div class="pv"><i style="background:#376EFF;width:40%;height:4px"></i><div class="blk g"></div><div class="blk r"></div><div class="blk b"></div></div><b><span class="rad"></span>彩签笔记</b></div>
+                    <div class="style"><div class="pv pv--grid"><i class="w60"></i><i></i><i class="w80"></i><i class="w60"></i></div><b><span class="rad"></span>方格手账</b></div>
+                  </div>
+                  <div class="mcard">
+                    <div class="krow"><span>图片大小</span><span class="segi"><span>小</span><span class="on">中</span><span>大</span></span></div>
+                    <div class="krow"><span>字号</span><span class="segi"><span>小</span><span class="on">中</span><span>大</span></span></div>
+                    <div class="krow"><span>排序方式</span><span class="kv">时间 新→旧<svg class="i"><use href="#i-chev-d"/></svg></span></div>
+                    <div class="krow"><div><b>一题一页</b></div><span class="toggle"></span></div>
+                    <div class="krow"><div><b>题目与答案分离</b><small>先集中显示题目，再显示答案与解析</small></div><span class="toggle on"></span></div>
+                    <div class="krow"><span>导出内容</span><span class="muted num">6/6</span></div>
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
-          <div class="side">
-            <div class="paper" aria-label="导出预览示意">
-              <div class="paper__h">多元函数微分 · 错题卷<small>共 14 题 · 2026 年 3 月 15 日 · 经典留白</small></div>
-              <div class="paper__q"><b>1.</b><div>设函数 z = z(x, y) 由方程 x − az = e<sup>y+az</sup> 确定，其中 a 是非零常数，则（　）。<div class="paper__line"></div></div></div>
-              <div class="paper__q"><b>2.</b><div>设 x² + y² + z² = 4z 确定 z = z(x, y)，求 ∂²z/∂x²。<div class="paper__line"></div><div class="paper__line"></div></div></div>
-              <div class="paper__q"><b>3.</b><div>求函数 f(x, y) = x³ − y³ + 3x² + 3y² − 9x 的极值。<div class="paper__line"></div></div></div>
-              <div class="paper__foot"><span>今知错题本 · 打印版</span><span>第 1 页 / 共 4 页</span></div>
-            </div>
-          </div>
+          <div class="story__fade"></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== GRID ===================== -->
-<section class="section section--ground" id="overview">
+<!-- ===================== SPEC SHEET ===================== -->
+<section class="sheet" id="overview">
   <div class="container">
     <div class="sec-head">
       <span class="kicker">功能一览</span>
-      <h2>十项功能亮点，一览无余</h2>
-      <p>底部标注了每项功能所属的环节，对应上面的使用流程。</p>
+      <h2>十项功能亮点</h2>
+      <p>每一项都标注了它所属的环节，和上面六个场景一一对应。</p>
     </div>
-    <div class="fgrid">
-      <article class="fitem t-blue"><span class="fic"><svg class="i"><use href="#i-tree"/></svg></span><h3>多层级错题整理</h3><p>支持文件夹、课本、知识点等多层级分类，错题归属更清晰，复习路径更有序。</p><small>整理</small></article>
-      <article class="fitem t-blue"><span class="fic"><svg class="i"><use href="#i-route"/></svg></span><h3>智能导航路径</h3><p>自动呈现错题所在位置，快速跳转目标内容，让每一道错题都有清晰来源。</p><small>整理</small></article>
-      <article class="fitem t-blue"><span class="fic"><svg class="i"><use href="#i-mag"/></svg></span><h3>多维搜索定位</h3><p>支持按科目、章节、日期、标签、关键词等多条件搜索，快速找到目标错题。</p><small>整理</small></article>
-      <article class="fitem t-purple"><span class="fic"><svg class="i"><use href="#i-cam-ai"/></svg></span><h3>AI 智能录题系统</h3><p>支持文字、图片等多模态输入，AI 自动识别题目内容，提取关键信息，减少手动录入成本。</p><small>录入</small></article>
-      <article class="fitem t-purple"><span class="fic"><svg class="i"><use href="#i-sparks"/></svg></span><h3>智能补全功能</h3><p>AI 可辅助补全题目、答案、知识点、标签等内容，让错题记录更完整。</p><small>录入</small></article>
-      <article class="fitem t-purple"><span class="fic"><svg class="i"><use href="#i-layers"/></svg></span><h3>多维度错题记录</h3><p>支持题目、标准答案、我的答案、图片、录音、标签、知识点等多维度记录，完整还原学习过程。</p><small>录入</small></article>
-      <article class="fitem t-orange"><span class="fic"><svg class="i"><use href="#i-chat-q"/></svg></span><h3>错题 AI 追问</h3><p>围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p><small>学透</small></article>
-      <article class="fitem t-orange"><span class="fic"><svg class="i"><use href="#i-mindmap"/></svg></span><h3>思维导图可视化</h3><p>自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p><small>学透</small></article>
-      <article class="fitem t-green"><span class="fic"><svg class="i"><use href="#i-refresh-check"/></svg></span><h3>智能错题复习</h3><p>支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p><small>复习</small></article>
-      <article class="fitem t-red"><span class="fic"><svg class="i"><use href="#i-export"/></svg></span><h3>一键导出错题</h3><p>支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p><small>导出</small></article>
+    <div class="sheet__grid">
+      <article class="sp t-blue"><span class="st">整理</span><svg class="i"><use href="#i-tree"/></svg><h3>多层级错题整理</h3><p>支持文件夹、课本、知识点等多层级分类，错题归属更清晰，复习路径更有序。</p></article>
+      <article class="sp t-blue"><span class="st">整理</span><svg class="i"><use href="#i-route"/></svg><h3>智能导航路径</h3><p>自动呈现错题所在位置，快速跳转目标内容，让每一道错题都有清晰来源。</p></article>
+      <article class="sp t-blue"><span class="st">整理</span><svg class="i"><use href="#i-mag"/></svg><h3>多维搜索定位</h3><p>支持按科目、章节、日期、标签、关键词等多条件搜索，快速找到目标错题。</p></article>
+      <article class="sp t-purple"><span class="st">录入</span><svg class="i"><use href="#i-cam-ai"/></svg><h3>AI 智能录题系统</h3><p>支持文字、图片等多模态输入，AI 自动识别题目内容，提取关键信息，减少手动录入成本。</p></article>
+      <article class="sp t-purple"><span class="st">录入</span><svg class="i"><use href="#i-sparks"/></svg><h3>智能补全功能</h3><p>AI 可辅助补全题目、答案、知识点、标签等内容，让错题记录更完整。</p></article>
+      <article class="sp t-purple"><span class="st">录入</span><svg class="i"><use href="#i-layers"/></svg><h3>多维度错题记录</h3><p>支持题目、标准答案、我的答案、图片、录音、标签、知识点等多维度记录，完整还原学习过程。</p></article>
+      <article class="sp t-orange"><span class="st">学透</span><svg class="i"><use href="#i-chat-q"/></svg><h3>错题 AI 追问</h3><p>围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p></article>
+      <article class="sp t-orange"><span class="st">学透</span><svg class="i"><use href="#i-mindmap"/></svg><h3>思维导图可视化</h3><p>自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p></article>
+      <article class="sp t-green"><span class="st">复习</span><svg class="i"><use href="#i-refresh-check"/></svg><h3>智能错题复习</h3><p>支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p></article>
+      <article class="sp t-red"><span class="st">导出</span><svg class="i"><use href="#i-export"/></svg><h3>一键导出错题</h3><p>支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p></article>
     </div>
   </div>
 </section>
 
-<!-- ===================== WHO ===================== -->
-<section class="section" id="who">
+<!-- ===================== PLATFORMS ===================== -->
+<section class="band" id="platforms">
   <div class="container">
-    <div class="sec-head">
-      <span class="kicker">适合谁</span>
-      <h2>从一次周测，到一整年备考</h2>
-      <p>错题本的价值在于坚持记录和反复回看。不同阶段的学习者，都能找到顺手的用法。</p>
-    </div>
-    <div class="who">
-      <article class="wcard">
-        <span class="wic"><svg class="i"><use href="#i-grad"/></svg></span>
-        <h3>考研 / 考证备考</h3>
-        <p>刷题量大、错题分散。按科目和章节沉淀下来，用筛选复习和再战区反复攻克高频错点。</p>
-        <div class="chips"><span class="chip">多层级整理</span><span class="chip">筛选复习</span><span class="chip">再战区</span></div>
-      </article>
-      <article class="wcard">
-        <span class="wic"><svg class="i"><use href="#i-book"/></svg></span>
-        <h3>大学期末复习</h3>
-        <p>课本章节就是文件夹层级。期末前按知识点集中复习，再一键导出打印成一份复习卷。</p>
-        <div class="chips"><span class="chip">课本层级</span><span class="chip">思维导图</span><span class="chip">一键导出</span></div>
-      </article>
-      <article class="wcard">
-        <span class="wic"><svg class="i"><use href="#i-pencil"/></svg></span>
-        <h3>中学日常错题</h3>
-        <p>作业和试卷拍照即录，AI 补全答案与知识点；每天照着今日复习清单巩固，家长辅导也更省心。</p>
-        <div class="chips"><span class="chip">AI 录题</span><span class="chip">今日复习</span><span class="chip">AI 追问</span></div>
-      </article>
+    <div class="band__inner">
+      <div class="band__copy">
+        <span class="kicker">多端可用</span>
+        <h2>手机拍题，电脑整理导出</h2>
+        <p>iPhone、iPad、Android、Windows、Mac 都有对应版本。在手机上随手录题，回到电脑上整理资料、批量管理和打印。</p>
+        <div class="plats">
+          <span><svg class="i"><use href="#i-apple"/></svg>iPhone / iPad</span>
+          <span><svg class="i"><use href="#i-android"/></svg>Android</span>
+          <span><svg class="i"><use href="#i-windows"/></svg>Windows 10 / 11</span>
+          <span><svg class="i"><use href="#i-laptop"/></svg>Mac（Apple Silicon）</span>
+        </div>
+        <a class="btn btn--primary" href="download.html">前往下载页<svg class="i i--s"><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="devices" aria-hidden="true">
+        <div class="dev dev-laptop"><div class="dscr"><div class="ds-side"><i></i><i></i><i></i><i></i><i></i></div><div class="ds-main"><div class="ds-card"><i class="b"></i><i></i><i style="width:85%"></i><i class="g"></i><i class="r"></i></div><div class="ds-card"><i class="b"></i><i></i><i style="width:70%"></i></div></div></div></div>
+        <div class="dev dev-tablet"><div class="dscr"><div class="ds-paper"><b>错题卷 · 多元函数微分</b>1. 设函数 z = z(x, y) 由方程确定…<i></i><i style="width:70%"></i>2. 求 ∂²z/∂x² …<i></i><i style="width:60%"></i>3. 求函数的极值…<i></i></div></div></div>
+        <div class="dev dev-phone"><div class="dscr"><div class="ds-today"><b>12</b><i></i></div><div class="ds-rows"><i></i><i></i><i></i></div></div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== CTA ===================== -->
-<section class="section" id="download" style="padding-top:24px">
+<section class="cta" id="download">
   <div class="container">
-    <div class="cta">
-      <div class="cta__copy">
-        <span class="kicker">开始使用</span>
-        <h2>今天的错题，今天就学透</h2>
-        <p>微信扫一扫，打开「今知错题本」小程序。不用安装，随手就能录下一道题。</p>
-        <div class="cta__steps"><span><i>1</i>微信扫码打开</span><span><i>2</i>拍照录入第一道错题</span><span><i>3</i>明天按清单复习</span></div>
-      </div>
-      <div class="cta__qr">
-        <!-- 二维码占位：上线前请替换为小程序码图片 -->
-        <div class="qr" aria-label="小程序码（示意）">
-          <svg viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"><path fill="#1B1F2A" d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM15 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM21 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM13 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM24 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM8 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM15 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM14 3h1v1h-1zM18 3h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM18 5h1v1h-1zM24 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM10 7h1v1h-1zM11 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM1 8h1v1h-1zM2 8h1v1h-1zM6 8h1v1h-1zM9 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM21 8h1v1h-1zM22 8h1v1h-1zM1 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM16 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM23 9h1v1h-1zM24 9h1v1h-1zM2 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM16 10h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM20 10h1v1h-1zM24 10h1v1h-1zM1 11h1v1h-1zM2 11h1v1h-1zM3 11h1v1h-1zM4 11h1v1h-1zM7 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM23 11h1v1h-1zM0 12h1v1h-1zM1 12h1v1h-1zM3 12h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM20 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM23 12h1v1h-1zM0 13h1v1h-1zM3 13h1v1h-1zM5 13h1v1h-1zM16 13h1v1h-1zM19 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM1 14h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM2 15h1v1h-1zM3 15h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM16 15h1v1h-1zM19 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM1 16h1v1h-1zM6 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM23 16h1v1h-1zM8 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1zM19 17h1v1h-1zM21 17h1v1h-1zM0 18h1v1h-1zM1 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM9 18h1v1h-1zM15 18h1v1h-1zM18 18h1v1h-1zM21 18h1v1h-1zM22 18h1v1h-1zM0 19h1v1h-1zM6 19h1v1h-1zM8 19h1v1h-1zM11 19h1v1h-1zM14 19h1v1h-1zM19 19h1v1h-1zM20 19h1v1h-1zM22 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM10 20h1v1h-1zM15 20h1v1h-1zM19 20h1v1h-1zM21 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM0 21h1v1h-1zM2 21h1v1h-1zM3 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM12 21h1v1h-1zM16 21h1v1h-1zM17 21h1v1h-1zM20 21h1v1h-1zM23 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM8 22h1v1h-1zM11 22h1v1h-1zM16 22h1v1h-1zM17 22h1v1h-1zM23 22h1v1h-1zM24 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM10 23h1v1h-1zM11 23h1v1h-1zM12 23h1v1h-1zM13 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM0 24h1v1h-1zM1 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM10 24h1v1h-1zM11 24h1v1h-1zM14 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM20 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1z"/></svg>
-          <span class="qr__logo"><span><svg class="i"><use href="#i-logo"/></svg></span></span>
-        </div>
-        <p><svg class="i"><use href="#i-scan"/></svg>微信扫码 · 打开小程序</p>
-      </div>
+    <img class="cta__icon" src="assets/icon.png" alt="今知错题本图标">
+    <h2>今天的错题，今天就学透</h2>
+    <p>拍下第一道错题，明天就有一份属于你的复习清单。</p>
+    <div class="cta__actions">
+      <a class="btn btn--white btn--lg" href="download.html"><svg class="i i--s"><use href="#i-down"/></svg>下载今知错题本</a>
+      <a class="btn btn--outline btn--lg" href="https://apps.apple.com/cn/app/id6747738523" target="_blank" rel="noopener"><svg class="i i--s"><use href="#i-apple"/></svg>App Store</a>
     </div>
+    <div class="cta__plats">iPhone / iPad · Android · Windows · Mac</div>
   </div>
 </section>
 </main>
@@ -1122,14 +988,14 @@ sup{font-size:.72em;line-height:0}
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__brand">
-      <a class="brand" href="#top"><span class="brand__mark"><svg class="i"><use href="#i-logo"/></svg></span><span>今知错题本</span></a>
+      <a class="brand" href="#top"><img class="brand__icon" src="assets/icon.png" alt=""><span>今知错题本</span></a>
       <p>今日之错，今日知。让每一道错题都有清晰来源，也有明确去处。</p>
     </div>
-    <div class="footer__col"><h4>产品</h4><a href="#features">功能亮点</a><a href="#flow">使用流程</a><a href="#who">适合谁</a><a href="#download">开始使用</a></div>
-    <div class="footer__col"><h4>支持</h4><a href="#">帮助中心</a><a href="#">意见反馈</a><a href="#">联系我们</a></div>
-    <div class="footer__col"><h4>法律</h4><a href="#">用户协议</a><a href="#">隐私政策</a></div>
+    <div class="footer__col"><h4>产品</h4><a href="#features">功能亮点</a><a href="#overview">功能一览</a><a href="#platforms">多端可用</a><a href="download.html">下载</a></div>
+    <div class="footer__col"><h4>支持</h4><a href="https://www.jinzhi.fun/correction/support" target="_blank" rel="noopener">技术支持</a><a href="https://www.jinzhi.fun/correction/import" target="_blank" rel="noopener">数据导入</a></div>
+    <div class="footer__col"><h4>法律</h4><a href="https://www.jinzhi.fun/correction/terms" target="_blank" rel="noopener">用户协议</a><a href="https://www.jinzhi.fun/correction/privacy" target="_blank" rel="noopener">隐私政策</a></div>
   </div>
-  <div class="container footer__bottom"><span>© <span id="year">2026</span> 今知错题本</span><span>微信小程序 · 让错题不再重复</span></div>
+  <div class="container footer__bottom"><span>© <span id="year">2026</span> 今知错题本</span><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">津ICP备2025029019号</a></div>
 </footer>
 
 <script>
@@ -1137,38 +1003,89 @@ sup{font-size:.72em;line-height:0}
   var nav=document.getElementById('nav');
   var onScroll=function(){nav.classList.toggle('scrolled',window.scrollY>8)};
   onScroll();window.addEventListener('scroll',onScroll,{passive:true});
-
   var toggle=document.getElementById('navToggle');
-  toggle.addEventListener('click',function(){
-    var open=nav.classList.toggle('open');
-    toggle.setAttribute('aria-expanded',open?'true':'false');
-    toggle.setAttribute('aria-label',open?'关闭菜单':'打开菜单');
-  });
-  nav.querySelectorAll('.nav__links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false')})});
-
-  /* 复习方式切换：点击后停止自动轮播 */
-  var tabs=Array.prototype.slice.call(document.querySelectorAll('#modes [role="tab"]'));
-  var panels=Array.prototype.slice.call(document.querySelectorAll('#modePanels [data-panel]'));
-  var idx=0,timer=null,touched=false;
-  function show(i){
-    idx=i;
-    tabs.forEach(function(t,j){t.setAttribute('aria-selected',i===j?'true':'false');t.tabIndex=i===j?0:-1});
-    panels.forEach(function(p,j){p.hidden=i!==j});
-  }
-  tabs.forEach(function(t,i){t.addEventListener('click',function(){touched=true;if(timer){clearInterval(timer);timer=null}show(i)})});
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var host=document.getElementById('f-review');
-  if(!reduce&&'IntersectionObserver' in window&&host){
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(e.isIntersecting&&!touched&&!timer){timer=setInterval(function(){show((idx+1)%tabs.length)},3600)}
-        else if(!e.isIntersecting&&timer){clearInterval(timer);timer=null}
-      });
-    },{threshold:.35});
-    io.observe(host);
-  }
-
+  toggle.addEventListener('click',function(){var open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',open?'true':'false')});
+  nav.querySelectorAll('.nav__links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open')})});
   document.getElementById('year').textContent=new Date().getFullYear();
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ================= 首屏动画：一道错题的一生 ================= */
+  var wrap=document.getElementById('sceneWrap'),scene=document.getElementById('scene');
+  var paper=document.getElementById('paper'),snap=document.getElementById('snap'),thumbMini=document.getElementById('thumbMini');
+  var typed=document.getElementById('typed');
+  var TEXT='设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数，则（　）。';
+  var DUR=[2200,4300,3000,3300,3300,3600];
+  var chapters=Array.prototype.slice.call(document.querySelectorAll('#chapters button[data-step]'));
+  var step=0,timer=null,typeTimer=null,running=false,inView=false,pageVisible=!document.hidden;
+
+  function clonePaper(into){var c=paper.cloneNode(true);c.removeAttribute('id');into.appendChild(c)}
+  clonePaper(snap);clonePaper(thumbMini);
+
+  function fit(){var s=wrap.clientWidth/1100;if(s<0.62)s=0.62;if(s>1)s=1;wrap.style.setProperty('--s',s)}
+  fit();window.addEventListener('resize',fit);
+
+  function setClasses(n){var c=['scene'];for(var k=0;k<=n;k++)c.push('s'+k);scene.className=c.join(' ')}
+  function setChapter(n){
+    chapters.forEach(function(b,i){
+      var on=i===n;b.setAttribute('aria-pressed',on?'true':'false');
+      b.classList.remove('on');
+      if(on){b.style.setProperty('--dur',DUR[n]+'ms');void b.offsetWidth;b.classList.add('on')}
+    });
+  }
+  function stopTyping(){if(typeTimer){clearTimeout(typeTimer);typeTimer=null}}
+  function typeText(delay){
+    stopTyping();typed.textContent='';var i=0;
+    function tick(){i++;typed.textContent=TEXT.slice(0,i);if(i<TEXT.length)typeTimer=setTimeout(tick,34)}
+    typeTimer=setTimeout(tick,delay);
+  }
+  function scrollToStep(n){
+    if(wrap.scrollWidth<=wrap.clientWidth+4)return;
+    var s=parseFloat(getComputedStyle(wrap).getPropertyValue('--s'))||1;
+    var anchors=[0,0,436,722,722,0];
+    var x=anchors[n]*s-(n===0||n===1||n===5?0:24);
+    var max=wrap.scrollWidth-wrap.clientWidth;
+    wrap.scrollTo({left:Math.max(0,Math.min(max,x)),behavior:'smooth'});
+  }
+  function go(n){
+    clearTimeout(timer);step=n;setClasses(n);setChapter(n);
+    if(n===0){stopTyping();typed.textContent=''}
+    else if(n===1){typeText(1750)}
+    else{stopTyping();typed.textContent=TEXT}
+    scrollToStep(n);
+    if(!running)return;
+    timer=setTimeout(function(){if(n>=5)restart();else go(n+1)},DUR[n]);
+  }
+  function restart(){
+    clearTimeout(timer);stopTyping();scene.classList.add('fade');
+    timer=setTimeout(function(){
+      scene.className='scene fade';typed.textContent='';
+      requestAnimationFrame(function(){requestAnimationFrame(function(){scene.classList.remove('fade');go(0)})});
+    },380);
+  }
+  function start(){if(running)return;running=true;go(step)}
+  function pause(){running=false;clearTimeout(timer);stopTyping()}
+  chapters.forEach(function(b){b.addEventListener('click',function(){running=true;go(+b.getAttribute('data-step'))})});
+  document.getElementById('replay').addEventListener('click',function(){running=true;restart()});
+  if(reduce){setClasses(5);typed.textContent=TEXT;setChapter(5)}
+  else if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){es.forEach(function(e){inView=e.isIntersecting;if(inView&&pageVisible)start();else pause()})},{threshold:.2}).observe(wrap);
+    document.addEventListener('visibilitychange',function(){pageVisible=!document.hidden;if(pageVisible&&inView)start();else pause()});
+  } else {start()}
+
+  /* ================= 六个场景：滚动切换手机屏幕 ================= */
+  var steps=Array.prototype.slice.call(document.querySelectorAll('#steps .step'));
+  var screens=Array.prototype.slice.call(document.querySelectorAll('#screens .ss'));
+  var tag=document.getElementById('storyTag');
+  var names=['录入','整理','追问','导图','复习','导出'];
+  function activate(i){
+    steps.forEach(function(s,j){s.classList.toggle('on',j===i)});
+    screens.forEach(function(s,j){s.classList.toggle('on',j===i)});
+    tag.innerHTML='<i>'+(i+1)+'</i>'+names[i];
+  }
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)activate(+e.target.getAttribute('data-i'))})},{rootMargin:'-42% 0px -42% 0px',threshold:0});
+    steps.forEach(function(s){so.observe(s)});
+  }
 })();
 </script>
 </body>
