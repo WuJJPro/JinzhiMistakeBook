@@ -5,45 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>今知错题本</title>
 <meta name="description" content="今知错题本：拍照即录，AI 补全答案、知识点与标签；多层级整理、错题追问、思维导图、按计划复习与一键导出。iPhone / iPad、Android、Windows、Mac 可用。">
+<meta name="theme-color" content="#0A1130">
 <link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/style.css">
 <style>
-/* ===================== hero ===================== */
-.hero{position:relative;padding:52px 0 28px;overflow:hidden}
-.hero__head{max-width:860px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;color:var(--ink-2);box-shadow:var(--shadow-sm)}
-.eyebrow b{display:inline-flex;align-items:center;gap:4px;background:var(--blue);color:#fff;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700}
-.hero h1{font-size:clamp(40px,6vw,74px);line-height:1.1;letter-spacing:-.03em;font-weight:800;margin:22px 0 20px;text-wrap:balance}
+/* ===================== hero (dark) ===================== */
+.hero{position:relative;padding:40px 0 56px;overflow:hidden;background:radial-gradient(900px 520px at 18% 10%,rgba(255,176,92,.20),transparent 60%),radial-gradient(760px 520px at 78% 30%,rgba(55,110,255,.36),transparent 62%),linear-gradient(180deg,#0B1234 0%,#0A1130 55%,#0D1740 100%);color:var(--on-dark);margin-top:-70px;padding-top:120px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:26px 26px;opacity:.5;-webkit-mask-image:radial-gradient(70% 60% at 50% 50%,#000,transparent);mask-image:radial-gradient(70% 60% at 50% 50%,#000,transparent);pointer-events:none}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:160px;background:linear-gradient(transparent,rgba(5,9,28,.5));pointer-events:none}
+.hero > .container{position:relative;z-index:1}
+.hero__head{max-width:900px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);font-size:13px;color:var(--on-dark-2);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.eyebrow b{display:inline-flex;align-items:center;gap:4px;background:#fff;color:var(--blue-ink);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700}
+.hero h1{font-size:clamp(42px,6.4vw,80px);line-height:1.12;margin:26px 0 22px;text-wrap:balance;text-shadow:0 10px 40px rgba(0,0,0,.35)}
 .circled{position:relative;display:inline-block;padding:0 .04em}
-.circled svg{position:absolute;left:-5%;top:-14%;width:112%;height:132%;overflow:visible;pointer-events:none}
-.circled path{fill:none;stroke:var(--pen);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:drawpath 1s cubic-bezier(.4,0,.2,1) .45s forwards;opacity:.92}
+.circled svg{position:absolute;left:-10%;top:-14%;width:117%;height:132%;overflow:visible;pointer-events:none}
+.circled path{fill:none;stroke:var(--pen-on-dark);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:drawpath 1s cubic-bezier(.4,0,.2,1) 1.1s forwards;opacity:.95;filter:drop-shadow(0 0 10px rgba(255,97,102,.35))}
 @keyframes drawpath{to{stroke-dashoffset:0}}
-.hero__lead{font-size:18px;color:var(--ink-2);max-width:640px;line-height:1.8}
-.hero__actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;align-items:center}
-.hero__plat{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);margin-left:8px}
-.hero__plat .i{width:16px;height:16px}
+.hero__lead{font-size:18px;color:var(--on-dark-2);max-width:720px;margin:0 auto;line-height:1.85}
+.hero__actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;align-items:center;justify-content:center}
+.hero__plat{display:flex;justify-content:center;align-items:center;gap:8px;font-size:13px;color:var(--on-dark-3);margin-top:18px;letter-spacing:.04em}
+.hero__plat .i{width:15px;height:15px}
+/* load-in sequence */
+.hero__head > *{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero__head > :nth-child(1){animation-delay:.05s}
+.hero__head > :nth-child(2){animation-delay:.15s}
+.hero__head > :nth-child(3){animation-delay:.3s}
+.hero__head > :nth-child(4){animation-delay:.42s}
+.hero__head > :nth-child(5){animation-delay:.5s}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.scene-wrap{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) .55s both}
+.chapters{animation:rise .9s cubic-bezier(.2,.7,.2,1) .9s both}
 
 /* scene */
-.scene-wrap{position:relative;margin-top:40px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scene-wrap{position:relative;margin-top:52px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;--px:0;--py:0}
 .scene-wrap::-webkit-scrollbar{display:none}
-.scene-size{position:relative;width:calc(1100px * var(--s,1));height:calc(480px * var(--s,1));margin:0 auto}
-.scene{position:absolute;left:0;top:0;width:1100px;height:480px;transform:scale(var(--s,1));transform-origin:0 0;transition:opacity .35s}
+.scene-size{position:relative;width:calc(1100px * var(--s,1));height:calc(500px * var(--s,1));margin:0 auto}
+.scene-3d{position:absolute;left:0;top:0;width:100%;height:100%;transform:perspective(1600px) rotateX(calc(var(--py) * -2.2deg)) rotateY(calc(var(--px) * 3deg));transform-style:preserve-3d;transition:transform .5s ease-out}
+.scene{position:absolute;left:0;top:0;width:1100px;height:500px;transform:scale(var(--s,1));transform-origin:0 0;transition:opacity .35s}
 .scene.fade{opacity:0}
 .scene.fade *{transition:none!important;animation:none!important}
-.sc-bg{position:absolute;inset:8px 0 0 0;border-radius:36px;background:var(--ground);overflow:hidden}
-.sc-bg::before{content:"";position:absolute;inset:0;background:radial-gradient(520px 330px at 52% 42%,rgba(55,110,255,.15),transparent 70%)}
-.sc-bg::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(27,31,42,.09) 1px,transparent 1px);background-size:22px 22px;opacity:.5;-webkit-mask-image:linear-gradient(#000 30%,transparent);mask-image:linear-gradient(#000 30%,transparent)}
+.layer{position:absolute;inset:0;pointer-events:none;transition:transform .5s ease-out}
+.layer-a{transform:translate3d(calc(var(--px) * -12px),calc(var(--py) * -8px),0)}
+.layer-b{transform:translate3d(calc(var(--px) * 6px),calc(var(--py) * 4px),0)}
+.layer-c{transform:translate3d(calc(var(--px) * 18px),calc(var(--py) * 10px),0)}
+.sc-lamp{position:absolute;left:-60px;top:-80px;width:620px;height:560px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,196,120,.28),rgba(255,196,120,.06) 55%,transparent 72%);pointer-events:none}
 /* paper */
-.sc-paper{position:absolute;left:40px;top:40px;width:328px;height:392px;background:var(--paper);border-radius:6px;box-shadow:0 30px 50px -24px rgba(27,31,42,.35),0 2px 6px rgba(27,31,42,.08);transform:rotate(-2.5deg);padding:20px 24px 20px;font-family:var(--serif);color:#22262F;transition:transform .6s,opacity .5s}
-.sc-paper::before{content:"";position:absolute;inset:0;border-radius:6px;background:linear-gradient(90deg,rgba(0,0,0,.035),transparent 12%);pointer-events:none}
-.pp-head{display:flex;justify-content:space-between;font-size:10.5px;color:#6B6F7B;letter-spacing:.06em;border-bottom:1px solid #D9D2C0;padding-bottom:8px;margin-bottom:14px;font-family:var(--font)}
-.pp-q{font-size:13.5px;line-height:1.7;letter-spacing:.01em}
-.pp-q b{font-weight:700;margin-right:4px}
-.pp-opts{margin-top:10px;font-size:13px;line-height:1.5;display:grid;gap:10px}
+.sc-paper{position:absolute;left:36px;top:34px;width:350px;height:420px;background:linear-gradient(180deg,#FDFAF2,#F7F1E2);border-radius:5px;box-shadow:0 40px 70px -28px rgba(0,0,0,.75),0 4px 14px rgba(0,0,0,.25),inset 0 0 0 1px rgba(255,255,255,.6);transform:rotate(-2.5deg);padding:22px 26px;font-family:var(--serif);color:#22262F;transition:transform .6s,opacity .5s}
+.sc-paper::before{content:"";position:absolute;inset:0;border-radius:5px;background:linear-gradient(90deg,rgba(0,0,0,.05),transparent 14%),linear-gradient(180deg,rgba(255,255,255,.35),transparent 30%);pointer-events:none}
+.pp-head{display:flex;justify-content:space-between;font-size:11px;color:#6B6F7B;letter-spacing:.06em;border-bottom:1px solid #D6CFBC;padding-bottom:8px;margin-bottom:16px;font-family:var(--font)}
+.pp-q{font-size:14.5px;line-height:1.72;letter-spacing:.01em}
+.pp-q b{font-weight:700;margin-right:5px}
+.pp-opts{margin-top:12px;font-size:14px;line-height:1.5;display:grid;gap:12px}
 .pp-opts li{position:relative}
-.pencil{position:absolute;left:-12px;top:-8px;width:150px;height:36px;overflow:visible;pointer-events:none}
+.pencil{position:absolute;left:-12px;top:-8px;width:158px;height:38px;overflow:visible;pointer-events:none}
 .pencil path{fill:none;stroke:var(--pencil);stroke-width:1.7;stroke-linecap:round;opacity:.8}
-.pp-mark{position:absolute;left:-6px;top:38px;width:60px;height:60px;overflow:visible;pointer-events:none}
+.pp-mark{position:absolute;left:-4px;top:44px;width:62px;height:62px;overflow:visible;pointer-events:none}
 .pp-mark path{fill:none;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
 .pp-mark .x1,.pp-mark .x2{stroke:var(--pen)}
 .pp-mark .ok{stroke:var(--green)}
@@ -51,33 +69,36 @@
 .scene.s0 .pp-mark .x2{animation:drawpath .3s ease-out .8s forwards}
 .scene.s5 .pp-mark .x1,.scene.s5 .pp-mark .x2{opacity:0;transition:opacity .45s .25s}
 .scene.s5 .pp-mark .ok{animation:drawpath .7s ease-out .65s forwards}
-.pp-stamp{position:absolute;right:22px;bottom:24px;padding:5px 12px;border:2.5px solid var(--green);color:var(--green);border-radius:8px;font-family:var(--font);font-weight:800;font-size:15px;letter-spacing:.14em;transform:rotate(-9deg) scale(1.5);opacity:0;transition:transform .35s cubic-bezier(.2,1.2,.4,1) 1.3s,opacity .25s 1.3s;background:rgba(255,255,255,.35)}
-.scene.s5 .pp-stamp{opacity:1;transform:rotate(-9deg) scale(1)}
+.pp-note{position:absolute;left:58px;top:302px;font-family:var(--hand);font-size:26px;line-height:1;color:var(--pen);transform:rotate(-7deg) scale(.7);opacity:0;transition:opacity .25s,transform .35s cubic-bezier(.2,1.2,.4,1);white-space:nowrap}
+.scene.s0 .pp-note{opacity:.95;transform:rotate(-7deg) scale(1);transition-delay:1.15s}
+.scene.s5 .pp-note{opacity:0;transform:rotate(-7deg) scale(.9);transition-delay:.2s}
+.pp-oknote{position:absolute;right:26px;bottom:26px;font-family:var(--hand);font-size:34px;line-height:1;color:var(--green);transform:rotate(-8deg) scale(1.4);opacity:0;transition:transform .4s cubic-bezier(.2,1.2,.4,1) 1.3s,opacity .25s 1.3s;white-space:nowrap}
+.scene.s5 .pp-oknote{opacity:1;transform:rotate(-8deg) scale(1)}
 /* viewfinder + flash */
-.sc-vf{position:absolute;left:22px;top:22px;width:364px;height:428px;opacity:0;transform:scale(1.08);transition:opacity .35s,transform .35s;pointer-events:none}
-.sc-vf i{position:absolute;width:36px;height:36px;border:3px solid var(--blue);border-radius:5px}
+.sc-vf{position:absolute;left:18px;top:16px;width:386px;height:456px;opacity:0;transform:scale(1.08);transition:opacity .35s,transform .35s;pointer-events:none}
+.sc-vf i{position:absolute;width:38px;height:38px;border:3px solid #fff;border-radius:5px;filter:drop-shadow(0 0 6px rgba(55,110,255,.8))}
 .sc-vf i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}
 .sc-vf i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
 .sc-vf i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}
 .sc-vf i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
 .scene.s1 .sc-vf{opacity:1;transform:scale(1)}
 .scene.s2 .sc-vf{opacity:0}
-.sc-flash{position:absolute;left:22px;top:22px;width:364px;height:428px;background:#fff;border-radius:8px;opacity:0;pointer-events:none}
+.sc-flash{position:absolute;left:18px;top:16px;width:386px;height:456px;background:#fff;border-radius:8px;opacity:0;pointer-events:none}
 .scene.s1 .sc-flash{animation:flash .5s ease-out .55s}
 @keyframes flash{0%{opacity:0}15%{opacity:.9}100%{opacity:0}}
 /* snapshot flying into the phone */
-.sc-snap{position:absolute;left:40px;top:40px;width:328px;height:392px;transform-origin:0 0;opacity:0;pointer-events:none;border-radius:6px;overflow:hidden;box-shadow:0 20px 40px -16px rgba(27,31,42,.45)}
+.sc-snap{position:absolute;left:36px;top:34px;width:350px;height:420px;transform-origin:0 0;opacity:0;pointer-events:none;border-radius:5px;overflow:hidden;box-shadow:0 20px 40px -16px rgba(0,0,0,.6)}
 .sc-snap .sc-paper,.ph-thumb .sc-paper{left:0;top:0;transform:none;box-shadow:none;transition:none}
 .scene.s1 .sc-snap{animation:fly .8s cubic-bezier(.5,0,.3,1) .75s both,vanish .01s 1.6s forwards}
-@keyframes fly{0%{opacity:1;transform:rotate(-2.5deg) scale(1)}18%{transform:rotate(-1deg) scale(1.03)}100%{opacity:1;transform:translate(424px,174px) scale(.2)}}
+@keyframes fly{0%{opacity:1;transform:rotate(-2.5deg) scale(1)}18%{transform:rotate(-1deg) scale(1.03)}100%{opacity:1;transform:translate(422px,172px) scale(.189)}}
 @keyframes vanish{to{opacity:0}}
 /* phone */
-.sc-phone{position:absolute;left:436px;top:22px;width:236px;height:426px;background:#0E1326;border-radius:38px;padding:8px;box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.08);transition:transform .6s,opacity .6s}
-.sc-phone::before{content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);width:62px;height:17px;border-radius:10px;background:#0E1326;z-index:3}
-.sc-screen{width:100%;height:100%;border-radius:30px;background:var(--ground);overflow:hidden;position:relative;font-size:10.5px;line-height:1.45;color:var(--ink)}
-.scene.s3 .sc-phone{transform:scale(.97);opacity:.85}
-.scene.s4 .sc-phone{opacity:.55}
-.ph-sb{height:34px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 18px 3px;font-size:9.5px;font-weight:600}
+.sc-phone{position:absolute;left:430px;top:14px;width:250px;height:452px;background:#0E1326;border-radius:40px;padding:8px;box-shadow:0 50px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.14),0 0 60px -10px rgba(55,110,255,.45);transition:transform .6s,opacity .6s}
+.sc-phone::before{content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);width:66px;height:18px;border-radius:10px;background:#0E1326;z-index:3}
+.sc-screen{width:100%;height:100%;border-radius:32px;background:var(--ground);overflow:hidden;position:relative;font-size:10.5px;line-height:1.45;color:var(--ink)}
+.scene.s3 .sc-phone{transform:scale(.97);opacity:.9}
+.scene.s4 .sc-phone{opacity:.62}
+.ph-sb{height:36px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 3px;font-size:9.5px;font-weight:600}
 .ph-sb .i{width:11px;height:11px;stroke-width:2.2}
 .ph-bar{height:30px;display:flex;align-items:center;gap:6px;padding:0 12px;font-size:13px;font-weight:700}
 .ph-bar .i--back{width:14px;height:14px;stroke-width:2.4}
@@ -91,10 +112,10 @@
 .ph-caret{display:none;width:1.5px;height:1em;background:var(--blue);vertical-align:-.15em;margin-left:1px;animation:blink 1s steps(2) infinite}
 .scene.s1 .ph-caret{display:inline-block}
 @keyframes blink{50%{opacity:0}}
-.ph-thumbrow{display:flex;align-items:flex-end;gap:8px;margin-top:8px;height:78px}
-.ph-thumb{position:relative;width:66px;height:78px;border-radius:7px;overflow:hidden;border:1px solid var(--line);background:#fff;opacity:0;flex:none}
+.ph-thumbrow{display:flex;align-items:flex-end;gap:8px;margin-top:8px;height:79px}
+.ph-thumb{position:relative;width:66px;height:79px;border-radius:7px;overflow:hidden;border:1px solid var(--line);background:#fff;opacity:0;flex:none}
 .scene.s1 .ph-thumb{opacity:1;transition:opacity .2s 1.55s}
-.ph-thumb .mini{position:absolute;left:0;top:0;width:328px;height:392px;transform:scale(.2);transform-origin:0 0}
+.ph-thumb .mini{position:absolute;left:0;top:0;width:350px;height:420px;transform:scale(.189);transform-origin:0 0}
 .ph-thumb .scan{position:absolute;left:0;right:0;top:0;height:2px;background:var(--blue);box-shadow:0 0 10px 2px rgba(55,110,255,.6);opacity:0}
 .scene.s1 .ph-thumb .scan{animation:scan 1.2s ease-in-out 1.6s both}
 @keyframes scan{0%{top:0;opacity:1}100%{top:calc(100% - 2px);opacity:1}}
@@ -119,17 +140,17 @@
 .scene.s2 .ph-field:nth-child(4){transition-delay:1.4s}
 .scene.s2 .ph-field:nth-child(5){transition-delay:1.8s}
 .scene.s2 .ph-field:nth-child(6){transition-delay:2.2s}
-.ph-cam{position:absolute;right:14px;bottom:16px;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 10px 18px -8px rgba(55,110,255,.8);z-index:2}
+.ph-cam{position:absolute;right:14px;bottom:16px;width:42px;height:42px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 10px 18px -8px rgba(55,110,255,.8);z-index:2}
 .ph-cam .i{width:18px;height:18px}
 .scene.s1 .ph-cam{animation:press .5s ease .2s}
 @keyframes press{50%{transform:scale(.86)}}
-/* step captions (right area, before the card appears) */
-.sc-cap{position:absolute;left:748px;top:130px;width:310px;transition:opacity .35s}
+/* captions */
+.sc-cap{position:absolute;left:748px;top:120px;width:320px;transition:opacity .35s}
 .sc-cap > div{position:absolute;left:0;top:0;width:100%;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
-.sc-cap small{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--blue)}
-.sc-cap small::before{content:"";width:18px;height:2px;background:var(--blue);border-radius:2px}
-.sc-cap b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.25;margin:10px 0 8px;color:var(--ink)}
-.sc-cap p{font-size:14px;line-height:1.7;color:var(--ink-2)}
+.sc-cap small{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--blue-on-dark)}
+.sc-cap small::before{content:"";width:18px;height:2px;background:var(--blue-on-dark);border-radius:2px}
+.sc-cap b{display:block;font-family:var(--display);font-weight:900;font-size:28px;line-height:1.3;margin:12px 0 10px;color:#fff}
+.sc-cap p{font-size:14.5px;line-height:1.75;color:var(--on-dark-2)}
 .sc-cap .cap0{opacity:1;transform:none}
 .scene.s1 .sc-cap .cap0{opacity:0;transform:translateY(-8px)}
 .scene.s1 .sc-cap .cap1{opacity:1;transform:none;transition-delay:.25s}
@@ -137,14 +158,13 @@
 .scene.s2 .sc-cap .cap2{opacity:1;transform:none;transition-delay:.25s}
 .scene.s3 .sc-cap{opacity:0;pointer-events:none}
 /* mini card flying into the tree */
-.sc-mini{position:absolute;left:452px;top:150px;width:206px;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 16px 30px -12px rgba(15,30,74,.35);border:1px solid var(--line);font-size:10.5px;opacity:0;transform-origin:0 0;pointer-events:none;z-index:4}
+.sc-mini{position:absolute;left:446px;top:150px;width:206px;background:#fff;border-radius:10px;padding:8px 10px;box-shadow:0 16px 30px -12px rgba(0,0,0,.5);border:1px solid var(--line);font-size:10.5px;opacity:0;transform-origin:0 0;pointer-events:none;z-index:4}
 .sc-mini .t{display:block;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
-.sc-mini .chips{margin-top:5px}
 .scene.s3 .sc-mini{animation:flycard .9s cubic-bezier(.5,0,.3,1) .5s both}
-@keyframes flycard{0%{opacity:0;transform:translate(0,0) scale(.9)}20%{opacity:1;transform:translate(0,-8px) scale(1)}100%{opacity:1;transform:translate(286px,86px) scale(.92)}}
+@keyframes flycard{0%{opacity:0;transform:translate(0,0) scale(.9)}20%{opacity:1;transform:translate(0,-8px) scale(1)}100%{opacity:1;transform:translate(324px,66px) scale(.92)}}
 .scene.s4 .sc-mini{animation:none;opacity:0}
 /* right card */
-.sc-right{position:absolute;left:722px;top:56px;width:346px;height:352px;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-lg);padding:16px;opacity:0;transform:translateX(26px);transition:opacity .5s,transform .5s;overflow:hidden}
+.sc-right{position:absolute;left:722px;top:52px;width:350px;height:360px;background:#fff;border-radius:18px;box-shadow:0 40px 70px -28px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.5);padding:16px;opacity:0;transform:translateX(26px);transition:opacity .5s,transform .5s;overflow:hidden;color:var(--ink)}
 .scene.s3 .sc-right{opacity:1;transform:none}
 .rc-head{font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:space-between;height:24px}
 .rc-head .n{font-weight:600;color:var(--muted);font-size:11px}
@@ -191,31 +211,38 @@
 .rv-done{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;color:var(--green);font-weight:700;opacity:0;transition:opacity .3s 1.6s}
 .rv-done .i{width:13px;height:13px;stroke-width:2.6}
 .scene.s5 .rv-done{opacity:1}
-/* chapters */
-.chapters{display:flex;align-items:center;gap:2px;margin:16px 0 0;flex-wrap:wrap}
+/* chapters (dark) */
+.chapters{display:flex;align-items:center;justify-content:center;gap:2px;margin:26px 0 0;flex-wrap:wrap}
 .chapters li{display:flex;align-items:center}
 .chapters li.replay-li::before{content:none}
-.chapters li + li::before{content:"›";color:var(--blue);opacity:.45;font-size:20px;line-height:1;margin:0 4px}
-.chapters button{position:relative;font-size:14px;font-weight:600;color:var(--muted);padding:8px 10px 10px;border-radius:10px;transition:color .2s,background .2s}
-.chapters button::after{content:"";position:absolute;left:10px;right:10px;bottom:5px;height:2px;border-radius:2px;background:var(--blue);transform:scaleX(0);transform-origin:left}
-.chapters button:hover{color:var(--ink);background:var(--ground)}
-.chapters button.on{color:var(--ink)}
+.chapters li + li::before{content:"›";color:var(--blue-on-dark);opacity:.5;font-size:20px;line-height:1;margin:0 4px}
+.chapters button{position:relative;font-size:14px;font-weight:600;color:var(--on-dark-3);padding:8px 12px 11px;border-radius:10px;transition:color .2s,background .2s}
+.chapters button::after{content:"";position:absolute;left:12px;right:12px;bottom:6px;height:2px;border-radius:2px;background:#fff;transform:scaleX(0);transform-origin:left}
+.chapters button:hover{color:#fff;background:rgba(255,255,255,.08)}
+.chapters button.on{color:#fff}
 .chapters button.on::after{animation:fillbar var(--dur,3s) linear forwards}
 @keyframes fillbar{to{transform:scaleX(1)}}
-.chapters .replay{margin-left:auto;font-size:13px;color:var(--blue);display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:8px 10px;border-radius:10px}
-.chapters .replay:hover{background:var(--blue-50)}
+.chapters .replay{margin-left:14px;font-size:13px;color:var(--blue-on-dark);display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.14)}
+.chapters .replay:hover{background:rgba(255,255,255,.08);color:#fff}
 .chapters .replay .i{width:15px;height:15px}
 
 /* ===================== story (sticky phone) ===================== */
-.story{padding:88px 0 24px}
+.story{padding:96px 0 24px;background:var(--surface)}
 .story__grid{display:grid;grid-template-columns:1fr 470px;gap:72px;align-items:start}
-.step{min-height:76vh;display:flex;flex-direction:column;justify-content:center;padding:28px 0;opacity:.45;transition:opacity .4s}
+.story__steps{position:relative;padding-left:46px}
+.story__steps::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--line),var(--line) 92%,transparent)}
+.step{position:relative;min-height:76vh;display:flex;flex-direction:column;justify-content:center;padding:28px 0;opacity:.45;transition:opacity .4s}
 .step.on{opacity:1}
 .step:first-child{min-height:58vh;justify-content:flex-start;padding-top:16px}
 .step:last-child{min-height:58vh;justify-content:flex-start}
+.step::before{content:"";position:absolute;left:-44px;top:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--line-2);transition:border-color .3s,background .3s,box-shadow .3s}
+.step:first-child::before{top:20px}
+.step:last-child::before{top:32px}
+.step.on::before{border-color:var(--blue);background:var(--blue);box-shadow:0 0 0 6px var(--blue-50)}
 .step .no{font-size:13px;letter-spacing:.14em;color:var(--blue);font-weight:800;display:inline-flex;align-items:center;gap:10px}
 .step .no::before{content:"";width:22px;height:2px;background:var(--blue)}
-.step h2{font-size:clamp(26px,3vw,36px);line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:14px 0 12px;text-wrap:balance}
+.step .note{display:inline-block;margin-left:14px;font-family:var(--hand);font-size:22px;color:var(--pen);transform:rotate(-4deg);opacity:.9;letter-spacing:.02em;vertical-align:-2px}
+.step h2{font-size:clamp(26px,3vw,38px);line-height:1.3;margin:14px 0 12px;text-wrap:balance}
 .step > p{color:var(--ink-2);font-size:16.5px;max-width:540px}
 .plist{display:grid;gap:18px;margin-top:24px;max-width:540px}
 .plist li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
@@ -226,12 +253,12 @@
 .dims{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;max-width:540px}
 .dims span{font-size:12.5px;padding:4px 10px;border-radius:999px;background:var(--ground);border:1px solid var(--line);color:var(--ink-2)}
 .story__phone{position:sticky;top:90px;height:calc(100vh - 110px);min-height:660px;max-height:820px}
-.story__stage{position:relative;width:100%;height:100%;border-radius:32px;background:var(--ground);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate}
-.story__stage::before{content:"";position:absolute;inset:0;background:radial-gradient(360px 320px at 50% 46%,rgba(55,110,255,.16),transparent 70%);z-index:0}
-.story__stage::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(27,31,42,.09) 1px,transparent 1px);background-size:20px 20px;opacity:.45;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);z-index:0}
-.story__tag{position:absolute;left:20px;top:18px;display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-size:12.5px;font-weight:700;box-shadow:var(--shadow-sm);z-index:3}
-.story__tag i{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800}
-.story__stage .phone{position:relative;z-index:1}
+.story__stage{position:relative;width:100%;height:100%;border-radius:32px;background:linear-gradient(180deg,#0D1740,#0A1130);display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.story__stage::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 380px at 50% 40%,rgba(55,110,255,.42),transparent 70%);z-index:0}
+.story__stage::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px);background-size:22px 22px;opacity:.6;-webkit-mask-image:radial-gradient(60% 60% at 50% 50%,#000,transparent);mask-image:radial-gradient(60% 60% at 50% 50%,#000,transparent);z-index:0}
+.story__tag{position:absolute;left:20px;top:18px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:5px 12px 5px 6px;font-size:12.5px;font-weight:700;color:#fff;z-index:3;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.story__tag i{width:22px;height:22px;border-radius:50%;background:#fff;color:var(--blue-ink);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800}
+.story__stage .phone{position:relative;z-index:1;box-shadow:0 60px 90px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.14),0 0 70px -10px rgba(55,110,255,.5)}
 
 /* phone mockup */
 .phone{--w:290px;width:var(--w);height:calc(var(--w) * 2.06);background:#0E1326;border-radius:46px;padding:10px;box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.08);position:relative;flex:none}
@@ -260,9 +287,6 @@
 .mq{font-size:12px;line-height:1.6;color:var(--ink)}
 .mq--clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .math{font-family:var(--math);font-style:italic;font-size:1.06em;letter-spacing:.01em;white-space:nowrap}
-.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;font-size:.86em;margin:0 1px}
-.frac i{font-style:italic;padding:0 2px 1px}
-.frac i:first-child{border-bottom:1px solid currentColor;margin-bottom:1px}
 .crumb{display:flex;align-items:center;gap:3px;font-size:12px;padding:2px 2px 8px;flex-wrap:wrap}
 .crumb a{color:var(--blue)}
 .crumb .i{width:11px;height:11px;color:var(--muted)}
@@ -376,103 +400,120 @@
 .pmap{width:100%;height:auto;display:block}
 .pmap text{font-family:var(--font)}
 
-/* ===================== spec sheet ===================== */
-.sheet{padding:72px 0 80px}
-.sheet__grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden}
-.sp{background:var(--surface);padding:24px 20px 22px;display:flex;flex-direction:column;gap:10px;min-height:206px;transition:background .2s}
-.sp:hover{background:var(--ground)}
-.sp .st{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--t);display:inline-flex;align-items:center;gap:6px}
+/* ===================== answer sheet ===================== */
+.sheet{padding:88px 0 96px;background:var(--paper);position:relative}
+.sheet::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(120,100,60,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(120,100,60,.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.sheet > .container{position:relative}
+.sheet .sec-head p{color:var(--ink-2)}
+.sheet__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.sheet__meta{font-family:var(--serif);font-size:13px;color:#6B6F7B;letter-spacing:.08em;display:flex;gap:18px;flex-wrap:wrap}
+.sheet__meta span{border-bottom:1px solid #C9C1AB;padding-bottom:2px}
+.sheet__grid{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;border-top:1.5px solid #2B2F3A;border-bottom:1.5px solid #2B2F3A;padding:8px 0}
+.sp{display:grid;grid-template-columns:54px 1fr;gap:14px;padding:22px 4px 22px 0;border-bottom:1px dashed #C9C1AB;align-items:start}
+.sp:nth-last-child(-n+2){border-bottom:0}
+.sp .num-sp{font-family:var(--display);font-weight:900;font-size:26px;line-height:1;color:var(--t);letter-spacing:-.02em;padding-top:2px}
+.sp .st{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--t);margin-bottom:6px}
 .sp .st::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--t)}
-.sp > .i{width:24px;height:24px;color:var(--t);margin-top:4px}
-.sp h3{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
-.sp p{font-size:13px;color:var(--muted);line-height:1.65}
+.sp h3{font-size:17px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.sp h3 .i{width:18px;height:18px;color:var(--t)}
+.sp p{font-size:14px;color:var(--ink-2);line-height:1.7}
 .t-blue{--t:var(--blue)}
 .t-purple{--t:var(--purple)}
 .t-orange{--t:var(--orange)}
 .t-green{--t:var(--green)}
 .t-red{--t:var(--red)}
 
-/* ===================== platforms band ===================== */
-.band{padding:0 0 96px}
-.band__inner{background:var(--ground);border:1px solid var(--line);border-radius:32px;padding:56px 56px 0;display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:end;overflow:hidden}
-.band__copy{padding-bottom:56px}
-.band__copy h2{font-size:clamp(26px,3vw,36px);line-height:1.25;letter-spacing:-.02em;font-weight:800;margin:14px 0 12px;text-wrap:balance}
-.band__copy p{color:var(--ink-2);font-size:16px;max-width:460px;margin-bottom:22px}
-.plats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
-.plats span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+/* ===================== platforms ===================== */
+.band{padding:96px 0 110px;overflow:hidden}
+.band__inner{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:center}
+.band__copy h2{font-size:clamp(28px,3.2vw,40px);line-height:1.3;margin:14px 0 12px;text-wrap:balance}
+.band__copy p{color:var(--ink-2);font-size:16.5px;max-width:460px;margin-bottom:22px}
+.plats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.plats span{display:inline-flex;align-items:center;gap:6px;background:var(--ground);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
 .plats .i{width:15px;height:15px}
-.devices{position:relative;height:300px}
-.dev{position:absolute;bottom:0;background:#1F2535;box-shadow:var(--shadow-lg)}
-.dev .dscr{position:absolute;inset:0;background:var(--ground);overflow:hidden;padding:10px}
-.dev-laptop{left:50%;transform:translateX(-50%);width:380px;height:238px;border-radius:14px 14px 0 0;padding:10px 10px 0;border-bottom:0}
-.dev-laptop .dscr{border-radius:6px 6px 0 0;display:grid;grid-template-columns:96px 1fr;gap:8px}
-.dev-laptop::after{content:"";position:absolute;left:-26px;right:-26px;bottom:-9px;height:10px;background:#2A3145;border-radius:0 0 8px 8px}
-.dev-tablet{right:8px;width:150px;height:200px;border-radius:16px;padding:7px;bottom:20px}
-.dev-tablet .dscr{border-radius:10px;background:#fff}
-.dev-phone{left:14px;width:96px;height:186px;border-radius:20px;padding:6px;bottom:20px}
-.dev-phone .dscr{border-radius:15px;padding:8px 7px}
-.ds-side{background:#fff;border-radius:6px;padding:8px 6px;display:grid;gap:6px;align-content:start}
-.ds-side i{display:block;height:6px;border-radius:3px;background:#DCE2EE}
-.ds-side i:nth-child(2){background:var(--blue-100);width:80%}
-.ds-side i:nth-child(3){width:70%}
-.ds-side i:nth-child(4){width:60%}
-.ds-main{display:grid;gap:8px;align-content:start}
-.ds-card{background:#fff;border-radius:8px;padding:8px;display:grid;gap:5px}
-.ds-card i{display:block;height:6px;border-radius:3px;background:#E1E6F0}
-.ds-card i.b{background:var(--blue-100);width:40%}
-.ds-card i.g{background:var(--green-bg);width:55%}
-.ds-card i.r{background:var(--red-bg);width:50%}
-.ds-paper{font-family:var(--serif);font-size:7px;color:#2B2F3A;line-height:1.6;padding:8px 8px}
-.ds-paper b{display:block;text-align:center;font-size:8px;border-bottom:1px solid #2B2F3A;margin-bottom:5px;padding-bottom:3px}
-.ds-paper i{display:block;height:4px;border-radius:2px;background:#C9CED9;margin:4px 0}
-.ds-today{background:linear-gradient(135deg,#3B8CFF,#1E5AE3);border-radius:10px;padding:8px;color:#fff;height:64px;display:flex;flex-direction:column;justify-content:space-between}
-.ds-today b{font-size:16px;font-weight:800;line-height:1}
-.ds-today i{display:block;width:60%;height:5px;border-radius:3px;background:rgba(255,255,255,.4)}
+.devices{position:relative;height:420px}
+.devices::before{content:"";position:absolute;left:0;right:0;bottom:22px;height:200px;border-radius:40px;background:radial-gradient(60% 80% at 50% 100%,rgba(55,110,255,.16),transparent 70%)}
+.dev{position:absolute;background:#0E1326;box-shadow:0 50px 80px -30px rgba(15,30,74,.55),0 0 0 1px rgba(255,255,255,.12)}
+.dev .dscr{position:absolute;inset:0;background:var(--ground);overflow:hidden}
+.dev-laptop{left:50%;bottom:30px;transform:translateX(-50%);width:470px;height:300px;border-radius:16px;padding:12px 12px 12px}
+.dev-laptop .dscr{border-radius:6px}
+.dev-laptop::after{content:"";position:absolute;left:-60px;right:-60px;bottom:-12px;height:14px;background:linear-gradient(#2A3145,#1B2133);border-radius:0 0 12px 12px;box-shadow:0 20px 30px -16px rgba(0,0,0,.6)}
+.dev-laptop::before{content:"";position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);width:120px;height:5px;background:#3A4360;border-radius:0 0 6px 6px;z-index:2}
+.dev-tablet{right:0;bottom:60px;width:190px;height:250px;border-radius:18px;padding:8px;transform:rotate(4deg)}
+.dev-tablet .dscr{border-radius:12px;background:#fff}
+.dev-phone{left:0;bottom:8px;width:118px;height:236px;border-radius:26px;padding:7px;transform:rotate(-5deg)}
+.dev-phone .dscr{border-radius:20px;padding:26px 8px 8px}
+.dev-phone::before{content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);width:34px;height:9px;border-radius:6px;background:#0E1326;z-index:2}
+.dk{display:grid;grid-template-columns:118px 1fr;height:100%}
+.dk-side{background:#fff;border-right:1px solid var(--line);padding:12px 10px;display:grid;gap:8px;align-content:start;font-size:9px;color:var(--ink-2)}
+.dk-side b{font-size:10px;color:var(--ink);display:block;margin-bottom:2px}
+.dk-side i{display:flex;align-items:center;gap:5px;font-style:normal;padding:3px 6px;border-radius:5px}
+.dk-side i.on{background:var(--blue-50);color:var(--blue);font-weight:700}
+.dk-side i::before{content:"";width:8px;height:6px;border-radius:1.5px;background:var(--blue)}
+.dk-main{padding:12px;display:grid;gap:8px;align-content:start}
+.dk-top{display:flex;align-items:center;justify-content:space-between;font-size:9.5px;color:var(--muted)}
+.dk-top b{color:var(--ink);font-size:11px}
+.dk-card{background:#fff;border-radius:8px;padding:8px 10px;font-size:8.5px;line-height:1.5;color:var(--ink);border:1px solid var(--line)}
+.dk-card .chips{margin-top:4px}
+.dk-card .chip{font-size:8px;padding:0 5px}
+.dk-card .q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:3px}
+.ds-paper{font-family:var(--serif);font-size:8px;color:#2B2F3A;line-height:1.6;padding:12px 12px}
+.ds-paper b{display:block;text-align:center;font-size:9.5px;border-bottom:1px solid #2B2F3A;margin-bottom:6px;padding-bottom:4px;font-family:var(--serif)}
+.ds-paper i{display:block;height:4px;border-radius:2px;background:#D9DDE6;margin:5px 0}
+.ds-today{background:linear-gradient(135deg,#3B8CFF,#1E5AE3);border-radius:12px;padding:10px;color:#fff;height:84px;display:flex;flex-direction:column;justify-content:space-between}
+.ds-today b{font-size:22px;font-weight:800;line-height:1}
+.ds-today small{font-size:8px;opacity:.9}
+.ds-today i{display:block;width:70%;height:6px;border-radius:3px;background:rgba(255,255,255,.4)}
 .ds-rows{display:grid;gap:6px;margin-top:8px}
-.ds-rows i{display:block;height:20px;border-radius:6px;background:#fff}
+.ds-rows i{display:block;height:24px;border-radius:7px;background:#fff}
 
 /* ===================== cta ===================== */
-.cta{position:relative;background:var(--navy);color:#fff;padding:92px 0 80px;text-align:center;overflow:hidden}
-.cta::before{content:"";position:absolute;left:50%;top:-180px;width:720px;height:720px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(55,110,255,.42),transparent 72%)}
+.cta{position:relative;background:radial-gradient(760px 420px at 50% 0%,rgba(55,110,255,.42),transparent 62%),linear-gradient(180deg,#0D1740,#0A1130);color:#fff;padding:100px 0 84px;text-align:center;overflow:hidden}
+.cta::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:26px 26px;opacity:.5;-webkit-mask-image:radial-gradient(60% 60% at 50% 40%,#000,transparent);mask-image:radial-gradient(60% 60% at 50% 40%,#000,transparent);pointer-events:none}
 .cta > .container{position:relative}
-.cta__icon{width:92px;height:92px;margin:0 auto 24px;filter:drop-shadow(0 22px 30px rgba(3,88,216,.55))}
-.cta h2{font-size:clamp(30px,4.2vw,50px);font-weight:800;letter-spacing:-.025em;line-height:1.14;text-wrap:balance}
-.cta p{margin:14px auto 30px;font-size:16.5px;color:rgba(255,255,255,.74);max-width:560px}
+.cta__icon{width:96px;height:96px;margin:0 auto 26px;filter:drop-shadow(0 24px 34px rgba(3,88,216,.6))}
+.cta h2{font-size:clamp(32px,4.4vw,54px);line-height:1.22;text-wrap:balance}
+.cta p{margin:16px auto 32px;font-size:17px;color:var(--on-dark-2);max-width:560px}
 .cta__actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.cta__plats{margin-top:24px;font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.06em}
+.cta__plats{margin-top:26px;font-size:13px;color:var(--on-dark-3);letter-spacing:.06em}
 .footer{border-top:1px solid rgba(255,255,255,.1);padding-top:56px}
 
 /* ===================== responsive ===================== */
 @media (max-width:1100px){
   .story__grid{grid-template-columns:1fr 400px;gap:48px}
-  .sheet__grid{grid-template-columns:repeat(3,1fr)}
-  .band__inner{grid-template-columns:1fr 1fr;padding:44px 40px 0}
+  .band__inner{grid-template-columns:1fr 1fr;gap:32px}
+  .dev-laptop{width:400px;height:256px}
+  .dev-tablet{width:160px;height:210px}
 }
 @media (max-width:960px){
-  .hero{padding-top:36px}
+  .hero{padding-top:104px}
   .story{padding-top:64px}
   .story__grid{grid-template-columns:1fr;gap:0}
+  .story__steps{padding-left:36px}
+  .step::before{left:-34px}
   .story__phone{position:sticky;top:70px;height:auto;min-height:0;max-height:none;z-index:5;padding:6px 0 0;background:var(--surface);order:-1}
   .story__stage{height:340px;border-radius:24px;align-items:flex-start;padding-top:24px}
   .story__stage .phone{--w:224px}
-  .story__fade{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,var(--ground));z-index:2}
+  .story__fade{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,#0A1130);z-index:2}
   .step{min-height:0;padding:40px 0 8px;opacity:1}
   .step:first-child{padding-top:30px}
-  .band__inner{grid-template-columns:1fr;padding:40px 28px 0}
-  .band__copy{padding-bottom:12px}
-  .devices{height:260px}
-  .dev-laptop{width:320px;height:200px}
+  .sheet__grid{grid-template-columns:1fr}
+  .sp:nth-last-child(-n+2){border-bottom:1px dashed #C9C1AB}
+  .sp:last-child{border-bottom:0}
+  .band__inner{grid-template-columns:1fr}
+  .devices{height:340px}
+  .dev-laptop{width:360px;height:230px}
   .dev-tablet{display:none}
-  .dev-phone{left:auto;right:8px}
+  .dev-phone{left:auto;right:0}
 }
 @media (max-width:640px){
-  .hero h1{font-size:38px}
+  .hero h1{font-size:40px}
   .hero__plat{display:none}
-  .sheet__grid{grid-template-columns:1fr 1fr}
-  .sp{min-height:0}
   .chapters .replay{margin-left:0}
-  .devices{height:220px}
-  .dev-laptop{width:260px;height:170px;left:40%}
+  .step .note{display:block;margin:6px 0 0}
+  .devices{height:260px}
+  .dev-laptop{width:280px;height:180px;left:44%}
+  .dev-phone{width:96px;height:190px}
 }
 </style>
 </head>
@@ -535,7 +576,7 @@
   </defs>
 </svg>
 
-<header class="nav" id="nav">
+<header class="nav nav--dark" id="nav">
   <div class="container nav__inner">
     <a class="brand" href="#top" aria-label="今知错题本 首页"><img class="brand__icon" src="assets/icon.png" alt=""><span>今知错题本</span></a>
     <nav class="nav__links" id="navLinks" aria-label="主导航">
@@ -556,21 +597,22 @@
 <section class="hero">
   <div class="container">
     <div class="hero__head">
-      <span class="eyebrow"><b><svg class="i i--xs"><use href="#i-spark"/></svg>AI</b>今日之错，今日知</span>
+      <span class="eyebrow"><b><svg class="i i--xs"><use href="#i-spark"/></svg>AI 错题本</b>今日之错，今日知</span>
       <h1>把每一道<span class="circled">错题<svg viewBox="0 0 200 100" aria-hidden="true"><path pathLength="1" d="M30 54C22 22 96 6 150 16c44 8 48 54 12 70-40 17-118 14-134-12-8-13 6-28 34-34"/></svg></span>，<br>都学透。</h1>
-      <p class="hero__lead">拍照即录、AI 补全，把它归到该在的位置，再按计划复习，直到红叉变成绿勾。今知错题本把「录题、整理、追问、复习、导出」串成一条路，让错题不再重复，进步看得见。</p>
+      <p class="hero__lead">拍照即录、AI 补全，把它归到该在的位置，再按计划复习，直到红叉变成绿勾。今知错题本把「录题、整理、追问、复习、导出」串成一条路，让错题不再重复。</p>
       <div class="hero__actions">
-        <a class="btn btn--primary btn--lg" href="download.html"><svg class="i i--s"><use href="#i-down"/></svg>下载今知错题本</a>
-        <a class="btn btn--ghost btn--lg" href="#features">看看六个场景</a>
-        <span class="hero__plat"><svg class="i"><use href="#i-phone"/></svg>iPhone / iPad · Android<svg class="i"><use href="#i-laptop"/></svg>Windows · Mac</span>
+        <a class="btn btn--white btn--lg" href="download.html"><svg class="i i--s"><use href="#i-down"/></svg>下载今知错题本</a>
+        <a class="btn btn--outline btn--lg" href="#features">看看六个场景</a>
       </div>
+      <div class="hero__plat"><svg class="i"><use href="#i-phone"/></svg>iPhone / iPad · Android<svg class="i"><use href="#i-laptop"/></svg>Windows · Mac</div>
     </div>
 
     <div class="scene-wrap" id="sceneWrap" role="img" aria-label="动画演示：一道被打叉的错题，被拍照录入、AI 补全、归入文件夹、加入今日复习，最后被标记为已学透">
       <div class="scene-size">
+       <div class="scene-3d">
         <div class="scene s0" id="scene">
-          <div class="sc-bg"></div>
-
+          <div class="sc-lamp"></div>
+          <div class="layer layer-a">
           <div class="sc-paper" id="paper">
             <div class="pp-head"><span>高等数学（下）· 周测三</span><span>第 2 页 / 共 4 页</span></div>
             <div class="pp-q"><b>7.</b>设函数 <span class="math">z = z(x, y)</span> 由方程 <span class="math">x − az = e<sup>y+az</sup></span> 确定，其中 <span class="math">a</span> 是非零常数，则（　）。</div>
@@ -581,12 +623,14 @@
               <li>D. <span class="math">∂z/∂x + ∂z/∂y = −1/a</span></li>
             </ol>
             <svg class="pp-mark" viewBox="0 0 60 60" aria-hidden="true"><path class="x1" pathLength="1" d="M13 12L48 48"/><path class="x2" pathLength="1" d="M48 12L13 48"/><path class="ok" pathLength="1" d="M10 32l14 14L52 14"/></svg>
-            <div class="pp-stamp">已学透</div>
+            <div class="pp-note hand">符号写反了！</div>
+            <div class="pp-oknote hand">已学透 ✓</div>
           </div>
-
           <div class="sc-vf"><i></i><i></i><i></i><i></i></div>
           <div class="sc-flash"></div>
+          </div>
 
+          <div class="layer layer-b">
           <div class="sc-phone">
             <div class="sc-screen">
               <div class="ph-sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg></span></div>
@@ -608,12 +652,15 @@
             </div>
           </div>
 
+          <div class="sc-snap" id="snap"></div>
+          </div>
+
+          <div class="layer layer-c">
           <div class="sc-cap" aria-hidden="true">
             <div class="cap0"><small>第 1 步 · 做错了</small><b>周测卷上，第 7 题被打了叉。</b><p>选了 B，正确答案是 A。以前，这道题到这里就结束了。</p></div>
             <div class="cap1"><small>第 2 步 · 拍照录入</small><b>对着题目拍一张。</b><p>AI 识别出题干和四个选项，不用再手动抄题。</p></div>
             <div class="cap2"><small>第 3 步 · AI 补全</small><b>答案、知识点、标签，一并补齐。</b><p>还会写一段解析，指出这次错在哪一步。</p></div>
           </div>
-          <div class="sc-snap" id="snap"></div>
           <div class="sc-mini"><span class="chip chip--blue chip--sm">单选题</span><span class="t">设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数…</span></div>
 
           <div class="sc-right">
@@ -639,7 +686,9 @@
               <div class="rv-done"><svg class="i"><use href="#i-check-c"/></svg>连续答对 3 次，已标记为掌握</div>
             </div>
           </div>
+          </div>
         </div>
+       </div>
       </div>
     </div>
     <ol class="chapters" id="chapters" aria-label="动画章节">
@@ -666,7 +715,7 @@
       <div class="story__steps" id="steps">
 
         <article class="step on" data-i="0">
-          <span class="no">01 · 录入</span>
+          <span class="no">01 · 录入</span><span class="note hand">拍一张就够了</span>
           <h2>拍一张照片，AI 帮你把题录全</h2>
           <p>文字、图片都能作为输入。AI 识别题目内容、提取关键信息，再把答案、知识点、标签一并补全。</p>
           <ul class="plist">
@@ -678,7 +727,7 @@
         </article>
 
         <article class="step" data-i="1">
-          <span class="no">02 · 整理</span>
+          <span class="no">02 · 整理</span><span class="note hand">各归各位</span>
           <h2>错题归属清晰，复习路径有序</h2>
           <p>从文件夹到课本再到知识点，每一道错题都有自己的位置：找得到，也回得去。</p>
           <ul class="plist">
@@ -689,7 +738,7 @@
         </article>
 
         <article class="step" data-i="2">
-          <span class="no">03 · 追问</span>
+          <span class="no">03 · 追问</span><span class="note hand">问到懂为止</span>
           <h2>不止记下来，更要问明白</h2>
           <p>错题 AI 追问围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p>
           <ul class="plist">
@@ -700,7 +749,7 @@
         </article>
 
         <article class="step" data-i="3">
-          <span class="no">04 · 导图</span>
+          <span class="no">04 · 导图</span><span class="note hand">一张图看全</span>
           <h2>把零散的错题，连成一张知识图</h2>
           <p>思维导图可视化自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p>
           <ul class="plist">
@@ -711,7 +760,7 @@
         </article>
 
         <article class="step" data-i="4">
-          <span class="no">05 · 复习</span>
+          <span class="no">05 · 复习</span><span class="note hand">今天的今天做</span>
           <h2>有计划地复习，把薄弱点一个个攻克</h2>
           <p>智能错题复习支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p>
           <ul class="plist">
@@ -722,7 +771,7 @@
         </article>
 
         <article class="step" data-i="5">
-          <span class="no">06 · 导出</span>
+          <span class="no">06 · 导出</span><span class="note hand">打印再做一遍</span>
           <h2>一键导出，还原真题质感</h2>
           <p>一键导出错题支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p>
           <ul class="plist">
@@ -922,50 +971,55 @@
   </div>
 </section>
 
-<!-- ===================== SPEC SHEET ===================== -->
+<!-- ===================== ANSWER SHEET ===================== -->
 <section class="sheet" id="overview">
   <div class="container">
-    <div class="sec-head">
-      <span class="kicker">功能一览</span>
-      <h2>十项功能亮点</h2>
-      <p>每一项都标注了它所属的环节，和上面六个场景一一对应。</p>
+    <div class="sheet__head reveal">
+      <div class="sec-head" style="margin:0"><span class="kicker">功能一览</span><h2>十项功能亮点</h2><p>像一张答题卡：每一项都标注了所属环节，和上面六个场景一一对应。</p></div>
+      <div class="sheet__meta"><span>科目：错题本</span><span>题数：10</span><span>满分：学透</span></div>
     </div>
     <div class="sheet__grid">
-      <article class="sp t-blue"><span class="st">整理</span><svg class="i"><use href="#i-tree"/></svg><h3>多层级错题整理</h3><p>支持文件夹、课本、知识点等多层级分类，错题归属更清晰，复习路径更有序。</p></article>
-      <article class="sp t-blue"><span class="st">整理</span><svg class="i"><use href="#i-route"/></svg><h3>智能导航路径</h3><p>自动呈现错题所在位置，快速跳转目标内容，让每一道错题都有清晰来源。</p></article>
-      <article class="sp t-blue"><span class="st">整理</span><svg class="i"><use href="#i-mag"/></svg><h3>多维搜索定位</h3><p>支持按科目、章节、日期、标签、关键词等多条件搜索，快速找到目标错题。</p></article>
-      <article class="sp t-purple"><span class="st">录入</span><svg class="i"><use href="#i-cam-ai"/></svg><h3>AI 智能录题系统</h3><p>支持文字、图片等多模态输入，AI 自动识别题目内容，提取关键信息，减少手动录入成本。</p></article>
-      <article class="sp t-purple"><span class="st">录入</span><svg class="i"><use href="#i-sparks"/></svg><h3>智能补全功能</h3><p>AI 可辅助补全题目、答案、知识点、标签等内容，让错题记录更完整。</p></article>
-      <article class="sp t-purple"><span class="st">录入</span><svg class="i"><use href="#i-layers"/></svg><h3>多维度错题记录</h3><p>支持题目、标准答案、我的答案、图片、录音、标签、知识点等多维度记录，完整还原学习过程。</p></article>
-      <article class="sp t-orange"><span class="st">学透</span><svg class="i"><use href="#i-chat-q"/></svg><h3>错题 AI 追问</h3><p>围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p></article>
-      <article class="sp t-orange"><span class="st">学透</span><svg class="i"><use href="#i-mindmap"/></svg><h3>思维导图可视化</h3><p>自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p></article>
-      <article class="sp t-green"><span class="st">复习</span><svg class="i"><use href="#i-refresh-check"/></svg><h3>智能错题复习</h3><p>支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p></article>
-      <article class="sp t-red"><span class="st">导出</span><svg class="i"><use href="#i-export"/></svg><h3>一键导出错题</h3><p>支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p></article>
+      <article class="sp t-blue reveal" data-d="0"><span class="num-sp num">01</span><div><span class="st">整理</span><h3><svg class="i"><use href="#i-tree"/></svg>多层级错题整理</h3><p>支持文件夹、课本、知识点等多层级分类，错题归属更清晰，复习路径更有序。</p></div></article>
+      <article class="sp t-blue reveal" data-d="0"><span class="num-sp num">02</span><div><span class="st">整理</span><h3><svg class="i"><use href="#i-route"/></svg>智能导航路径</h3><p>自动呈现错题所在位置，快速跳转目标内容，让每一道错题都有清晰来源。</p></div></article>
+      <article class="sp t-blue reveal" data-d="1"><span class="num-sp num">03</span><div><span class="st">整理</span><h3><svg class="i"><use href="#i-mag"/></svg>多维搜索定位</h3><p>支持按科目、章节、日期、标签、关键词等多条件搜索，快速找到目标错题。</p></div></article>
+      <article class="sp t-purple reveal" data-d="1"><span class="num-sp num">04</span><div><span class="st">录入</span><h3><svg class="i"><use href="#i-cam-ai"/></svg>AI 智能录题系统</h3><p>支持文字、图片等多模态输入，AI 自动识别题目内容，提取关键信息，减少手动录入成本。</p></div></article>
+      <article class="sp t-purple reveal" data-d="2"><span class="num-sp num">05</span><div><span class="st">录入</span><h3><svg class="i"><use href="#i-sparks"/></svg>智能补全功能</h3><p>AI 可辅助补全题目、答案、知识点、标签等内容，让错题记录更完整。</p></div></article>
+      <article class="sp t-purple reveal" data-d="2"><span class="num-sp num">06</span><div><span class="st">录入</span><h3><svg class="i"><use href="#i-layers"/></svg>多维度错题记录</h3><p>支持题目、标准答案、我的答案、图片、录音、标签、知识点等多维度记录，完整还原学习过程。</p></div></article>
+      <article class="sp t-orange reveal" data-d="3"><span class="num-sp num">07</span><div><span class="st">学透</span><h3><svg class="i"><use href="#i-chat-q"/></svg>错题 AI 追问</h3><p>围绕当前错题继续提问，深挖解题思路、易错点与变式训练，真正把题目学透。</p></div></article>
+      <article class="sp t-orange reveal" data-d="3"><span class="num-sp num">08</span><div><span class="st">学透</span><h3><svg class="i"><use href="#i-mindmap"/></svg>思维导图可视化</h3><p>自动生成错题结构关系，让知识脉络清晰展开，复习不再零散。</p></div></article>
+      <article class="sp t-green reveal" data-d="0"><span class="num-sp num">09</span><div><span class="st">复习</span><h3><svg class="i"><use href="#i-refresh-check"/></svg>智能错题复习</h3><p>支持今日复习、文件夹复习、筛选复习、再战区等多种方式，帮助你有计划地巩固薄弱点。</p></div></article>
+      <article class="sp t-red reveal" data-d="0"><span class="num-sp num">10</span><div><span class="st">导出</span><h3><svg class="i"><use href="#i-export"/></svg>一键导出错题</h3><p>支持多种自定义格式，可自由选择导出内容、版式与字号，还原真题质感，打印复习更方便。</p></div></article>
     </div>
   </div>
 </section>
 
 <!-- ===================== PLATFORMS ===================== -->
 <section class="band" id="platforms">
-  <div class="container">
-    <div class="band__inner">
-      <div class="band__copy">
-        <span class="kicker">多端可用</span>
-        <h2>手机拍题，电脑整理导出</h2>
-        <p>iPhone、iPad、Android、Windows、Mac 都有对应版本。在手机上随手录题，回到电脑上整理资料、批量管理和打印。</p>
-        <div class="plats">
-          <span><svg class="i"><use href="#i-apple"/></svg>iPhone / iPad</span>
-          <span><svg class="i"><use href="#i-android"/></svg>Android</span>
-          <span><svg class="i"><use href="#i-windows"/></svg>Windows 10 / 11</span>
-          <span><svg class="i"><use href="#i-laptop"/></svg>Mac（Apple Silicon）</span>
+  <div class="container band__inner">
+    <div class="band__copy reveal">
+      <span class="kicker">多端可用</span>
+      <h2>手机拍题，电脑整理导出</h2>
+      <p>iPhone、iPad、Android、Windows、Mac 都有对应版本。在手机上随手录题，回到电脑上整理资料、批量管理和打印。</p>
+      <div class="plats">
+        <span><svg class="i"><use href="#i-apple"/></svg>iPhone / iPad</span>
+        <span><svg class="i"><use href="#i-android"/></svg>Android</span>
+        <span><svg class="i"><use href="#i-windows"/></svg>Windows 10 / 11</span>
+        <span><svg class="i"><use href="#i-laptop"/></svg>Mac（Apple Silicon）</span>
+      </div>
+      <a class="btn btn--primary" href="download.html">前往下载页<svg class="i i--s"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="devices reveal" data-d="1" aria-hidden="true">
+      <div class="dev dev-laptop"><div class="dscr"><div class="dk">
+        <div class="dk-side"><b>错题本</b><i>高等数学</i><i class="on">多元函数微分</i><i>线性代数</i><i>概率论</i><i>政治</i><i>英语</i></div>
+        <div class="dk-main">
+          <div class="dk-top"><b>多元函数微分</b><span>14 道错题 · 时间 新→旧</span></div>
+          <div class="dk-card"><span class="chip chip--blue">隐函数求导</span><div class="q">设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数，则（ ）。</div><div class="chips"><span class="chip chip--red">#易错</span><span class="chip chip--purple">单选题</span></div></div>
+          <div class="dk-card"><span class="chip chip--blue">隐函数求导</span><div class="q">设 x² + y² + z² = 4z 确定 z = z(x, y)，求 ∂²z/∂x²。</div><div class="chips"><span class="chip chip--green">已掌握</span></div></div>
+          <div class="dk-card"><span class="chip chip--blue">极值与最值</span><div class="q">求函数 f(x, y) = x³ − y³ + 3x² + 3y² − 9x 的极值。</div><div class="chips"><span class="chip chip--orange">待复习</span></div></div>
         </div>
-        <a class="btn btn--primary" href="download.html">前往下载页<svg class="i i--s"><use href="#i-arrow"/></svg></a>
-      </div>
-      <div class="devices" aria-hidden="true">
-        <div class="dev dev-laptop"><div class="dscr"><div class="ds-side"><i></i><i></i><i></i><i></i><i></i></div><div class="ds-main"><div class="ds-card"><i class="b"></i><i></i><i style="width:85%"></i><i class="g"></i><i class="r"></i></div><div class="ds-card"><i class="b"></i><i></i><i style="width:70%"></i></div></div></div></div>
-        <div class="dev dev-tablet"><div class="dscr"><div class="ds-paper"><b>错题卷 · 多元函数微分</b>1. 设函数 z = z(x, y) 由方程确定…<i></i><i style="width:70%"></i>2. 求 ∂²z/∂x² …<i></i><i style="width:60%"></i>3. 求函数的极值…<i></i></div></div></div>
-        <div class="dev dev-phone"><div class="dscr"><div class="ds-today"><b>12</b><i></i></div><div class="ds-rows"><i></i><i></i><i></i></div></div></div>
-      </div>
+      </div></div></div>
+      <div class="dev dev-tablet"><div class="dscr"><div class="ds-paper"><b>多元函数微分 · 错题卷</b>1. 设函数 z = z(x, y) 由方程 x − az = e^(y+az) 确定，其中 a 是非零常数，则（ ）。<i></i><i style="width:70%"></i>2. 设 x² + y² + z² = 4z 确定 z = z(x, y)，求 ∂²z/∂x²。<i></i><i style="width:60%"></i>3. 求函数的极值。<i></i></div></div></div>
+      <div class="dev dev-phone"><div class="dscr"><div class="ds-today"><small>今日复习</small><b>12</b><i></i></div><div class="ds-rows"><i></i><i></i><i></i></div></div></div>
     </div>
   </div>
 </section>
@@ -973,10 +1027,10 @@
 <!-- ===================== CTA ===================== -->
 <section class="cta" id="download">
   <div class="container">
-    <img class="cta__icon" src="assets/icon.png" alt="今知错题本图标">
-    <h2>今天的错题，今天就学透</h2>
-    <p>拍下第一道错题，明天就有一份属于你的复习清单。</p>
-    <div class="cta__actions">
+    <img class="cta__icon reveal" src="assets/icon.png" alt="今知错题本图标">
+    <h2 class="reveal" data-d="1">今天的错题，今天就学透</h2>
+    <p class="reveal" data-d="2">拍下第一道错题，明天就有一份属于你的复习清单。</p>
+    <div class="cta__actions reveal" data-d="3">
       <a class="btn btn--white btn--lg" href="download.html"><svg class="i i--s"><use href="#i-down"/></svg>下载今知错题本</a>
       <a class="btn btn--outline btn--lg" href="https://apps.apple.com/cn/app/id6747738523" target="_blank" rel="noopener"><svg class="i i--s"><use href="#i-apple"/></svg>App Store</a>
     </div>
@@ -1008,6 +1062,33 @@
   nav.querySelectorAll('.nav__links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open')})});
   document.getElementById('year').textContent=new Date().getFullYear();
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasIO='IntersectionObserver' in window;
+  if(!hasIO)document.documentElement.classList.add('no-io');
+
+  /* 导航：深色首屏上透明，滚过首屏后变白 */
+  var hero=document.querySelector('.hero');
+  function navTone(){var dark=window.scrollY<hero.offsetHeight-70;nav.classList.toggle('nav--dark',dark&&!nav.classList.contains('open'))}
+  navTone();window.addEventListener('scroll',navTone,{passive:true});window.addEventListener('resize',navTone);
+  toggle.addEventListener('click',navTone);
+
+  /* 首屏 3D 视差 */
+  var sceneWrapEl=document.getElementById('sceneWrap');
+  if(!reduce&&window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    hero.addEventListener('mousemove',function(e){
+      var r=hero.getBoundingClientRect();
+      var px=((e.clientX-r.left)/r.width-.5)*2,py=((e.clientY-r.top)/r.height-.5)*2;
+      sceneWrapEl.style.setProperty('--px',px.toFixed(3));sceneWrapEl.style.setProperty('--py',py.toFixed(3));
+    });
+    hero.addEventListener('mouseleave',function(){sceneWrapEl.style.setProperty('--px',0);sceneWrapEl.style.setProperty('--py',0)});
+  }
+
+  /* 滚动进入视口时显现 */
+  var reveals=Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if(reduce||!hasIO){reveals.forEach(function(el){el.classList.add('in')})}
+  else{
+    var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+    reveals.forEach(function(el){ro.observe(el)});
+  }
 
   /* ================= 首屏动画：一道错题的一生 ================= */
   var wrap=document.getElementById('sceneWrap'),scene=document.getElementById('scene');
@@ -1059,7 +1140,7 @@
     clearTimeout(timer);stopTyping();scene.classList.add('fade');
     timer=setTimeout(function(){
       scene.className='scene fade';typed.textContent='';
-      requestAnimationFrame(function(){requestAnimationFrame(function(){scene.classList.remove('fade');go(0)})});
+      setTimeout(function(){scene.classList.remove('fade');go(0)},60);
     },380);
   }
   function start(){if(running)return;running=true;go(step)}
