@@ -23,7 +23,8 @@ async function fetchFont(key,family,text){
 }
 function textOf(html,re){let out='';for(const m of html.matchAll(re))out+=m[1].replace(/<[^>]+>/g,'');return out}
 (async()=>{
-  const pages=['index.html','download.html'].map(f=>fs.readFileSync(path.join(root,f),'utf8')).join('\n');
+  function walk(d){return fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.name==='tools'||e.name==='assets'?[]:e.isDirectory()?walk(path.join(d,e.name)):e.name.endsWith('.html')?[path.join(d,e.name)]:[])}
+  const pages=walk(root).map(f=>fs.readFileSync(f,'utf8')).join('\n');
   const display=textOf(pages,/<h1[^>]*>([\s\S]*?)<\/h1>/g)+textOf(pages,/<h2[^>]*>([\s\S]*?)<\/h2>/g)+textOf(pages,/<b>([\s\S]*?)<\/b>/g)+'0123456789.,:%';
   const hand=textOf(pages,/class="[^"]*\bhand\b[^"]*"[^>]*>([\s\S]*?)</g);
   const uniq=s=>[...new Set(s.replace(/\s+/g,''))].join('');

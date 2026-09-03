@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>今知日课</title>
+<meta name="description" content="今知日课：把考纲、课程、书本交给它，按考试日期倒推，每天生成刚好能完成的学习任务；专注计时、讲一遍、闪卡、复盘日记、在线自习室，一整天的学习都在这里。iOS 与 Android 即将上线。">
+<meta name="theme-color" content="#FFF3E0">
+<link rel="icon" href="../assets/icon-dailycourse.png">
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+/* 日课换肤：把共享组件的主色从蓝切到橙 */
+:root{--blue:#E0703A;--blue-deep:#C95F2C;--blue-ink:#A94D1F;--blue-50:#FFF1E6;--blue-100:#FFE1CB;--blue-200:#FFC7A3;--ground:#FBF3E7;--pen:#DD6A31;--ink:#292017;--ink-2:#4A4238;--muted:#8A7F72;--line:#EFE4D3;--line-2:#E0D2BC;--navy:#2A1A0F;--navy-2:#3B2818}
+body{background:#fff}
+.nav{background:rgba(255,248,236,.82)}
+.nav.scrolled{border-color:var(--line)}
+
+/* ===================== hero (warm) ===================== */
+.hero{position:relative;margin-top:-70px;padding:118px 0 56px;overflow:hidden;color:var(--ink);background:radial-gradient(760px 520px at 88% 12%,rgba(255,170,100,.32),transparent 62%),linear-gradient(180deg,#FFF1DC 0%,#FFF7E9 55%,#FFFFFF 100%)}
+.hero::before{content:"";position:absolute;left:-140px;top:-180px;width:640px;height:640px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,206,140,.95),rgba(255,206,140,.35) 55%,rgba(255,206,140,0));pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(41,32,23,.09) 1px,transparent 1px);background-size:26px 26px;opacity:.45;-webkit-mask-image:radial-gradient(70% 60% at 50% 55%,#000,transparent);mask-image:radial-gradient(70% 60% at 50% 55%,#000,transparent);pointer-events:none}
+.hero > .container{position:relative;z-index:1}
+.hero__head{max-width:900px;margin:0 auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid rgba(224,112,58,.25);font-size:13px;color:var(--ink-2);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.eyebrow b{display:inline-flex;align-items:center;gap:4px;background:var(--dc);color:#fff;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:700}
+.hero h1{font-size:clamp(40px,6.2vw,78px);line-height:1.14;margin:26px 0 22px;text-wrap:balance}
+.ul{position:relative;display:inline-block;padding:0 .04em;z-index:0}
+.ul svg{position:absolute;left:-4%;bottom:-8%;width:108%;height:46%;overflow:visible;pointer-events:none;z-index:-1}
+.ul path{fill:none;stroke:var(--dc);stroke-width:22;stroke-linecap:round;opacity:.28;stroke-dasharray:1;stroke-dashoffset:1;animation:drawpath .8s cubic-bezier(.4,0,.2,1) 1s forwards}
+@keyframes drawpath{to{stroke-dashoffset:0}}
+.hero__lead{font-size:18px;color:var(--ink-2);max-width:720px;margin:0 auto;line-height:1.85}
+.hero__actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;align-items:center;justify-content:center}
+.hero__plat{display:flex;justify-content:center;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-top:18px}
+.hero__plat .i{width:15px;height:15px}
+.hero__head > *{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero__head > :nth-child(2){animation-delay:.12s}
+.hero__head > :nth-child(3){animation-delay:.24s}
+.hero__head > :nth-child(4){animation-delay:.36s}
+.hero__head > :nth-child(5){animation-delay:.46s}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.scene-wrap{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) .5s both}
+.chapters{animation:rise .9s cubic-bezier(.2,.7,.2,1) .85s both}
+
+/* scene */
+.scene-wrap{position:relative;margin-top:52px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;--px:0;--py:0}
+.scene-wrap::-webkit-scrollbar{display:none}
+.scene-size{position:relative;width:calc(1100px * var(--s,1));height:calc(500px * var(--s,1));margin:0 auto}
+.scene-3d{position:absolute;left:0;top:0;width:100%;height:100%;transform:perspective(1600px) rotateX(calc(var(--py) * -2.2deg)) rotateY(calc(var(--px) * 3deg));transform-style:preserve-3d;transition:transform .5s ease-out}
+.scene{position:absolute;left:0;top:0;width:1100px;height:500px;transform:scale(var(--s,1));transform-origin:0 0;transition:opacity .35s}
+.scene.fade{opacity:0}
+.scene.fade *{transition:none!important;animation:none!important}
+.layer{position:absolute;inset:0;pointer-events:none;transition:transform .5s ease-out}
+.layer-a{transform:translate3d(calc(var(--px) * -12px),calc(var(--py) * -8px),0)}
+.layer-b{transform:translate3d(calc(var(--px) * 6px),calc(var(--py) * 4px),0)}
+.layer-c{transform:translate3d(calc(var(--px) * 18px),calc(var(--py) * 10px),0)}
+/* desk calendar */
+.sc-cal{position:absolute;left:52px;top:52px;width:300px;height:392px;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.6,0,.3,1)}
+.scene.s4 .sc-cal{transform:rotateY(180deg);transition-delay:2s}
+.cal-face{position:absolute;inset:0;background:#fff;border-radius:16px;box-shadow:0 34px 60px -26px rgba(120,70,20,.45),0 3px 10px rgba(120,70,20,.12);padding:54px 26px 24px;-webkit-backface-visibility:hidden;backface-visibility:hidden;overflow:hidden}
+.cal-face::before{content:"";position:absolute;left:0;right:0;top:0;height:38px;background:linear-gradient(180deg,#F5934F,var(--dc));border-radius:16px 16px 0 0}
+.cal-back{transform:rotateY(180deg)}
+.cal-rings{position:absolute;top:-14px;left:0;right:0;display:flex;justify-content:center;gap:110px}
+.cal-rings i{width:18px;height:40px;border-radius:9px;background:linear-gradient(180deg,#FFF6EA,#EBD9C2);box-shadow:0 3px 6px rgba(0,0,0,.18),inset 0 -2px 0 rgba(0,0,0,.08)}
+.cal-month{position:absolute;top:9px;left:0;right:0;text-align:center;color:#fff;font-weight:700;font-size:12.5px;letter-spacing:.14em}
+.cal-day{font-family:var(--display);font-weight:900;font-size:104px;line-height:1;text-align:center;letter-spacing:-.04em;margin-top:6px}
+.cal-week{text-align:center;font-size:13px;color:var(--muted);letter-spacing:.2em;margin-top:2px}
+.cal-cd{display:flex;justify-content:center;gap:16px;margin:16px 0 14px;font-size:12px;color:var(--ink-2)}
+.cal-cd b{font-family:var(--display);font-size:18px;color:var(--ink);margin:0 2px}
+.cal-sub{display:grid;gap:9px;padding-top:12px;border-top:1px dashed var(--line-2)}
+.cal-sub div{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;font-size:12px}
+.cal-sub i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:12px}
+.cal-sub .bar{grid-column:2/4;height:5px;border-radius:3px;background:#F1EAD9;overflow:hidden;margin-top:-3px}
+.cal-sub .bar i{display:block;height:100%;border-radius:3px;background:var(--dc);width:8%}
+.cal-note{position:absolute;right:12px;top:154px;font-family:var(--hand);font-size:20px;color:var(--dc);transform:rotate(-12deg);line-height:1;white-space:nowrap}
+.cal-back .cal-day{font-size:88px;margin-top:10px}
+.cal-back .cal-note{top:auto;bottom:26px}
+.cal-back .cal-done{text-align:center;margin-top:14px;font-size:13px;color:var(--ink-2)}
+.cal-back .cal-done b{color:var(--green)}
+/* phone */
+.sc-phone{position:absolute;left:430px;top:14px;width:250px;height:452px;background:#2A2118;border-radius:40px;padding:8px;box-shadow:0 50px 80px -30px rgba(80,40,10,.55),0 0 0 1px rgba(255,255,255,.35),0 0 60px -10px rgba(255,150,80,.35);transition:transform .6s,opacity .6s}
+.sc-phone::before{content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);width:66px;height:18px;border-radius:10px;background:#2A2118;z-index:3}
+.sc-screen{width:100%;height:100%;border-radius:32px;background:linear-gradient(180deg,#FCF0DA,#FEFCF7 60%);overflow:hidden;position:relative;font-size:10.5px;line-height:1.45;color:var(--ink)}
+.scene.s4 .sc-phone{opacity:.72}
+.pscr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .4s}
+.scene .pscr-task{opacity:1}
+.scene.s1 .pscr-task{opacity:0}
+.scene.s1 .pscr-focus{opacity:1}
+.scene.s2 .pscr-focus{opacity:0}
+.scene.s2 .pscr-task{opacity:1}
+.scene.s3 .pscr-task{opacity:0}
+.scene.s3 .pscr-talk{opacity:1}
+.scene.s4 .pscr-talk{opacity:0}
+.scene.s4 .pscr-diary{opacity:1}
+.ph-sb{height:36px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 3px;font-size:9.5px;font-weight:600;flex:none}
+.ph-sb .i{width:11px;height:11px;stroke-width:2.2}
+.ph-bar{height:30px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 12px;font-size:13px;font-weight:700;flex:none;position:relative}
+.ph-bar .i--back{position:absolute;left:12px;width:14px;height:14px;stroke-width:2.4}
+.ph-body{flex:1;min-height:0;padding:4px 10px;overflow:hidden;position:relative}
+.ph-card{background:#fff;border-radius:12px;padding:10px;margin-bottom:8px;box-shadow:0 1px 2px rgba(120,70,20,.05)}
+.tk-stats{display:grid;grid-template-columns:1fr 1fr;text-align:center}
+.tk-stats small{display:block;font-size:9.5px;color:var(--muted)}
+.tk-stats b{font-family:var(--display);font-size:20px;line-height:1.2}
+.tk-stats b em{font-style:normal;font-size:11px;color:var(--muted);font-family:var(--font)}
+.tk-empty{position:absolute;left:10px;right:10px;top:74px;background:#fff;border-radius:12px;padding:16px 12px;text-align:center;box-shadow:0 1px 2px rgba(120,70,20,.05)}
+.tk-empty p{font-size:11px;color:var(--ink-2);margin-bottom:10px}
+.tk-gen{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:var(--dc);color:#fff;font-weight:700;font-size:11.5px;border-radius:10px;padding:8px 14px;box-shadow:0 8px 16px -8px rgba(224,112,58,.8)}
+.scene.s0 .tk-gen{animation:press .5s ease .7s}
+@keyframes press{50%{transform:scale(.9)}}
+.tk-prog{margin-top:10px;height:4px;border-radius:2px;background:#F1EAD9;overflow:hidden;opacity:0}
+.tk-prog i{display:block;height:100%;width:0;background:var(--dc);border-radius:2px}
+.scene.s0 .tk-prog{opacity:1;transition:opacity .2s 1s}
+.scene.s0 .tk-prog i{animation:grow 1.1s ease-in-out 1.1s forwards}
+@keyframes grow{to{width:100%}}
+.tk-empty small{display:block;margin-top:6px;font-size:9.5px;color:var(--muted);opacity:0}
+.scene.s0 .tk-empty small{opacity:1;transition:opacity .2s 1.2s}
+.scene.s0 .tk-empty{animation:fadeout .3s 2.35s forwards}
+@keyframes fadeout{to{opacity:0;visibility:hidden}}
+.tk-plan{display:flex;align-items:center;justify-content:space-between;font-size:10.5px;color:var(--ink-2);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.tk-plan b{color:var(--ink);font-size:11.5px}
+.tk-plan span{color:var(--dc);font-weight:700}
+.scene.s0 .tk-plan{opacity:1;transform:none;transition-delay:2.45s}
+.tk-g{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:700;padding:6px 2px 4px;opacity:0;transition:opacity .3s}
+.tk-g span{font-weight:500;color:var(--muted);font-size:10px}
+.tk-i{display:flex;align-items:center;gap:8px;background:#fff;border-radius:10px;padding:7px 9px;margin-bottom:6px;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+.tk-i i{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line-2);flex:none;display:grid;place-items:center;color:#fff}
+.tk-i i .i{width:9px;height:9px;stroke-width:3;opacity:0}
+.tk-i b{display:block;font-size:10.5px;font-weight:600;line-height:1.35}
+.tk-i small{display:block;font-size:9px;color:var(--muted)}
+.tk-i em{margin-left:auto;font-style:normal;font-size:10px;color:var(--ink-2);white-space:nowrap}
+.tk-i .dchip{display:none;margin-left:auto;font-size:9px;font-weight:700;color:var(--green);background:var(--green-bg);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.scene.s0 .tk-g{opacity:1}
+.scene.s0 .tk-i{opacity:1;transform:none}
+.scene.s0 .tk-g,.scene.s0 .tk-i{transition-delay:var(--d,2.6s)}
+.scene.s2 .tk-i.first{background:var(--green-bg)}
+.scene.s2 .tk-i.first i{background:var(--green);border-color:var(--green);transition:background .3s .5s,border-color .3s .5s}
+.scene.s2 .tk-i.first i .i{opacity:1;transition:opacity .2s .6s}
+.scene.s2 .tk-i.first b{text-decoration:line-through;color:var(--muted);transition:color .3s .5s}
+.scene.s2 .tk-i.first em{display:none}
+.scene.s2 .tk-i.first .dchip{display:inline-block;animation:pop .35s cubic-bezier(.2,1.3,.4,1) .7s both}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.tk-stats .v0,.tk-stats .v1{display:inline}
+.tk-stats .v1{display:none}
+.scene.s2 .tk-stats .v0{display:none}
+.scene.s2 .tk-stats .v1{display:inline}
+/* focus screen */
+.fc-task{background:#fff;border-radius:12px;padding:10px;margin-bottom:8px}
+.fc-task b{display:block;font-size:11.5px;font-weight:700;line-height:1.4}
+.fc-task small{display:block;font-size:9.5px;color:var(--muted);margin-top:2px}
+.fc-task .hint{font-size:9.5px;color:var(--dc);font-weight:600;margin-top:3px}
+.fc-tabs{display:flex;background:#F5EBDA;border-radius:9px;padding:2px;margin:0 6px 10px}
+.fc-tabs span{flex:1;text-align:center;font-size:10px;padding:4px 0;border-radius:7px;color:var(--ink-2)}
+.fc-tabs span.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:var(--shadow-sm)}
+.fc-goal{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);padding:0 8px 6px}
+.fc-goal b{color:var(--ink-2)}
+.fc-ringwrap{position:relative;width:150px;height:150px;margin:2px auto 8px}
+.fc-ringwrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fc-ringwrap circle{fill:none;stroke-width:9}
+.fc-ringwrap .bg{stroke:#F5EBDA}
+.fc-ringwrap .fg{stroke:var(--dc);stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:.2;transition:stroke-dashoffset 3.4s linear}
+.scene.s1 .fc-ringwrap .fg{stroke-dashoffset:.26}
+.fc-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--display);font-size:30px;font-weight:900;letter-spacing:-.02em;line-height:1}
+.fc-num small{font-family:var(--font);font-size:9.5px;color:var(--muted);font-weight:500;margin-top:4px}
+.fc-btns{display:flex;gap:8px;padding:0 4px}
+.fc-btns span{flex:1;text-align:center;border-radius:10px;padding:8px 0;font-size:11px;font-weight:700;background:var(--dc);color:#fff}
+.fc-btns span.o{background:#F5EBDA;color:var(--ink-2)}
+/* talk screen */
+.tl-ringwrap{position:relative;width:120px;height:120px;margin:10px auto 8px}
+.tl-ringwrap svg{width:100%;height:100%}
+.tl-ringwrap circle{fill:none;stroke-width:8}
+.tl-ringwrap .bg{stroke:#F5EBDA}
+.tl-ringwrap .fg{stroke:var(--dc);stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:.55;transform-origin:50% 50%}
+.scene.s3 .tl-ringwrap .fg{animation:spin 2.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tl-ringwrap span{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink-2)}
+.tl-sub{background:#fff;border-radius:12px;padding:8px 10px;font-size:10.5px;line-height:1.5;color:var(--ink-2);display:grid;gap:5px}
+.tl-sub p{opacity:0;transform:translateY(4px);transition:opacity .35s,transform .35s;display:grid;grid-template-columns:16px 1fr;gap:4px}
+.tl-sub p b{color:var(--dc);font-weight:700}
+.tl-sub p.ai b{color:var(--muted)}
+.tl-sub p.ai{color:var(--ink)}
+.scene.s3 .tl-sub p{opacity:1;transform:none}
+.scene.s3 .tl-sub p:nth-child(1){transition-delay:.6s}
+.scene.s3 .tl-sub p:nth-child(2){transition-delay:1.5s}
+.scene.s3 .tl-sub p:nth-child(3){transition-delay:2.5s}
+.tl-end{margin:10px 6px 0;text-align:center;border-radius:10px;padding:8px 0;font-size:11px;font-weight:700;background:var(--dc);color:#fff}
+/* diary screen */
+.dy-date{text-align:center;font-size:10.5px;color:var(--muted);margin:4px 0 8px}
+.dy-card{background:#fff;border-radius:12px;padding:10px;min-height:86px;font-size:11px;line-height:1.6;color:var(--ink)}
+.dy-card .ph{color:#B8AD9D}
+.dy-card .typed{display:none}
+.scene.s4 .dy-card .ph{display:none}
+.scene.s4 .dy-card .typed{display:inline}
+.dy-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.dy-tags span{font-size:9.5px;padding:2px 8px;border-radius:999px;background:var(--blue-50);color:var(--dc);font-weight:600}
+.dy-save{margin-top:10px;text-align:center;border-radius:10px;padding:8px 0;font-size:11px;font-weight:700;background:var(--dc);color:#fff}
+/* captions */
+.sc-cap{position:absolute;left:748px;top:120px;width:320px;transition:opacity .35s}
+.sc-cap > div{position:absolute;left:0;top:0;width:100%;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.sc-cap small{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--dc)}
+.sc-cap small::before{content:"";width:18px;height:2px;background:var(--dc);border-radius:2px}
+.sc-cap b{display:block;font-family:var(--display);font-weight:900;font-size:28px;line-height:1.3;margin:12px 0 10px;color:var(--ink)}
+.sc-cap p{font-size:14.5px;line-height:1.75;color:var(--ink-2)}
+.sc-cap .cap0{opacity:1;transform:none}
+.scene.s1 .sc-cap .cap0{opacity:0;transform:translateY(-8px)}
+.scene.s1 .sc-cap .cap1{opacity:1;transform:none;transition-delay:.25s}
+.scene.s2 .sc-cap .cap1{opacity:0;transform:translateY(-8px);transition-delay:0s}
+.scene.s2 .sc-cap .cap2{opacity:1;transform:none;transition-delay:.25s}
+.scene.s3 .sc-cap .cap2{opacity:0;transform:translateY(-8px);transition-delay:0s}
+.scene.s3 .sc-cap .cap3{opacity:1;transform:none;transition-delay:.25s}
+.scene.s4 .sc-cap{opacity:0;pointer-events:none}
+/* evening review card */
+.sc-right{position:absolute;left:722px;top:52px;width:350px;height:372px;background:#fff;border-radius:18px;box-shadow:0 40px 70px -28px rgba(120,70,20,.45),0 0 0 1px rgba(255,255,255,.6);padding:16px;opacity:0;transform:translateX(26px);transition:opacity .5s,transform .5s;overflow:hidden;color:var(--ink)}
+.scene.s4 .sc-right{opacity:1;transform:none}
+.rc-head{font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:space-between;height:24px}
+.rc-head .n{font-weight:600;color:var(--muted);font-size:11px}
+.rv-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;margin:8px 0 10px;padding:8px 0;background:var(--ground);border-radius:12px}
+.rv-stats b{display:block;font-family:var(--display);font-size:20px;line-height:1.2}
+.rv-stats small{font-size:9.5px;color:var(--muted)}
+.rv-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid #F3EBDD}
+.rv-donut{position:relative;width:64px;height:64px;flex:none}
+.rv-donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.rv-donut circle{fill:none;stroke-width:9}
+.rv-donut .a{stroke:#D9A441}
+.rv-donut .b{stroke:var(--dc);stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s .6s}
+.scene.s4 .rv-donut .b{stroke-dashoffset:.47}
+.rv-donut span{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:800}
+.rv-legend{font-size:10.5px;color:var(--ink-2);display:grid;gap:3px}
+.rv-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.rv-streak{display:flex;align-items:center;gap:10px}
+.rv-streak .fl{width:36px;height:36px;border-radius:10px;background:var(--blue-50);color:var(--dc);display:grid;place-items:center}
+.rv-streak b{display:block;font-size:12.5px}
+.rv-streak small{display:block;font-size:10px;color:var(--muted)}
+.rv-streak .plus{margin-left:auto;font-family:var(--hand);font-size:24px;color:var(--dc);opacity:0;transform:scale(.6);transition:opacity .3s 1.4s,transform .35s 1.4s cubic-bezier(.2,1.3,.4,1)}
+.scene.s4 .rv-streak .plus{opacity:1;transform:none}
+.rv-farm{display:flex;align-items:center;gap:10px}
+.rv-farm .sp{width:36px;height:36px;border-radius:10px;background:var(--green-bg);color:var(--green);display:grid;place-items:center;overflow:hidden}
+.rv-farm .sp svg{width:22px;height:22px;transform:translateY(10px) scale(.6);opacity:0;transition:transform .6s 1.8s cubic-bezier(.2,1.2,.4,1),opacity .3s 1.8s}
+.scene.s4 .rv-farm .sp svg{transform:none;opacity:1}
+.rv-farm b{display:block;font-size:12.5px}
+.rv-farm small{display:block;font-size:10px;color:var(--muted)}
+/* chapters */
+.chapters{display:flex;align-items:center;justify-content:center;gap:2px;margin:26px 0 0;flex-wrap:wrap}
+.chapters li{display:flex;align-items:center}
+.chapters li.replay-li::before{content:none}
+.chapters li + li::before{content:"›";color:var(--dc);opacity:.5;font-size:20px;line-height:1;margin:0 4px}
+.chapters button{position:relative;font-size:14px;font-weight:600;color:var(--muted);padding:8px 12px 11px;border-radius:10px;transition:color .2s,background .2s}
+.chapters button::after{content:"";position:absolute;left:12px;right:12px;bottom:6px;height:2px;border-radius:2px;background:var(--dc);transform:scaleX(0);transform-origin:left}
+.chapters button:hover{color:var(--ink);background:rgba(224,112,58,.08)}
+.chapters button.on{color:var(--ink)}
+.chapters button.on::after{animation:fillbar var(--dur,3s) linear forwards}
+@keyframes fillbar{to{transform:scaleX(1)}}
+.chapters .replay{margin-left:14px;font-size:13px;color:var(--dc);display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:8px 12px;border-radius:10px;border:1px solid var(--dc-200)}
+.chapters .replay:hover{background:var(--blue-50)}
+.chapters .replay .i{width:15px;height:15px}
+
+/* ===================== story (sticky phone) ===================== */
+.story{padding:96px 0 24px;background:#fff}
+.story__grid{display:grid;grid-template-columns:1fr 470px;gap:72px;align-items:start}
+.story__steps{position:relative;padding-left:46px}
+.story__steps::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--line),var(--line) 92%,transparent)}
+.step{position:relative;min-height:76vh;display:flex;flex-direction:column;justify-content:center;padding:28px 0;opacity:.45;transition:opacity .4s}
+.step.on{opacity:1}
+.step:first-child{min-height:58vh;justify-content:flex-start;padding-top:16px}
+.step:last-child{min-height:58vh;justify-content:flex-start}
+.step::before{content:"";position:absolute;left:-44px;top:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--line-2);transition:border-color .3s,background .3s,box-shadow .3s}
+.step:first-child::before{top:20px}
+.step:last-child::before{top:32px}
+.step.on::before{border-color:var(--dc);background:var(--dc);box-shadow:0 0 0 6px var(--blue-50)}
+.step .no{font-size:13px;letter-spacing:.14em;color:var(--dc);font-weight:800;display:inline-flex;align-items:center;gap:10px}
+.step .no::before{content:"";width:22px;height:2px;background:var(--dc)}
+.step .note{display:inline-block;margin-left:14px;font-family:var(--hand);font-size:22px;color:var(--dc);transform:rotate(-4deg);opacity:.9;vertical-align:-2px}
+.step h2{font-size:clamp(26px,3vw,38px);line-height:1.3;margin:14px 0 12px;text-wrap:balance}
+.step > p{color:var(--ink-2);font-size:16.5px;max-width:540px}
+.plist{display:grid;gap:18px;margin-top:24px;max-width:540px}
+.plist li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.plist .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--blue-50);color:var(--dc)}
+.plist .ico .i{width:22px;height:22px}
+.plist h3{font-size:16.5px;font-weight:700;margin-bottom:3px}
+.plist p{color:var(--muted);font-size:14.5px;line-height:1.7}
+.story__phone{position:sticky;top:90px;height:calc(100vh - 110px);min-height:660px;max-height:820px}
+.story__stage{position:relative;width:100%;height:100%;border-radius:32px;background:radial-gradient(420px 380px at 50% 40%,rgba(255,190,120,.55),transparent 70%),linear-gradient(180deg,#FFF1DC,#FFF8EC);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;isolation:isolate}
+.story__stage::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(41,32,23,.09) 1px,transparent 1px);background-size:22px 22px;opacity:.5;-webkit-mask-image:radial-gradient(60% 60% at 50% 50%,#000,transparent);mask-image:radial-gradient(60% 60% at 50% 50%,#000,transparent);z-index:0}
+.story__tag{position:absolute;left:20px;top:18px;display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-size:12.5px;font-weight:700;color:var(--ink);z-index:3;box-shadow:var(--shadow-sm)}
+.story__tag i{width:22px;height:22px;border-radius:50%;background:var(--dc);color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800}
+.story__stage .phone{position:relative;z-index:1;background:#2A2118;box-shadow:0 60px 90px -30px rgba(80,40,10,.5),0 0 0 1px rgba(255,255,255,.4)}
+.story__stage .phone::before{background:#2A2118}
+.story__stage .screen{background:linear-gradient(180deg,#FCF0DA,#FEFCF7 55%)}
+/* 日课界面元件 */
+.subj{background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:9px;box-shadow:0 1px 2px rgba(120,70,20,.05)}
+.subj__top{display:flex;align-items:center;gap:9px}
+.subj__g{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+.subj__top b{display:block;font-size:13px}
+.subj__top small{display:block;font-size:10px;color:var(--muted)}
+.subj__st{margin-left:auto;font-size:9.5px;font-weight:700;color:var(--dc);background:var(--blue-50);border-radius:999px;padding:2px 7px}
+.subj__st.wait{color:var(--muted);background:#F3EEE4}
+.subj__cd{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;color:var(--muted);margin-top:8px}
+.subj__cd b{font-family:var(--display);font-size:17px;color:var(--ink);margin:0 2px}
+.subj__cd em{font-style:normal;font-weight:700;color:var(--green)}
+.subj__bar{height:5px;border-radius:3px;background:#F1EAD9;margin-top:6px;overflow:hidden}
+.subj__bar i{display:block;height:100%;border-radius:3px;background:var(--green)}
+.tabbar{background:#fff}
+.tabbar .on{color:var(--dc)}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tool{background:#fff;border-radius:12px;padding:10px;position:relative;overflow:hidden}
+.tool::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--t)}
+.tool .tic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--t-bg);color:var(--t);margin-bottom:6px}
+.tool .tic .i{width:15px;height:15px}
+.tool b{display:block;font-size:12px}
+.tool small{display:block;font-size:9.5px;color:var(--muted);line-height:1.4}
+.t-green{--t:#3F7753;--t-bg:#E6F0E4}.t-orange{--t:#DD7741;--t-bg:#FDEBDD}.t-purple{--t:#7A5AD8;--t-bg:#EEE8FA}.t-blue{--t:#4F81C5;--t-bg:#E4ECF7}.t-red{--t:#D6544F;--t-bg:#FBE4E2}.t-gray{--t:#6B7280;--t-bg:#EEEFF2}
+.room-scr{position:absolute;inset:0;background:#241A3F url("../assets/studyroom-night.jpg") center 40%/cover no-repeat}
+.room-top{position:absolute;left:0;right:0;top:0;padding:52px 14px 14px;background:linear-gradient(rgba(20,12,40,.85),rgba(20,12,40,0));color:#fff;font-weight:700;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.room-top small{font-weight:500;opacity:.8;font-size:10px}
+.room-toast{position:absolute;left:14px;right:14px;top:96px;background:rgba(20,12,40,.75);color:#fff;font-size:10.5px;padding:6px 10px;border-radius:999px;text-align:center;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.room-bar{position:absolute;left:12px;right:12px;bottom:14px;background:rgba(255,255,255,.94);border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:11px}
+.room-bar .avs{display:flex}
+.room-bar .avs i{width:22px;height:22px;border-radius:50%;border:2px solid #fff;margin-left:-6px;background:var(--dc);color:#fff;font-style:normal;font-size:10px;display:grid;place-items:center;font-weight:700}
+.room-bar .avs i:first-child{margin-left:0}
+.room-bar b{display:block;font-size:11.5px}
+.room-bar small{display:block;font-size:9.5px;color:var(--muted)}
+.room-bar .go{margin-left:auto;background:var(--dc);color:#fff;border-radius:999px;padding:5px 10px;font-weight:700;font-size:10.5px}
+.st-tabs{display:flex;justify-content:space-around;font-size:11.5px;color:var(--muted);padding:2px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.st-tabs span.on{color:var(--ink);font-weight:700;border-bottom:2px solid var(--dc);padding-bottom:5px;margin-bottom:-9px}
+.st-big small{display:block;font-size:10px;color:var(--muted)}
+.st-big b{font-family:var(--display);font-size:24px}
+.st-big b em{font-style:normal;font-size:11px;font-family:var(--font);color:var(--muted);font-weight:500}
+.st-big .up{font-size:10px;color:var(--green);font-weight:600}
+.st-row{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;margin-top:8px;padding-top:8px;border-top:1px solid #F3EBDD}
+.st-row b{display:block;font-family:var(--display);font-size:18px}
+.st-row small{font-size:9.5px;color:var(--muted)}
+.heat{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;margin-top:6px}
+.heat i{aspect-ratio:1;border-radius:2px;background:#F1EAD9}
+.heat i.l1{background:#FAD3B8}.heat i.l2{background:#F5A876}.heat i.l3{background:#E0703A}
+.heat-cap{font-size:9.5px;color:var(--muted);margin-top:6px}
+
+/* ===================== tools grid ===================== */
+.toolsec{padding:88px 0 96px;background:linear-gradient(180deg,#FFF8EC,#FFFFFF)}
+.toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 20px 20px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.tcard::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--t)}
+.tcard:hover{transform:translateY(-4px);box-shadow:0 20px 40px -20px rgba(120,70,20,.35)}
+.tcard .tic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:var(--t-bg);color:var(--t);margin-bottom:14px}
+.tcard .tic .i{width:24px;height:24px}
+.tcard h3{font-size:17px;font-weight:800;margin-bottom:4px}
+.tcard p{font-size:14px;color:var(--ink-2);line-height:1.65}
+.tcard .hint{margin-top:10px;font-family:var(--hand);font-size:19px;color:var(--t);opacity:.9}
+
+/* ===================== study room band ===================== */
+.roomsec{padding:0 0 96px}
+.roomsec__inner{position:relative;border-radius:32px;overflow:hidden;background:#1B1436;color:#fff;min-height:520px;display:grid;grid-template-columns:1.05fr 1fr;box-shadow:0 40px 80px -40px rgba(27,20,54,.7)}
+.roomsec__img{position:relative;min-height:420px;background:url("../assets/studyroom-night.jpg") center/cover no-repeat}
+.roomsec__img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,#1B1436)}
+.roomsec__copy{padding:56px 56px 56px 32px;display:flex;flex-direction:column;justify-content:center}
+.roomsec__copy .kicker{color:#FFB98A}
+.roomsec__copy .kicker::before{background:#FFB98A}
+.roomsec__copy h2{font-size:clamp(28px,3.2vw,40px);line-height:1.3;margin:14px 0 12px;text-wrap:balance}
+.roomsec__copy p{color:rgba(255,255,255,.75);font-size:16px;max-width:460px}
+.roomfacts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
+.roomfacts div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 14px}
+.roomfacts b{display:block;font-size:15px;margin-bottom:3px}
+.roomfacts small{font-size:12.5px;color:rgba(255,255,255,.7);line-height:1.5}
+.room-badge{position:absolute;left:24px;top:24px;background:rgba(255,255,255,.92);color:var(--ink);border-radius:999px;padding:6px 12px 6px 8px;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;z-index:2}
+.room-badge i{width:8px;height:8px;border-radius:50%;background:#3ED17A;box-shadow:0 0 0 4px rgba(62,209,122,.25)}
+
+/* ===================== timetable ===================== */
+.tt{padding:88px 0 96px;background:var(--paper);position:relative}
+.tt::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(120,100,60,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(120,100,60,.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.tt > .container{position:relative}
+.tt__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px}
+.tt__meta{font-family:var(--serif);font-size:13px;color:#6B6F7B;letter-spacing:.08em;display:flex;gap:18px;flex-wrap:wrap}
+.tt__meta span{border-bottom:1px solid #C9C1AB;padding-bottom:2px}
+.tt__table{width:100%;border-collapse:collapse;border-top:1.5px solid #2B2F3A;border-bottom:1.5px solid #2B2F3A;background:rgba(255,255,255,.55)}
+.tt__table th{font-family:var(--serif);font-weight:700;font-size:13px;letter-spacing:.1em;color:#2B2F3A;text-align:left;padding:12px 14px;border-bottom:1px solid #2B2F3A}
+.tt__table td{padding:15px 14px;border-bottom:1px dashed #C9C1AB;font-size:14.5px;vertical-align:top;color:var(--ink-2)}
+.tt__table tr:last-child td{border-bottom:0}
+.tt__table td.n{font-family:var(--display);font-weight:900;font-size:20px;color:var(--dc);width:64px;line-height:1.2}
+.tt__table td.f{font-weight:700;color:var(--ink);width:170px;white-space:nowrap}
+.tt__table td.f .i{width:16px;height:16px;color:var(--dc);display:inline-block;vertical-align:-3px;margin-right:6px}
+.tt__table td.w{width:90px;white-space:nowrap}
+.tt__table td.w span{font-size:11.5px;font-weight:700;letter-spacing:.08em;background:#fff;border:1px solid #DCD2BC;border-radius:6px;padding:2px 8px;color:var(--ink-2)}
+.tt__table tr:hover td{background:rgba(255,255,255,.7)}
+
+/* ===================== platforms / cta ===================== */
+.band{padding:96px 0 40px}
+.band__inner{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+.pcard{border-radius:28px;padding:44px 44px 40px;position:relative;overflow:hidden}
+.pcard--soon{background:linear-gradient(135deg,#FFF1DC,#FFE3C6);border:1px solid #F5D9BC}
+.pcard--soon .icon{width:76px;height:76px;border-radius:20px;box-shadow:0 20px 34px -16px rgba(224,112,58,.6);margin-bottom:22px}
+.pcard h2{font-size:clamp(26px,3vw,36px);line-height:1.3;margin:0 0 12px;text-wrap:balance}
+.pcard p{color:var(--ink-2);font-size:16px;max-width:460px}
+.pcard .plats{display:flex;gap:8px;margin:22px 0 0;flex-wrap:wrap}
+.pcard .plats span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.pcard .plats .i{width:15px;height:15px}
+.pcard--cross{background:radial-gradient(520px 300px at 20% 0%,rgba(55,110,255,.45),transparent 62%),linear-gradient(180deg,#0D1740,#0A1130);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.pcard--cross .kicker{color:#8FB0FF}
+.pcard--cross .kicker::before{background:#8FB0FF}
+.pcard--cross h2{margin-top:14px}
+.pcard--cross p{color:rgba(255,255,255,.72)}
+.pcard--cross .icon{width:60px;height:60px;border-radius:16px;box-shadow:0 18px 30px -14px rgba(3,88,216,.7);margin-bottom:18px}
+.pcard--cross .btn{align-self:flex-start;margin-top:26px}
+.cta{position:relative;padding:60px 0 96px;text-align:center}
+.cta__box{background:radial-gradient(640px 320px at 50% 0%,rgba(255,190,120,.6),transparent 70%),linear-gradient(180deg,#FFF3E0,#FFF8EC);border:1px solid #F5E3CC;border-radius:32px;padding:72px 32px 64px;position:relative;overflow:hidden}
+.cta__box::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(41,32,23,.09) 1px,transparent 1px);background-size:26px 26px;opacity:.45;-webkit-mask-image:radial-gradient(60% 60% at 50% 40%,#000,transparent);mask-image:radial-gradient(60% 60% at 50% 40%,#000,transparent);pointer-events:none}
+.cta__box > *{position:relative}
+.cta h2{font-size:clamp(30px,4.2vw,50px);line-height:1.22;text-wrap:balance}
+.cta p{margin:14px auto 28px;font-size:17px;color:var(--ink-2);max-width:560px}
+.cta__actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center}
+.cta .soon{font-size:14px;padding:10px 16px}
+.footer{background:var(--navy)}
+
+/* ===================== responsive ===================== */
+@media (max-width:1100px){
+  .story__grid{grid-template-columns:1fr 400px;gap:48px}
+  .toolgrid{grid-template-columns:repeat(2,1fr)}
+  .band__inner{grid-template-columns:1fr}
+}
+@media (max-width:960px){
+  .hero{padding-top:104px}
+  .story{padding-top:64px}
+  .story__grid{grid-template-columns:1fr;gap:0}
+  .story__steps{padding-left:36px}
+  .step::before{left:-34px}
+  .story__phone{position:sticky;top:70px;height:auto;min-height:0;max-height:none;z-index:5;padding:6px 0 0;background:#fff;order:-1}
+  .story__stage{height:340px;border-radius:24px;align-items:flex-start;padding-top:24px}
+  .story__stage .phone{--w:224px}
+  .story__fade{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,#FFF8EC);z-index:2}
+  .step{min-height:0;padding:40px 0 8px;opacity:1}
+  .step:first-child{padding-top:30px}
+  .roomsec__inner{grid-template-columns:1fr}
+  .roomsec__img{min-height:300px}
+  .roomsec__img::after{background:linear-gradient(transparent 55%,#1B1436)}
+  .roomsec__copy{padding:8px 32px 44px}
+  .tt__table td.w{display:none}
+  .tt__table th:last-child{display:none}
+  .pcard{padding:36px 28px}
+}
+@media (max-width:640px){
+  .hero h1{font-size:40px}
+  .hero__plat{display:none}
+  .chapters .replay{margin-left:0}
+  .step .note{display:block;margin:6px 0 0}
+  .toolgrid{grid-template-columns:1fr}
+  .tt__table td.f{white-space:normal;width:auto}
+  .tt__table{font-size:13px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol>
+    <symbol id="i-mag" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-cal-check" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9 15.5l2 2 4-4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9 2.5h6M12 2.5v2.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2.1 5.9L20 11l-5.9 2.1L12 19l-2.1-5.9L4 11l5.9-2.1z"/></symbol>
+    <symbol id="i-sparks" viewBox="0 0 24 24"><path d="M11 3l1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 12h3M11 12h9M4 17h12M20 17h0"/><circle cx="16" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="18" cy="17" r="2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H19v-3"/></symbol>
+    <symbol id="i-books" viewBox="0 0 24 24"><path d="M4 4h4v16H4zM10 4h4v16h-4z"/><path d="M15.5 5.2l3.9-1 4 15.5-3.9 1z"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-4 14-12 14"/><path d="M5 19c3-4 6-7 10-9"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21v-8"/><path d="M12 13c0-4 3-6 7-6 0 4-3 6-7 6z"/><path d="M12 13c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 13.5a6 6 0 0 1 4 6.5"/></symbol>
+    <symbol id="i-cards" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="2.5"/><path d="M7 4h12a2 2 0 0 1 2 2v12"/><path d="M7 13.5l2 2 4-4"/></symbol>
+    <symbol id="i-journal" viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6.5A1.5 1.5 0 0 1 5 19.5z"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><circle cx="6" cy="7" r="1.6"/><circle cx="6" cy="12" r="1.6"/><circle cx="6" cy="17" r="1.6"/><path d="M10.5 7H20M10.5 12H20M10.5 17H20"/></symbol>
+    <symbol id="i-todo" viewBox="0 0 24 24"><circle cx="7" cy="8" r="2.5"/><path d="M12.5 8H20M12.5 16H20"/><circle cx="7" cy="16" r="2.5"/><path d="M5.8 8l.9.9 1.6-1.8"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-pie" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12h8.5"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 4 5 4 9a4 4 0 0 1-8 0c0-1.5.5-2.5 1-3.5.5 1.2 1.2 2 2 2.5C11.5 8.5 11 6 12 3z"/><path d="M8 15a4 4 0 0 0 8 0"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h12l-3 4 3 4H5"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H14a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h5.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4.5h-4.5"/></symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-me" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-signal" viewBox="0 0 24 24"><path d="M5 18v-3M9.5 18V9M14 18V6M18.5 18V3"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9.5a14 14 0 0 1 19 0M6 13a9 9 0 0 1 12 0M9.5 16.5a4 4 0 0 1 5 0"/><path d="M12 19.8h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+    <symbol id="i-android" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <div class="nav__crumb">
+      <a class="brandmark" href="../" aria-label="今知 首页">今知</a><span class="nav__sep">›</span>
+      <a class="brand" href="#top"><img class="brand__icon" src="../assets/icon-dailycourse.png" alt=""><span>今知日课</span></a>
+    </div>
+    <nav class="nav__links" id="navLinks" aria-label="主导航">
+      <a href="#features">功能亮点</a>
+      <a href="#tools">学习工具</a>
+      <a href="#room">自习室</a>
+      <a href="#overview">功能一览</a>
+    </nav>
+    <div class="nav__cta">
+      <span class="soon">iOS · Android 即将上线</span>
+      <a class="btn btn--primary btn--sm" href="#features"><svg class="i i--s"><use href="#i-play"/></svg><span>看看它怎么工作</span></a>
+      <button class="nav__toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="navLinks"><svg class="i"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__head">
+      <span class="eyebrow"><b><svg class="i i--xs"><use href="#i-spark"/></svg>AI 学习计划</b>每天该学什么，它来安排</span>
+      <h1>今天该学什么，<br><span class="ul">日课<svg viewBox="0 0 200 40" aria-hidden="true"><path pathLength="1" d="M6 26c40-12 92-16 188-9"/></svg></span>来安排。</h1>
+      <p class="hero__lead">把考纲、课程、书本交给它，按考试日期倒推，每天生成刚好能完成的任务。专注计时、讲一遍、闪卡、复盘日记、在线自习室，一整天的学习都在这里。</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--lg" href="#features"><svg class="i i--s"><use href="#i-play"/></svg>看看一天的日课</a>
+        <a class="btn btn--ghost btn--lg" href="../">了解今知的全部产品</a>
+      </div>
+      <div class="hero__plat"><svg class="i"><use href="#i-apple"/></svg>iPhone / iPad<svg class="i"><use href="#i-android"/></svg>Android<span class="soon">即将上线</span></div>
+    </div>
+
+    <div class="scene-wrap" id="sceneWrap" role="img" aria-label="动画演示：早上一键生成今日任务，开始专注计时，完成后打勾，讲一遍给 AI 听并被追问，晚上写复盘日记、查看统计与连胜">
+      <div class="scene-size">
+       <div class="scene-3d">
+        <div class="scene s0" id="scene">
+
+          <div class="layer layer-a">
+            <div class="sc-cal" aria-hidden="true">
+              <div class="cal-face cal-front">
+                <div class="cal-rings"><i></i><i></i></div>
+                <div class="cal-month">2026 年 9 月</div>
+                <div class="cal-day num">3</div>
+                <div class="cal-week">星期三</div>
+                <div class="cal-cd"><span>距考研 <b class="num">126</b> 天</span><span>距考公 <b class="num">165</b> 天</span></div>
+                <div class="cal-sub">
+                  <div><i style="background:#E6F0E4;color:#3F7753">考</i><span>考研数学 · 3 本书 · 3 门课</span><em>3%</em><span class="bar"><i style="width:3%"></i></span></div>
+                  <div><i style="background:#FDEBDD;color:#DD7741">考</i><span>考公 · 1 门课 · 1 份考纲</span><em>8%</em><span class="bar"><i style="width:8%"></i></span></div>
+                  <div><i style="background:#E4ECF7;color:#4F81C5">英</i><span>考研英语 · 1 本书 · 1 份习题册</span><em>12%</em><span class="bar"><i style="width:12%"></i></span></div>
+                </div>
+                <div class="cal-note hand">今天 277 分钟</div>
+              </div>
+              <div class="cal-face cal-back">
+                <div class="cal-rings"><i></i><i></i></div>
+                <div class="cal-month">2026 年 9 月</div>
+                <div class="cal-day num">4</div>
+                <div class="cal-week">星期四</div>
+                <div class="cal-done">今天完成 <b>3 / 10</b> 项 · 96 分钟<br>没做完的已经顺延<br>明天安排 <b>245 分钟</b></div>
+                <div class="cal-note hand">明天见</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layer layer-b">
+            <div class="sc-phone">
+              <div class="sc-screen">
+                <!-- 今日任务 -->
+                <div class="pscr pscr-task">
+                  <div class="ph-sb"><span class="num">7:30</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg></span></div>
+                  <div class="ph-bar">今日任务</div>
+                  <div class="ph-body">
+                    <div class="ph-card tk-stats"><div><small>今日任务</small><b><span class="v0">0</span><span class="v1">1</span><em>/10</em></b></div><div><small>学习时长</small><b><span class="v0">0</span><span class="v1">73</span><em>/277 min</em></b></div></div>
+                    <div class="tk-empty"><p>今天还没有计划</p><span class="tk-gen"><svg class="i i--xs"><use href="#i-sparks"/></svg>生成今日任务</span><div class="tk-prog"><i></i></div><small>按各科目标日期倒推，正在安排今天…</small></div>
+                    <div class="tk-plan"><div><b>今天这样安排</b><br>按各科目标日期倒推，今天安排 277 分钟</div><span>计划记录 ›</span></div>
+                    <div class="tk-g" style="--d:2.55s">考研数学<span>0/3 · 107 分钟</span></div>
+                    <div class="tk-i first" style="--d:2.65s"><i><svg class="i"><use href="#i-check"/></svg></i><div><b>09.30 讲零基础三、方程与不等式 09</b><small>课程 · 接着昨天的断点</small></div><em>73 分钟</em><span class="dchip">完全懂了</span></div>
+                    <div class="tk-i" style="--d:2.8s"><i></i><div><b>10.30 讲零基础四、函数 10</b><small>课程 · 接着昨天的断点</small></div><em>34 分钟</em></div>
+                    <div class="tk-g" style="--d:2.95s">考公<span>0/1 · 42 分钟</span></div>
+                    <div class="tk-i" style="--d:3.05s"><i></i><div><b>判断推理理论-3</b><small>课程 · 接着昨天的断点</small></div><em>42 分钟</em></div>
+                    <div class="tk-g" style="--d:3.2s">考研英语<span>0/2 · 98 分钟</span></div>
+                    <div class="tk-i" style="--d:3.3s"><i></i><div><b>阅读理解定位与选项分析</b><small>课程 · 巩固还不牢的内容</small></div><em>48 分钟</em></div>
+                  </div>
+                  <div class="tabbar"><span><svg class="i"><use href="#i-books"/></svg>科目</span><span class="on"><svg class="i"><use href="#i-todo"/></svg>今日</span><span><svg class="i"><use href="#i-grid"/></svg>工具</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
+                </div>
+                <!-- 专注计时 -->
+                <div class="pscr pscr-focus">
+                  <div class="ph-sb"><span class="num">9:31</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg></span></div>
+                  <div class="ph-bar"><svg class="i i--back"><use href="#i-back"/></svg>专注计时</div>
+                  <div class="ph-body">
+                    <div class="fc-task"><b>09.30 讲零基础三、方程与不等式 09</b><small>考研数学 · 预计 73 分钟</small><span class="hint">接着昨天的断点</span></div>
+                    <div class="fc-tabs"><span>正计时</span><span>番茄</span><span class="on">倒计时</span></div>
+                    <div class="fc-goal"><span>目标时长</span><b>73 分钟</b></div>
+                    <div class="fc-ringwrap"><svg viewBox="0 0 150 150"><circle class="bg" cx="75" cy="75" r="62"/><circle class="fg" cx="75" cy="75" r="62" pathLength="1"/></svg><div class="fc-num"><span id="fcNum" class="num">58:56</span><small>倒计时中</small></div></div>
+                    <div class="fc-btns"><span><svg class="i i--xs" style="display:inline-block;vertical-align:-2px;margin-right:3px"><use href="#i-pause"/></svg>暂停</span><span class="o">完成</span></div>
+                  </div>
+                </div>
+                <!-- 讲一遍 -->
+                <div class="pscr pscr-talk">
+                  <div class="ph-sb"><span class="num">15:02</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg></span></div>
+                  <div class="ph-bar"><svg class="i i--back"><use href="#i-back"/></svg>讲一遍</div>
+                  <div class="ph-body">
+                    <div class="fc-task"><b>方程与不等式</b><small>考研数学 · 讲给它听，它来追问</small></div>
+                    <div class="tl-ringwrap"><svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="50"/><circle class="fg" cx="60" cy="60" r="50" pathLength="1"/></svg><span>正在听</span></div>
+                    <div class="tl-sub">
+                      <p><b>你</b><span>一元二次不等式先化成标准形，再看判别式，大于零有两个根…</span></p>
+                      <p class="ai"><b>它</b><span>判别式小于零的时候，解集是什么？</span></p>
+                      <p><b>你</b><span>看开口方向，开口向上就是全体实数。</span></p>
+                    </div>
+                    <div class="tl-end">结束</div>
+                  </div>
+                </div>
+                <!-- 复盘日记 -->
+                <div class="pscr pscr-diary">
+                  <div class="ph-sb"><span class="num">21:30</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg></span></div>
+                  <div class="ph-bar"><svg class="i i--back"><use href="#i-back"/></svg>复盘日记</div>
+                  <div class="ph-body">
+                    <div class="dy-date">9 月 3 日 · 星期三 · 学了 96 分钟</div>
+                    <div class="dy-card"><span class="ph">今天一句话，留着以后看…</span><span class="typed">不等式的判别式终于想明白了，明天接着看函数。</span></div>
+                    <div class="dy-tags"><span>状态：专注</span><span>完成 3 项</span><span>2 个番茄</span></div>
+                    <div class="dy-save">保存</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layer layer-c">
+            <div class="sc-cap" aria-hidden="true">
+              <div class="cap0"><small>第 1 步 · 生成计划</small><b>今天该学什么，按考试日期倒推。</b><p>把考纲、课程、书本交给它，它算出今天刚好能完成的 277 分钟，混合听课、看书和刷题。</p></div>
+              <div class="cap1"><small>第 2 步 · 专注计时</small><b>点开第一项，开始倒计时。</b><p>接着昨天的断点继续。正计时、番茄、倒计时随你选。</p></div>
+              <div class="cap2"><small>第 3 步 · 完成打勾</small><b>学完了，打个勾。</b><p>完全懂了、还有点难、先跳过：你的反馈会影响明天怎么安排。</p></div>
+              <div class="cap3"><small>第 4 步 · 讲一遍</small><b>讲给它听，它来追问。</b><p>把学过的内容说出来，说不清楚的地方，它会接着问。</p></div>
+            </div>
+            <div class="sc-right" aria-hidden="true">
+              <div class="rc-head">今日复盘<span class="n">9 月 3 日 · 21:30</span></div>
+              <div class="rv-stats"><div><b class="num">96</b><small>学习分钟</small></div><div><b class="num">3</b><small>完成任务</small></div><div><b class="num">2</b><small>番茄</small></div></div>
+              <div class="rv-row"><div class="rv-donut"><svg viewBox="0 0 64 64"><circle class="a" cx="32" cy="32" r="26"/><circle class="b" cx="32" cy="32" r="26" pathLength="1"/></svg><span>53%</span></div><div class="rv-legend"><div><i style="background:var(--dc)"></i>考公 · 51 分钟 · 53%</div><div><i style="background:#D9A441"></i>考研数学 · 45 分钟 · 47%</div></div></div>
+              <div class="rv-row rv-streak"><span class="fl"><svg class="i"><use href="#i-flame"/></svg></span><div><b>连续学习 12 天</b><small>你在 18–20 点学得最多</small></div><span class="plus hand">+1 天</span></div>
+              <div class="rv-row rv-farm"><span class="sp"><svg class="i"><use href="#i-sprout"/></svg></span><div><b>今知农场 · 小麦发芽了</b><small>今天的学习时长，长成了作物</small></div></div>
+            </div>
+          </div>
+
+        </div>
+       </div>
+      </div>
+    </div>
+    <ol class="chapters" id="chapters" aria-label="动画章节">
+      <li><button type="button" data-step="0" class="on" aria-pressed="true">生成计划</button></li>
+      <li><button type="button" data-step="1" aria-pressed="false">专注计时</button></li>
+      <li><button type="button" data-step="2" aria-pressed="false">完成打勾</button></li>
+      <li><button type="button" data-step="3" aria-pressed="false">讲一遍</button></li>
+      <li><button type="button" data-step="4" aria-pressed="false">晚上复盘</button></li>
+      <li class="replay-li"><button type="button" class="replay" id="replay"><svg class="i"><use href="#i-replay"/></svg>重播</button></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== STORY ===================== -->
+<section class="story" id="features">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">六个场景</span>
+      <h2>一部手机，安排好一整天</h2>
+      <p>往下滚动，右侧的手机会切换到对应的界面：科目、今日、专注、工具、自习室、统计。</p>
+    </div>
+    <div class="story__grid">
+      <div class="story__steps" id="steps">
+
+        <article class="step on" data-i="0">
+          <span class="no">01 · 科目</span><span class="note hand">先把资料交给它</span>
+          <h2>考纲、课程、书本，都交给它</h2>
+          <p>添加学科，粘贴课程目录或导入 PDF，它会识别讲次、标题和时长，按页数拆成任务，还知道距离考试还有多少天。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-list"/></svg></span><div><h3>课程目录解析</h3><p>粘贴目录，自动识别讲次、标题、时长，预览确认后生成课程与讲次。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-doc"/></svg></span><div><h3>PDF 按页拆成任务</h3><p>书本和讲义导入后按页数拆分，上下册可以合并成同一份学习规划。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-cal"/></svg></span><div><h3>距考试倒计时</h3><p>每个学科都有目标日期和学习进度，一眼看到还剩多少天、学到了哪。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="1">
+          <span class="no">02 · 今日</span><span class="note hand">刚好能完成的一天</span>
+          <h2>按考试日期倒推，生成今天的任务</h2>
+          <p>每天一个按钮：按各科目标日期倒推，混合听课、看书、刷题，安排一天刚好能完成的量。没做完的不会机械堆到明天，而是按完成率重新校准。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-sparks"/></svg></span><div><h3>一键生成今日任务</h3><p>按可完成的负载生成，任务分 P0 / P1 / P2 优先级，先做最要紧的。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-refresh"/></svg></span><div><h3>智能顺延</h3><p>未完成的任务顺延时会重新计算，避免越积越多。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-flag"/></svg></span><div><h3>完成标准</h3><p>英语阅读怎样算学完、新章节怎样算学好、刷题怎样算刷完，任务里写得清清楚楚。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="2">
+          <span class="no">03 · 专注</span><span class="note hand">接着昨天的断点</span>
+          <h2>点开一项，开始计时</h2>
+          <p>正计时、番茄、倒计时随你选。任务详情里写着从哪里接着学、学到什么程度算完成；做完之后选一个反馈，明天的安排会跟着调整。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-timer"/></svg></span><div><h3>三种计时</h3><p>倒计时盯目标，番茄钟节奏学，正计时随便学多久都算数。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-route"/></svg></span><div><h3>断点续学</h3><p>上次学到哪，这次从哪开始，不用再翻。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-check-c"/></svg></span><div><h3>任务后反馈</h3><p>完全懂了、部分完成、太难了、跳过：状态会反馈给计划算法。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="3">
+          <span class="no">04 · 工具</span><span class="note hand">学法都在这里</span>
+          <h2>背诵、讲一遍、闪卡，把学过的真正记住</h2>
+          <p>工具页放的是学习方法本身：遮住背、挖空背；讲给它听、它来追问；翻一面想一下。还有随时可开的自由番茄和自由待办。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-book"/></svg></span><div><h3>背诵</h3><p>遮住背、挖空背，背不出来的地方自己会露出来。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-mic"/></svg></span><div><h3>讲一遍</h3><p>把学过的内容讲出来，它一边听一边追问，说不清的就是没学透。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-cards"/></svg></span><div><h3>闪卡</h3><p>翻一面，想一下，记住了。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="4">
+          <span class="no">05 · 自习室</span><span class="note hand">一起学不孤单</span>
+          <h2>推门进一间正在学习的房间</h2>
+          <p>固定房号的小队自习室，成员的今日时长一起累计；也可以随手开一间临时自习室，空置后自动收起。像素风的房间里，每个人都有自己的座位。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-users"/></svg></span><div><h3>固定房号小队</h3><p>房号一直保留，加入过的同学也会留在小队名单里。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-clock"/></svg></span><div><h3>今日合计时长</h3><p>每个人的专注时间汇成小队今天的总时长。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-plus"/></svg></span><div><h3>临时自习室</h3><p>随便开一间，空置后会自动收起。</p></div></li>
+          </ul>
+        </article>
+
+        <article class="step" data-i="5">
+          <span class="no">06 · 统计</span><span class="note hand">看得见的每一天</span>
+          <h2>时长、科目、时段，都看得见</h2>
+          <p>今日、本周、本月、本年的学习时长；科目分布和时段热力图告诉你在几点学得最多；今知农场把坚持变成看得见的作物。</p>
+          <ul class="plist">
+            <li><span class="ico"><svg class="i"><use href="#i-chart"/></svg></span><div><h3>学习统计</h3><p>学习时长、完成任务、活跃天数、番茄数，和上周比一比。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-pie"/></svg></span><div><h3>科目分布与时段热力图</h3><p>知道时间花在了哪一科、哪个时段最专注。</p></div></li>
+            <li><span class="ico"><svg class="i"><use href="#i-leaf"/></svg></span><div><h3>今知农场</h3><p>土地正在等你播种，学习时长会长成作物。</p></div></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="story__phone">
+        <div class="story__stage">
+          <span class="story__tag" id="storyTag"><i>1</i>科目</span>
+          <div class="phone" aria-hidden="true">
+            <div class="screen" id="screens">
+
+              <!-- 0 科目 -->
+              <div class="ss on">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah" style="justify-content:center;position:relative">我的学科<span class="ah__ic" style="position:absolute;right:14px"><svg class="i"><use href="#i-refresh"/></svg><svg class="i"><use href="#i-plus"/></svg></span></div>
+                <div class="scr">
+                  <div class="subj"><div class="subj__top"><span class="subj__g" style="background:#E6F0E4;color:#3F7753">考</span><div><b>考研数学</b><small>3 本书 · 3 门课 · 1 份考纲</small></div><span class="subj__st">学习中</span></div><div class="subj__cd"><span>距考试 <b class="num">126</b> 天</span><span>学习进度 <em>3%</em></span></div><div class="subj__bar"><i style="width:3%"></i></div></div>
+                  <div class="subj"><div class="subj__top"><span class="subj__g" style="background:#FDEBDD;color:#DD7741">考</span><div><b>考公</b><small>1 门课 · 1 份考纲</small></div><span class="subj__st">学习中</span></div><div class="subj__cd"><span>距考试 <b class="num">165</b> 天</span><span>学习进度 <em style="color:var(--dc)">8%</em></span></div><div class="subj__bar"><i style="width:8%;background:var(--dc)"></i></div></div>
+                  <div class="subj"><div class="subj__top"><span class="subj__g" style="background:#E4ECF7;color:#4F81C5">英</span><div><b>考研英语</b><small>1 本书 · 1 份习题册</small></div><span class="subj__st">学习中</span></div><div class="subj__cd"><span>距考试 <b class="num">126</b> 天</span><span>学习进度 <em style="color:#4F81C5">12%</em></span></div><div class="subj__bar"><i style="width:12%;background:#4F81C5"></i></div></div>
+                  <div class="subj"><div class="subj__top"><span class="subj__g" style="background:#F3E6EA;color:#B0567A">政</span><div><b>政治</b><small>还没有添加资料</small></div><span class="subj__st wait">待开始</span></div><div class="subj__cd"><span>距考试 <b class="num">126</b> 天</span><span>学习进度 <em style="color:var(--muted)">0%</em></span></div><div class="subj__bar"></div></div>
+                </div>
+                <div class="tabbar"><span class="on"><svg class="i"><use href="#i-books"/></svg>科目</span><span><svg class="i"><use href="#i-todo"/></svg>今日</span><span><svg class="i"><use href="#i-grid"/></svg>工具</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
+              </div>
+
+              <!-- 1 今日 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah" style="justify-content:center;position:relative">今日任务<span class="ah__ic" style="position:absolute;right:14px"><svg class="i"><use href="#i-sliders"/></svg></span></div>
+                <div class="scr">
+                  <div class="mcard tk-stats" style="padding:12px"><div><small>今日任务</small><b>1<em>/10</em></b></div><div><small>学习时长</small><b>73<em>/277 min</em></b></div></div>
+                  <div class="mcard" style="font-size:11px"><b style="font-size:12.5px">今天这样安排</b><span class="link" style="float:right">计划记录 3 ›</span><div class="muted" style="margin-top:3px">按各科目标日期倒推，今天安排 277 分钟</div></div>
+                  <div class="tk-g" style="opacity:1;font-size:12px">考研数学<span>1/3 · 107 分钟</span></div>
+                  <div class="tk-i" style="opacity:1;transform:none;background:var(--green-bg)"><i style="background:var(--green);border-color:var(--green)"><svg class="i" style="opacity:1"><use href="#i-check"/></svg></i><div><b style="text-decoration:line-through;color:var(--muted)">09.30 讲零基础三、方程与不等式 09</b><small>课程 · 接着昨天的断点</small></div><span class="dchip" style="display:inline-block">完全懂了</span></div>
+                  <div class="tk-i" style="opacity:1;transform:none"><i></i><div><b>10.30 讲零基础四、函数 10</b><small>课程 · 接着昨天的断点</small></div><em>34 分钟</em></div>
+                  <div class="tk-g" style="opacity:1;font-size:12px">考公<span>0/1 · 42 分钟</span></div>
+                  <div class="tk-i" style="opacity:1;transform:none"><i></i><div><b>判断推理理论-3</b><small>课程 · 接着昨天的断点</small></div><em>42 分钟</em></div>
+                  <div class="tk-g" style="opacity:1;font-size:12px">考研英语<span>0/2 · 98 分钟</span></div>
+                  <div class="tk-i" style="opacity:1;transform:none"><i></i><div><b>阅读理解定位与选项分析</b><small>课程 · 巩固还不牢的内容</small></div><em>48 分钟</em></div>
+                </div>
+                <div class="tabbar"><span><svg class="i"><use href="#i-books"/></svg>科目</span><span class="on"><svg class="i"><use href="#i-todo"/></svg>今日</span><span><svg class="i"><use href="#i-grid"/></svg>工具</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
+              </div>
+
+              <!-- 2 专注 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>专注计时</div>
+                <div class="scr">
+                  <div class="mcard"><b style="font-size:13px">14.30 讲零基础五、数列及其单调性 14</b><div class="muted" style="font-size:11px;margin-top:2px">考研数学 · 预计 59 分钟</div><div style="font-size:11px;color:var(--dc);font-weight:600;margin-top:4px">接着昨天的断点 · 这部分昨天没看完，今天从保存的位置继续</div></div>
+                  <div class="fc-tabs" style="margin:0 0 10px"><span>正计时</span><span>番茄</span><span class="on">倒计时</span></div>
+                  <div class="fc-goal"><span>目标时长</span><b>59 分钟</b></div>
+                  <div class="fc-ringwrap" style="width:176px;height:176px"><svg viewBox="0 0 150 150"><circle class="bg" cx="75" cy="75" r="62"/><circle class="fg" cx="75" cy="75" r="62" pathLength="1" style="stroke-dashoffset:.02"/></svg><div class="fc-num" style="font-size:36px"><span class="num">58:56</span><small>倒计时中</small></div></div>
+                  <div class="fc-goal" style="justify-content:center;gap:16px"><span style="color:var(--dc);font-weight:600">进入自习室继续</span><span style="color:var(--dc);font-weight:600">补记学习</span></div>
+                  <div class="fc-btns"><span>暂停</span><span class="o">完成</span></div>
+                </div>
+              </div>
+
+              <!-- 3 工具 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah" style="justify-content:center;position:relative">学习工具<span class="ah__ic" style="position:absolute;right:14px"><svg class="i"><use href="#i-sliders"/></svg></span></div>
+                <div class="scr">
+                  <div class="mcard" style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;padding:9px 12px"><svg class="i i--s"><use href="#i-mag"/></svg>搜索工具</div>
+                  <div class="tools">
+                    <div class="tool t-green"><span class="tic"><svg class="i"><use href="#i-leaf"/></svg></span><b>今知农场</b><small>土地正在等你播种</small></div>
+                    <div class="tool t-orange"><span class="tic"><svg class="i"><use href="#i-todo"/></svg></span><b>自由待办</b><small>清单已清空</small></div>
+                    <div class="tool t-orange"><span class="tic"><svg class="i"><use href="#i-timer"/></svg></span><b>自由番茄</b><small>随时开始，不绑定任务</small></div>
+                    <div class="tool t-green"><span class="tic"><svg class="i"><use href="#i-users"/></svg></span><b>在线自习室</b><small>进入一间正在学习的房间</small></div>
+                    <div class="tool t-purple"><span class="tic"><svg class="i"><use href="#i-book"/></svg></span><b>背诵</b><small>遮住背、挖空背</small></div>
+                    <div class="tool t-blue"><span class="tic"><svg class="i"><use href="#i-mic"/></svg></span><b>讲一遍</b><small>讲给它听，它来追问</small></div>
+                    <div class="tool t-red"><span class="tic"><svg class="i"><use href="#i-cards"/></svg></span><b>闪卡</b><small>翻一面，想一下，记住了</small></div>
+                    <div class="tool t-gray"><span class="tic"><svg class="i"><use href="#i-journal"/></svg></span><b>复盘日记</b><small>一句话，留着以后看</small></div>
+                  </div>
+                </div>
+                <div class="tabbar"><span><svg class="i"><use href="#i-books"/></svg>科目</span><span><svg class="i"><use href="#i-todo"/></svg>今日</span><span class="on"><svg class="i"><use href="#i-grid"/></svg>工具</span><span><svg class="i"><use href="#i-me"/></svg>我的</span></div>
+              </div>
+
+              <!-- 4 自习室 -->
+              <div class="ss">
+                <div class="room-scr"></div>
+                <div class="room-top"><span>我的自习室<br><small>固定房号 364524 · 今日合计 186 分钟</small></span><span style="font-size:11px;background:rgba(255,255,255,.15);border-radius:999px;padding:3px 9px">3 人在学</span></div>
+                <div class="room-toast">小满 推门进了「我的自习室」</div>
+                <div class="room-bar"><span class="avs"><i>满</i><i style="background:#4F81C5">阿</i><i style="background:#7A5AD8">木</i></span><div><b>卡座 A · B 岛</b><small>你在 A2 · 已专注 42 分钟</small></div><span class="go">继续学习</span></div>
+              </div>
+
+              <!-- 5 统计 -->
+              <div class="ss">
+                <div class="sb"><span class="num">9:41</span><span class="sb__ic"><svg class="i"><use href="#i-signal"/></svg><svg class="i"><use href="#i-wifi"/></svg><i class="sb__bat"></i></span></div>
+                <div class="ah"><svg class="i i--back"><use href="#i-back"/></svg>学习统计</div>
+                <div class="scr">
+                  <div class="st-tabs"><span>今日</span><span class="on">本周</span><span>本月</span><span>本年</span></div>
+                  <div class="mcard"><div class="st-big"><small>学习时长</small><b class="num">612<em> 分钟</em></b><div class="up">比上周多 32%</div></div><div class="st-row"><div><b class="num">18</b><small>完成任务</small></div><div><b class="num">6</b><small>活跃天数</small></div><div><b class="num">11</b><small>番茄数</small></div></div></div>
+                  <div class="sec" style="color:var(--ink);font-size:12.5px">科目分布</div>
+                  <div class="mcard rv-row" style="border:0;padding:11px 12px"><div class="rv-donut"><svg viewBox="0 0 64 64"><circle class="a" cx="32" cy="32" r="26"/><circle class="b" cx="32" cy="32" r="26" pathLength="1" style="stroke-dashoffset:.47"/></svg><span>53%</span></div><div class="rv-legend"><div><i style="background:var(--dc)"></i>考公 · 324 分钟 · 53%</div><div><i style="background:#D9A441"></i>考研数学 · 288 分钟 · 47%</div></div></div>
+                  <div class="sec" style="color:var(--ink);font-size:12.5px">时段分布</div>
+                  <div class="mcard"><div class="heat"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="l1"></i><i class="l2"></i><i class="l1"></i><i></i><i></i><i></i><i class="l1"></i><i class="l2"></i><i class="l1"></i><i></i><i class="l2"></i><i class="l3"></i><i class="l3"></i><i class="l2"></i><i class="l1"></i><i></i></div><div class="heat-cap">你在 18–20 点学得最多</div></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="story__fade"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TOOLS ===================== -->
+<section class="toolsec" id="tools">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="kicker">学习工具</span>
+      <h2>工具页里放的，是学习方法本身</h2>
+      <p>下面这些名字和一句话，就是 App 里的原样。</p>
+    </div>
+    <div class="toolgrid">
+      <article class="tcard t-green reveal"><span class="tic"><svg class="i"><use href="#i-leaf"/></svg></span><h3>今知农场</h3><p>土地正在等你播种。学习时长会长成作物，坚持看得见。</p></article>
+      <article class="tcard t-orange reveal" data-d="1"><span class="tic"><svg class="i"><use href="#i-todo"/></svg></span><h3>自由待办</h3><p>不属于计划的小事，也有地方放。做完一件，清单就少一行。</p></article>
+      <article class="tcard t-orange reveal" data-d="2"><span class="tic"><svg class="i"><use href="#i-timer"/></svg></span><h3>自由番茄</h3><p>随时开始，不绑定任务。想学一会儿就学一会儿，时间照样算数。</p></article>
+      <article class="tcard t-green reveal" data-d="3"><span class="tic"><svg class="i"><use href="#i-users"/></svg></span><h3>在线自习室</h3><p>进入一间正在学习的房间，和小队一起把今天的时长累起来。</p></article>
+      <article class="tcard t-purple reveal"><span class="tic"><svg class="i"><use href="#i-book"/></svg></span><h3>背诵</h3><p>遮住背、挖空背。背不出来的地方，自己会露出来。</p><div class="hint hand">背不出来就是没记住</div></article>
+      <article class="tcard t-blue reveal" data-d="1"><span class="tic"><svg class="i"><use href="#i-mic"/></svg></span><h3>讲一遍</h3><p>讲给它听，它来追问。说不清楚的地方，就是还没学透的地方。</p><div class="hint hand">说不清就是没学透</div></article>
+      <article class="tcard t-red reveal" data-d="2"><span class="tic"><svg class="i"><use href="#i-cards"/></svg></span><h3>闪卡</h3><p>翻一面，想一下，记住了。碎片时间也能过一遍。</p></article>
+      <article class="tcard t-gray reveal" data-d="3"><span class="tic"><svg class="i"><use href="#i-journal"/></svg></span><h3>复盘日记</h3><p>一句话，留着以后看。一年后翻回来，能看见自己怎么走过来的。</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STUDY ROOM ===================== -->
+<section class="roomsec" id="room">
+  <div class="container">
+    <div class="roomsec__inner reveal">
+      <div class="roomsec__img"><span class="room-badge"><i></i>3 人正在学 · 卡座 A · B 岛</span></div>
+      <div class="roomsec__copy">
+        <span class="kicker">在线自习室</span>
+        <h2>推门进一间正在学习的房间</h2>
+        <p>像素风的自习室，每个人都有自己的座位。固定房号的小队一直保留，成员今天的专注时间汇成一个总数；也可以随手开一间临时自习室，空置后自动收起。</p>
+        <div class="roomfacts">
+          <div><b>固定房号</b><small>房号一直保留，加入过的同学留在小队名单里</small></div>
+          <div><b>今日合计</b><small>小队每个人的专注时长一起累计</small></div>
+          <div><b>临时自习室</b><small>随便开一间，空置后会自动收起</small></div>
+          <div><b>房间主题</b><small>深夜图书馆、木屋书房，随你换</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TIMETABLE ===================== -->
+<section class="tt" id="overview">
+  <div class="container">
+    <div class="tt__head reveal">
+      <div class="sec-head" style="margin:0"><span class="kicker">功能一览</span><h2>今知日课的课程表</h2><p>十项功能，按它们在 App 里所在的页签排好。</p></div>
+      <div class="tt__meta"><span>学科：全部</span><span>节数：10</span><span>作息：每天</span></div>
+    </div>
+    <div class="reveal" style="overflow-x:auto">
+    <table class="tt__table">
+      <thead><tr><th>节次</th><th>功能</th><th>一句话</th><th>页签</th></tr></thead>
+      <tbody>
+        <tr><td class="n num">01</td><td class="f"><svg class="i"><use href="#i-books"/></svg>学科与资料</td><td>添加考纲、课程、书本，粘贴目录自动识别讲次与时长，PDF 按页拆成任务。</td><td class="w"><span>科目</span></td></tr>
+        <tr><td class="n num">02</td><td class="f"><svg class="i"><use href="#i-cal"/></svg>距考试倒计时</td><td>每个学科都有目标日期和学习进度。</td><td class="w"><span>科目</span></td></tr>
+        <tr><td class="n num">03</td><td class="f"><svg class="i"><use href="#i-sparks"/></svg>今日任务生成</td><td>按考试日期倒推，混合听课、看书、刷题，安排一天刚好能完成的量。</td><td class="w"><span>今日</span></td></tr>
+        <tr><td class="n num">04</td><td class="f"><svg class="i"><use href="#i-refresh"/></svg>智能顺延</td><td>没做完的不会机械堆到明天，按完成率重新校准负载。</td><td class="w"><span>今日</span></td></tr>
+        <tr><td class="n num">05</td><td class="f"><svg class="i"><use href="#i-flag"/></svg>完成标准</td><td>英语阅读怎样算学完、刷题怎样算刷完，任务详情里写清楚。</td><td class="w"><span>今日</span></td></tr>
+        <tr><td class="n num">06</td><td class="f"><svg class="i"><use href="#i-timer"/></svg>专注计时</td><td>正计时、番茄、倒计时，接着昨天的断点继续。</td><td class="w"><span>今日</span></td></tr>
+        <tr><td class="n num">07</td><td class="f"><svg class="i"><use href="#i-mic"/></svg>背诵 · 讲一遍 · 闪卡</td><td>遮住背、挖空背；讲给它听、它来追问；翻一面想一下。</td><td class="w"><span>工具</span></td></tr>
+        <tr><td class="n num">08</td><td class="f"><svg class="i"><use href="#i-users"/></svg>在线自习室</td><td>固定房号的小队，或随开随收的临时自习室。</td><td class="w"><span>工具</span></td></tr>
+        <tr><td class="n num">09</td><td class="f"><svg class="i"><use href="#i-journal"/></svg>复盘日记</td><td>一句话，留着以后看。</td><td class="w"><span>工具</span></td></tr>
+        <tr><td class="n num">10</td><td class="f"><svg class="i"><use href="#i-chart"/></svg>学习统计 · 农场</td><td>时长、科目分布、时段热力图、最长专注；学习时长长成作物。</td><td class="w"><span>我的</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PLATFORMS ===================== -->
+<section class="band" id="platforms">
+  <div class="container band__inner">
+    <div class="pcard pcard--soon reveal">
+      <img class="icon" src="../assets/icon-dailycourse.png" alt="今知日课图标">
+      <h2>iOS 与 Android 版本，即将上线</h2>
+      <p>正在做最后的打磨。上线后，这里会放出 App Store 与 Android 安装包的下载入口。</p>
+      <div class="plats"><span><svg class="i"><use href="#i-apple"/></svg>iPhone / iPad</span><span><svg class="i"><use href="#i-android"/></svg>Android</span></div>
+    </div>
+    <div class="pcard pcard--cross reveal" data-d="1">
+      <div>
+        <img class="icon" src="../assets/icon-correction.png" alt="今知错题本图标">
+        <span class="kicker">同一个今知</span>
+        <h2>做错的题，交给今知错题本</h2>
+        <p>拍照即录、AI 补全、按计划复习、一键导出。现在就能用，iPhone / iPad、Android、Windows、Mac 都有。</p>
+      </div>
+      <a class="btn btn--white" href="../correction/">了解今知错题本<svg class="i i--s"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="cta">
+  <div class="container">
+    <div class="cta__box reveal">
+      <h2>把每一天，都安排明白。</h2>
+      <p>今知日课：每天该学什么，它来安排。上线时，这里会第一时间放出下载入口。</p>
+      <div class="cta__actions"><span class="soon">iOS · Android 即将上线</span><a class="btn btn--ghost" href="../">回到今知首页</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a class="brand" href="#top"><img class="brand__icon" src="../assets/icon-dailycourse.png" alt=""><span>今知日课</span></a>
+      <p>每天该学什么，它来安排。今知学习产品家族的一员。</p>
+    </div>
+    <div class="footer__col"><h4>今知</h4><a href="../">今知首页</a><a href="./">今知日课</a><a href="../correction/">今知错题本</a><a href="../correction/download/">错题本下载</a></div>
+    <div class="footer__col"><h4>本页</h4><a href="#features">功能亮点</a><a href="#tools">学习工具</a><a href="#room">自习室</a><a href="#overview">功能一览</a></div>
+    <div class="footer__col"><h4>支持</h4><a href="https://www.jinzhi.fun/correction/support" target="_blank" rel="noopener">技术支持</a></div>
+  </div>
+  <div class="container footer__bottom"><span>© <span id="year">2026</span> 今知</span><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">津ICP备2025029019号</a></div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  var onScroll=function(){nav.classList.toggle('scrolled',window.scrollY>8)};
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+  var toggle=document.getElementById('navToggle');
+  toggle.addEventListener('click',function(){var open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',open?'true':'false')});
+  nav.querySelectorAll('.nav__links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open')})});
+  document.getElementById('year').textContent=new Date().getFullYear();
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasIO='IntersectionObserver' in window;
+  if(!hasIO)document.documentElement.classList.add('no-io');
+
+  /* 首屏 3D 视差 */
+  var hero=document.querySelector('.hero'),wrap=document.getElementById('sceneWrap'),scene=document.getElementById('scene');
+  if(!reduce&&window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    hero.addEventListener('mousemove',function(e){var r=hero.getBoundingClientRect();wrap.style.setProperty('--px',(((e.clientX-r.left)/r.width-.5)*2).toFixed(3));wrap.style.setProperty('--py',(((e.clientY-r.top)/r.height-.5)*2).toFixed(3))});
+    hero.addEventListener('mouseleave',function(){wrap.style.setProperty('--px',0);wrap.style.setProperty('--py',0)});
+  }
+
+  /* ================= 首屏动画：一天的日课 ================= */
+  var DUR=[3800,3600,2600,3800,4600];
+  var chapters=Array.prototype.slice.call(document.querySelectorAll('#chapters button[data-step]'));
+  var fcNum=document.getElementById('fcNum');
+  var step=0,timer=null,tick=null,running=false,inView=false,pageVisible=!document.hidden;
+  function fit(){var s=wrap.clientWidth/1100;if(s<0.62)s=0.62;if(s>1)s=1;wrap.style.setProperty('--s',s)}
+  fit();window.addEventListener('resize',fit);
+  function setClasses(n){var c=['scene'];for(var k=0;k<=n;k++)c.push('s'+k);scene.className=c.join(' ')}
+  function setChapter(n){chapters.forEach(function(b,i){var on=i===n;b.setAttribute('aria-pressed',on?'true':'false');b.classList.remove('on');if(on){b.style.setProperty('--dur',DUR[n]+'ms');void b.offsetWidth;b.classList.add('on')}})}
+  function stopTick(){if(tick){clearInterval(tick);tick=null}fcNum.textContent='58:56'}
+  function startTick(){stopTick();var s=58*60+56;tick=setInterval(function(){s--;var m=Math.floor(s/60),x=s%60;fcNum.textContent=m+':'+(x<10?'0':'')+x},1000)}
+  function scrollToStep(n){if(wrap.scrollWidth<=wrap.clientWidth+4)return;var s=parseFloat(getComputedStyle(wrap).getPropertyValue('--s'))||1;var anchors=[430,430,430,430,722];var max=wrap.scrollWidth-wrap.clientWidth;wrap.scrollTo({left:Math.max(0,Math.min(max,anchors[n]*s-24)),behavior:'smooth'})}
+  function go(n){
+    clearTimeout(timer);step=n;setClasses(n);setChapter(n);
+    if(n===1)startTick();else stopTick();
+    scrollToStep(n);
+    if(!running)return;
+    timer=setTimeout(function(){if(n>=4)restart();else go(n+1)},DUR[n]);
+  }
+  function restart(){clearTimeout(timer);stopTick();scene.classList.add('fade');timer=setTimeout(function(){scene.className='scene fade';setTimeout(function(){scene.classList.remove('fade');go(0)},60)},380)}
+  function start(){if(running)return;running=true;go(step)}
+  function pause(){running=false;clearTimeout(timer);stopTick()}
+  chapters.forEach(function(b){b.addEventListener('click',function(){running=true;go(+b.getAttribute('data-step'))})});
+  document.getElementById('replay').addEventListener('click',function(){running=true;restart()});
+  if(reduce){setClasses(4);setChapter(4)}
+  else if(hasIO){
+    new IntersectionObserver(function(es){es.forEach(function(e){inView=e.isIntersecting;if(inView&&pageVisible)start();else pause()})},{threshold:.2}).observe(wrap);
+    document.addEventListener('visibilitychange',function(){pageVisible=!document.hidden;if(pageVisible&&inView)start();else pause()});
+  } else {start()}
+  setTimeout(function(){if(!running&&!reduce){var r=wrap.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0&&!document.hidden)start()}},1500);
+
+  /* ================= 六个场景 ================= */
+  var steps=Array.prototype.slice.call(document.querySelectorAll('#steps .step'));
+  var screens=Array.prototype.slice.call(document.querySelectorAll('#screens .ss'));
+  var tag=document.getElementById('storyTag');
+  var names=['科目','今日','专注','工具','自习室','统计'];
+  function activate(i){steps.forEach(function(s,j){s.classList.toggle('on',j===i)});screens.forEach(function(s,j){s.classList.toggle('on',j===i)});tag.innerHTML='<i>'+(i+1)+'</i>'+names[i]}
+  if(hasIO){var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)activate(+e.target.getAttribute('data-i'))})},{rootMargin:'-42% 0px -42% 0px',threshold:0});steps.forEach(function(s){so.observe(s)})}
+
+  /* 滚动显现 */
+  var reveals=Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if(reduce||!hasIO){reveals.forEach(function(el){el.classList.add('in')})}
+  else{var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -6% 0px'});reveals.forEach(function(el){ro.observe(el)})}
+})();
+</script>
+</body>
+</html>
